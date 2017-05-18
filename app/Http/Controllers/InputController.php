@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Session;
-use App\Page;
-use App\News;
+use App\App;
 use App\Product;
-use App\Country;
-use App\Order;
 
 class InputController extends Controller
 {
@@ -22,9 +18,9 @@ class InputController extends Controller
 	            return $query->where('barcode', 'LIKE', '%'.$text.'%')
 	            ->orWhere('title', 'LIKE', '%'.$text.'%')
 	            ->orWhere('oem', 'LIKE', '%'.$text.'%');
-	        })->take(20)->get();
+	        })->take(10)->get();
 
-        return view('site.found', compact('text', 'news', 'products'));
+        return view('site.found', compact('text', 'products'));
     }
 
     public function searchAjax(Request $request)
@@ -36,107 +32,59 @@ class InputController extends Controller
                 return $query->where('barcode', 'LIKE', '%'.$text.'%')
                 ->orWhere('title', 'LIKE', '%'.$text.'%')
                 ->orWhere('oem', 'LIKE', '%'.$text.'%');
-            })->take(20)->get();
+            })->take(10)->get();
 
         return response()->json($products);
     }
 
-    public function clearCart()
+    public function sendApp(Request $request)
     {
-        Session::forget('items');
-
-        return redirect('/');
-    }
-
-    public function addToCart(Request $request, $id)
-    {
-        if (Session::has('items')) {
-
-            $items = Session::get('items');
-
-            $items['products_id'][$id] = $id;
-
-            $count = count($items['products_id']);
-
-            Session::set('items', $items);
-
-            return response()->json(['alert' => 'Товар обновлен', 'countItems' => $count]);
-        }
-
-        $items = [];
-        $items['products_id'][$id] = $id;
-
-        Session::set('items', $items);
-
-        return response()->json(['alert' => 'Товар добавлен', 'countItems' => 1]);
-    }
-
-    public function basket()
-    {
-        if (Session::has('items')) {
-
-            $items = Session::get('items');
-            $products = Product::whereIn('id', $items['products_id'])->get();
-
-        }
-
-        return view('site.basket', compact('products'));
-    }
-
-    public function order()
-    {
-        $countries = Country::all();
-
-        if (Session::has('items')) {
-
-            $items = Session::get('items');
-            $products = Product::whereIn('id', $items['products_id'])->get();
-
-        }
-
-        return view('site.order', compact('products', 'countries'));
-    }
-
-    public function storeOrder(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|min:2|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|min:6',
-            'city_id' => 'numeric',
-            'address' => 'required',
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|min:3|max:60',
+            'phone' => 'required|min:5',
         ]);
 
-        $items = Session::get('items');
-        $products = Product::whereIn('id', $items['products_id'])->get();
+        if ($validator->fails()) {
+            return redirect('/#contact-form')->withErrors($validator)->withInput();
+        }
 
-        $order = new Order;
+        $app = new App;
+        $app->name = $request->name;
+        $app->email = $request->email;
+        $app->phone = $request->phone;
+        $app->message = $request->message;
+        $app->save();
 
-        $order->name = $request->name;
-        $order->email = $request->email;
-        $order->phone = $request->phone;
-        // $order->city_id = $request->city_id;
-        $order->address = $request->address;
-        $order->count = count($items['products_id']);
-        $order->price = $products->sum('price');
-        $order->amount = $products->sum('price');
-        $order->save();
+        // Email subject.
+        $subject = "Japan Import - novaya zayavka ot $request->name";
 
-        $order->products()->attach($items['products_id']);
+        // Email content.
+        $content = "<h2>Japan Import</h2>";
+        $content .= "<b>Имя: $request->name</b><br>";
+        $content .= "<b>Номер: $request->phone</b><br>";
+        $content .= "<b>Email: $request->email</b><br>";
+        $content .= "<b>Текст: $request->message</b><br>";
+        $content .= "<b>Дата: " . date('Y-m-d') . "</b><br>";
+        $content .= "<b>Время: " . date('G:i') . "</b>";
 
-        Session::forget('items');
+        $headers = "From: info@jpi.kz \r\n" .
+                   "MIME-Version: 1.0" . "\r\n" . 
+                   "Content-type: text/html; charset=UTF-8" . "\r\n";
 
-        return redirect('/')->with('status', 'Заказ принят!');
+        // Send the email.
+        if (mail('issayev.adilet@gmail.com', $subject, $content, $headers)) {
+            $status = 'alert-success';
+            $message = 'Ваша заявка принято.';
+        }
+        else {
+            $status = 'alert-danger';
+            $message = 'Произошла ошибка.';
+        }
+
+        return redirect()->back()->with([
+            'alert' => $status,
+            'message' => $message
+        ]);
     }
 
-    public function destroy($id)
-    {
-        $items = Session::get('items');
-
-        unset($items['products_id'][$id]);
-
-        Session::set('items', $items);
-
-        return redirect('basket');
-    }
 }

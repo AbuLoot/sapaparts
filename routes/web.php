@@ -2,6 +2,7 @@
 
 Auth::routes();
 
+
 // Joystick Administration
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
@@ -28,35 +29,43 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 });
 
 
+// Input
 Route::get('search', 'InputController@search');
 
 Route::get('search-ajax', 'InputController@searchAjax');
 
-Route::get('cart/{id}', 'InputController@addToCart');
+Route::post('send-app', 'InputController@sendApp');
 
-Route::get('clear-cart', 'InputController@clearCart');
 
-Route::get('basket', 'InputController@basket');
+// Basket Actions
+Route::get('add-to-basket/{id}', 'BasketController@addToBasket');
 
-Route::delete('basket/{id}', 'InputController@destroy');
+Route::get('clear-basket', 'BasketController@clearBasket');
 
-Route::get('order', 'InputController@order');
+Route::get('basket', 'BasketController@basket');
 
-Route::post('order', 'InputController@storeOrder');
+Route::delete('basket/{id}', 'BasketController@destroy');
+
+Route::get('order', 'BasketController@order');
+
+Route::post('order', 'BasketController@storeOrder');
+
+
+// Favorite Actions
+Route::get('toggle-favorite/{id}', 'FavoriteController@toggleFavorite');
+
 
 // Pages
-Route::get('/', 'MainController@index');
+Route::get('/', 'PageController@index');
 
-Route::get('catalog', 'MainController@catalog');
+Route::get('catalog', 'PageController@catalog');
 
-Route::get('catalog/{category}', 'MainController@categoryProducts');
+Route::get('catalog/{category}', 'PageController@categoryProducts');
 
-Route::get('goods/{id}-{product}', 'MainController@product');
+Route::get('goods/{id}-{product}', 'PageController@product');
 
-Route::get('catalog/brand/{company}', 'MainController@brandProducts');
+Route::get('catalog/brand/{company}', 'PageController@brandProducts');
 
-Route::post('send-app', 'MainController@sendApp');
+Route::get('contacts', 'PageController@contacts');
 
-Route::get('contacts', 'MainController@contacts');
-
-Route::get('{page}', 'MainController@page');
+Route::get('{page}', 'PageController@page');

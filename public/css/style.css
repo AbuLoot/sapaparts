@@ -44,12 +44,12 @@
 .navbar-nav > li > a.order-products,
 .navbar-nav > li > a.order-products > span {
   color: #fff;
-  background-color: #303030;
+  background-color: #263238;
 }
 .navbar-nav > li > a.order-products:hover,
 .navbar-nav > li > a.order-products:focus {
   color: #fff;
-  background-color: #303030;
+  background-color: #263238;
 }
 .navbar-nav > li > div.social-buttons {
   color: #fff;
@@ -126,7 +126,7 @@
   font-size: 14px;
   text-align: left;
   list-style: none;
-  background-color: #545454;
+  background-color: #263238;
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
   border: 1px solid #ccc;
@@ -183,14 +183,14 @@
 }
 .btn-category {
   color: #fff;
-  background-color: #303030;
+  background-color: #263238;
   border-color: #2e6da4;
   margin-bottom: 10px;
 }
 .btn-category:focus,
 .btn-category:hover {
   color: #fff;
-  background-color: #303030;
+  background-color: #263238;
   border-color: #204d74;
 }
 
@@ -288,7 +288,7 @@
 .thumbnail .caption > p {
   margin-bottom: 5px;
 }
-.btn-cart {
+.btn-basket {
   width: 70.5%;
   padding: 10px;
   border-radius: 0;
@@ -325,9 +325,14 @@
   background-color: #eee;
 }
 
+/* Basket */
+.tab-pane {
+  padding: 50px;
+}
+
 /* Footer */
 .footer {
   color: #fff;
   padding: 50px 0;
-  background-color: #444;
+  background-color: #263238;
 }

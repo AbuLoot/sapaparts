@@ -69,11 +69,11 @@
             </a>
           </div>
           <div class="col-xs-8 col-sm-4 col-md-4 search">
-            <form class="row">
+            <form action="/search" method="get" class="row">
               <div class="input-group input-search">
-                <input type="search" class="form-control input-lg typeahead-goods" placeholder="Поиск...">
+                <input type="search" class="form-control input-lg typeahead-goods" name="text" placeholder="Поиск...">
                 <span class="input-group-btn">
-                  <button class="btn btn-default btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                  <button class="btn btn-default btn-lg" type="submit"><span class="glyphicon glyphicon-search"></span></button>
                 </span>
               </div>
             </form>
@@ -92,7 +92,7 @@
       </section>
 
       <!-- Navigation -->
-      <nav class="navigation">
+      <nav class="navigation" id="navigation">
         <div class="container">
           <a class="btn btn-category btn-lg visible-xs-block" role="button" data-toggle="collapse" href="#collapseAutoParts" aria-expanded="false" aria-controls="collapseAutoParts"><span class="glyphicon glyphicon-menu-hamburger"></span> Запчасти</a>
           <ul class="nav nav-pills nav-justified collapse navigation-collapse categories" id="collapseAutoParts">
@@ -100,7 +100,7 @@
               <?php foreach ($categories as $category) : ?>
                 <li>
                   <?php if (count($category->descendants()->get()) > 0) : ?>
-                    <a href="#">{{ $category->title }}</a>
+                    <a>{{ $category->title }}</a>
                   <?php else : ?>
                     <a href="/catalog/{{ $category->slug }}">{{ $category->title }}</a>
                   <?php endif; ?>
@@ -112,7 +112,8 @@
                   <?php endif; ?>
                 </li>
               <?php endforeach; ?>
-            <?php }; $traverse($categories); ?>
+            <?php }; ?>
+            <?php $traverse($categories); ?>
           </ul>
         </div>
       </nav>
@@ -141,12 +142,26 @@
           </ul>
         </div>
         <div class="col-md-3">
+          <h4>Мы в соц. сети.</h4>
+          <ul class="list-unstyled">
+            <li href="#"><i class="socicon-google"></i> <a href="#">Google +</a></li>
+            <li href="#"><i class="socicon-facebook"></i> <a href="#">Facebook</a></li>
+            <li href="#"><i class="socicon-vkontakte"></i> <a href="#">Vkontake</a></li>
+            <li href="#"><i class="socicon-instagram"></i> <a href="#">Instagram</a></li>
+          </ul>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
+          <h4>Контакты</h4>
+          <ul class="list-unstyled">
+            <li>г. Алматы, ул. Райымбек</li>
+            <li>+7 775 900 4204</li>
+            <li>+7 707 900 4204</li>
+            <li>info@sapaparts.kz</li>
+          </ul>
         </div>
 
-        <div class="col-md-12">
-          <p class="text-right">SapaParts 2017</p>
+        <div class="col-md-12"><br>
+          <p class="text-center">SapaParts 2017</p>
         </div>
       </div>
     </footer>
@@ -166,16 +181,18 @@
             url: '/search-ajax?text=%QUERY%',
             wildcard: '%QUERY%'
           },
-          datumTokenizer: Bloodhound.tokenizers.whitespace('q'),
+          datumTokenizer: Bloodhound.tokenizers.whitespace('text'),
           queryTokenizer: Bloodhound.tokenizers.whitespace
         });
 
         $(".typeahead-goods").typeahead({
           hint: true,
           highlight: true,
-          minLength: 2
+          minLength: 2,
         }, {
+          limit: 10,
           source: engine.ttAdapter(),
+          displayKey: 'title',
 
           templates: {
             empty: [

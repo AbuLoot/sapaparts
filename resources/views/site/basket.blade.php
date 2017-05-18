@@ -9,7 +9,42 @@
       <li class="active">Корзина</li>
     </ol>
 
-    <h1>Корзина</h1>
+    <h1>Корзина <small>Оформление заказа</small></h1>
+
+    <div>
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#user" aria-controls="user" role="tab" data-toggle="tab">User</a></li>
+        <li><a href="#company" aria-controls="company" role="tab" data-toggle="tab">Company</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="user">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Jane Doe">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="jane.doe@example.com">
+            </div>
+          </form>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="company">
+          <form class="form-inline">
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Jane Doe">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" placeholder="jane.doe@example.com">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <div class="table-responsive">
       <table class="table table-striped table-condensed">
@@ -48,7 +83,7 @@
     </div>
 
     @if ($products->count() > 0)
-      <h4 class="text-right"><a href="/clear-cart">Очистить корзину?</a></h4>
+      <h4 class="text-right"><a href="/clear-basket">Очистить корзину?</a></h4>
       <div class="panel panel-default">
         <div class="panel-body">
           <p>Итого: <b>{{ $products->sum('price') }} ₸</b></p>

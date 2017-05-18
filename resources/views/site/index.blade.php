@@ -41,7 +41,7 @@
                       </a>
                       <div class="caption text-center">
                         <h4><a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">{{ $new_product->title }}</a></h4>
-                        <p>{{ $new_product->price }}</p>
+                        <p>{{ $new_product->price }} 〒</p>
                       </div>
                     </div>
                   @endforeach
@@ -59,7 +59,7 @@
         <h2>Партнеры</h2>
         <ul class="brands-logo nav-justified list-unstyled">
           @foreach ($companies as $company)
-            <li><a href="#"><img src="/img/companies/{{ $company->logo }}" class="center-block img-responsive"></a></li>
+            <li><a href="#"><img src="/img/companies/{{ $company->logo }}" class="center-block img-responsive"></a><br></li>
           @endforeach
         </ul>
       </div>
@@ -90,7 +90,7 @@
                       </a>
                       <div class="caption text-center">
                         <h4><a href="/goods/{{ $last_product->id.'-'.$last_product->slug }}">{{ $last_product->title }}</a></h4>
-                        <p>{{ $last_product->price }}</p>
+                        <p>{{ $last_product->price }} 〒</p>
                       </div>
                     </div>
                   @endforeach
@@ -106,7 +106,8 @@
 
 @section('scripts')
   <script>
-    $('button#add-to-cart').click(function(e){
+    // Add to Basket
+    $('button#add-to-basket').click(function(e){
       e.preventDefault();
 
       var productId = $(this).data("id");
@@ -114,12 +115,12 @@
       if (productId != '') {
         $.ajax({
           type: "get",
-          url: '/cart/'+productId,
+          url: '/add-to-basket/'+productId,
           dataType: "json",
           data: {},
           success: function(data) {
             console.log(data);
-            $('*[data-id="'+productId+'"]').replaceWith('<a href="/basket" class="btn btn-cart" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><img src="/img/shopping-cart.png"></a>');
+            $('*[data-id="'+productId+'"]').replaceWith('<a href="/basket" class="btn btn-basket" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><img src="/img/shopping-cart.png"></a>');
             $('#count-items').text(data.countItems);
             alert('Товар добавлен в корзину');
           }
