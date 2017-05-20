@@ -29,7 +29,7 @@ class FavoriteController extends Controller
 				unset($favorites['products_id'][$id]);
 			}
 			else {
-				$css_class = 'text-danger';
+				$css_class = 'text-success';
             	$favorites['products_id'][$id] = $id;
 			}
 
@@ -45,7 +45,7 @@ class FavoriteController extends Controller
 
         Session::set('favorites', $favorites);
 
-        return response()->json(['id' => $id, 'cssClass' => 'text-danger', 'countFavorites' => 1]);
+        return response()->json(['id' => $id, 'cssClass' => 'text-success', 'countFavorites' => 1]);
     }
 
     public function favorites()

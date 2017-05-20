@@ -188,11 +188,11 @@
         $(".typeahead-goods").typeahead({
           hint: true,
           highlight: true,
-          minLength: 2,
+          minLength: 2
         }, {
           limit: 10,
-          source: engine.ttAdapter(),
           displayKey: 'title',
+          source: engine.ttAdapter(),
 
           templates: {
             empty: [

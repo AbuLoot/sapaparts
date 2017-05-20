@@ -34,6 +34,8 @@ Route::get('search', 'InputController@search');
 
 Route::get('search-ajax', 'InputController@searchAjax');
 
+Route::post('filter-products', 'InputController@filterProducts');
+
 Route::post('send-app', 'InputController@sendApp');
 
 

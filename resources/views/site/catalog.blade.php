@@ -1,37 +1,176 @@
 @extends('layout')
 
-@section('title_description', $page->title_description)
+@section('title_description', $category->title_description)
 
-@section('meta_description', $page->meta_description)
+@section('meta_description', $category->meta_description)
 
 @section('content')
 
-  <!-- Модальное окно -->
-  @include('layouts.contact-us')
+  <main class="container main">
 
-  <div class="container breadcrums">
-    <ul>
+    <ol class="breadcrumb">
       <li><a href="/">Главная</a></li>
-      <li><a href="#">{{ $page->title }}</a></li>
-    </ul>
-  </div>
+      <li class="active">{{ $category->title }}</li>
+    </ol>
 
-  <div class="container"><!-- Товары -->
-    <h1>{{ $page->title }}</h1>
-    <div class="col-md-3 goods-left">
-      @include('layouts.goods-left')
-    </div>
-    <div class="col-md-9">
-      @foreach ($categories as $category)
-        <div class="col-md-4 col-sm-6 goods">
-          <a href="/catalog/{{ $category->slug }}">
-            <p class="name-good">{{ $category->title }}</p>
-            <div class="good-img"><img src="/img/categories/{{ $category->image }}" alt="{{ $category->title }}"></div>
-            <span class="good-more">Подробнее</span>
-          </a>
+    <h1>{{ $category->title }} <small>{{ $category->title_description }}</small></h1>
+    <hr>
+
+    <div class="row" id="catalog">
+      <div class="col-md-9">
+
+        <!-- Sort panel -->
+        <div class="sort">
+          <span>
+            <span class="sort-view-title hidden-xs">Вид: </span>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Сетка"><span class="glyphicon glyphicon-th"></span></button>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Список"><span class="glyphicon glyphicon-th-list"></span></button>
+          </span>
+
+          <div class="dropdown pull-right">
+            Показать:
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownSort" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              По рейтингу <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownSort">
+              <li><a href="#by-rating">По рейтингу</a></li>
+              <li><a href="#by-low">Дешевые</a></li>
+              <li><a href="#by-high">Дорогие</a></li>
+            </ul>
+          </div>
         </div>
-      @endforeach
-    </div>
-  </div><!-- Товары -->
 
+        <?php $items = session('items'); ?>
+        <?php $favorites = session('favorites'); ?>
+
+        <!-- Catalog -->
+        <div id="products">
+          @include('site.products')
+        </div>
+      </div>
+
+      <!-- Options -->
+      <aside class="options-app col-md-3">
+
+        <h4>Фильтр</h4>
+        <form action="/filter-products" method="post" id="filter">
+          {!! csrf_field() !!}
+
+          @foreach ($options as $option)
+            <div class="checkbox">
+              <label><input type="checkbox" name="options_id[]" value="{{ $option->id }}"> {{ $option->title }}</label>
+            </div>
+          @endforeach
+        </form>
+      </aside>
+    </div>
+  </main>
+
+@endsection
+
+@section('scripts')
+  <script>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+
+    $('button#add-to-basket').click(function(e){
+      e.preventDefault();
+
+      var productId = $(this).data("basket-id");
+
+      if (productId != '') {
+        $.ajax({
+          type: "get",
+          url: '/add-to-basket/'+productId,
+          dataType: "json",
+          data: {},
+          success: function(data) {
+            $('*[data-basket-id="'+productId+'"]').replaceWith('<a href="/basket" class="btn btn-basket btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><span class="glyphicon glyphicon-shopping-cart"></span> Оформить</a>');
+            $('#count-items').text(data.countItems);
+            alert('Товар добавлен в корзину');
+          }
+        });
+      } else {
+        alert("Ошибка сервера");
+      }
+    });
+
+    // Toggle Favorites
+    $('.thumbnail').on('click', '#toggle-favorite', function(e){
+      e.preventDefault();
+
+      var productId = $(this).data("favorite-id");
+
+      if (productId != '') {
+        $.ajax({
+          type: "get",
+          url: '/toggle-favorite/'+productId,
+          dataType: "json",
+          data: {},
+          success: function(data) {
+            $('*[data-favorite-id="'+productId+'"]').replaceWith('<button type="button" class="btn btn-like btn-default" id="toggle-favorite" data-favorite-id="'+data.id+'"><span class="glyphicon glyphicon-heart '+data.cssClass+'"></span></button>');
+          }
+        });
+      } else {
+        alert("Ошибка сервера");
+      }
+    });
+  </script>
+
+  <script>
+    $(window).on('hashchange',function(){
+      page = window.location.hash.replace('#', '');
+
+      getProducts(page);
+    });
+
+    $(document).on('click', '.pagination a', function(e){
+      e.preventDefault();
+      var page = $(this).attr('href').split('catalog')[1];
+
+      getProducts(page);
+      location.hash = page;
+    });
+
+    function getProducts(page) {
+      $.ajax({
+        url : '/catalog' + page,
+        dataType: 'json',
+      }).done(function (data) {
+        $('#products').html(data);
+        $('html, body').animate({ scrollTop: $('#catalog').offset().top }, 1000);
+        location.hash = page;
+      }).fail(function () {
+        alert('Products could not be loaded.');
+      });
+    }
+
+    // Filter products
+    $('#filter').on('click', 'input', function(e){
+      var optionsId = new Array();
+      var token = $('input[name="_token"]').val();
+
+      $('input[name="options_id[]"]:checked').each(function() {
+        optionsId.push($(this).val());
+      });
+
+      if (optionsId.length > 0) {
+        $.ajax({
+          type: "post",
+          url: '/catalog/',
+          dataType: "json",
+          data: {
+            '_token':token,
+            'options_id':optionsId
+          },
+          success: function(data) {
+            $('.products').html(data);
+          }
+        });
+      } else {
+        alert("Ошибка сервера");
+      }
+    });
+  </script>
 @endsection

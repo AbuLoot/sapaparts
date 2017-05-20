@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Validator;
+
 use App\App;
 use App\Product;
 
@@ -30,11 +32,26 @@ class InputController extends Controller
         $products = Product::where('status', 1)
             ->where(function($query) use ($text) {
                 return $query->where('barcode', 'LIKE', '%'.$text.'%')
-                ->orWhere('title', 'LIKE', '%'.$text.'%')
-                ->orWhere('oem', 'LIKE', '%'.$text.'%');
+                    ->orWhere('title', 'LIKE', '%'.$text.'%')
+                    ->orWhere('oem', 'LIKE', '%'.$text.'%');
             })->take(10)->get();
 
         return response()->json($products);
+    }
+
+    public function filterProducts(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'options_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator);
+        }
+
+        $products = Product::where('status', 1)->whereIn('id', $request->options_id)->paginate(27);
+
+        return response()->json(view('site.products', ['products' => $products])->render());
     }
 
     public function sendApp(Request $request)
@@ -86,5 +103,4 @@ class InputController extends Controller
             'message' => $message
         ]);
     }
-
 }

@@ -35,13 +35,19 @@ class PageController extends Controller
         return view('site.catalog')->with(['page' => $page]);
     }
 
-    public function categoryProducts($category_slug)
+    public function categoryProducts(Request $request, $category_slug)
     {
         $category = Category::where('slug', $category_slug)->first();
         $products = Product::where('category_id', $category->id)->paginate(27);
-        $options = Option::orderBy('sort_id')->get();
+        $options = Option::orderBy('sort_id')->take(80)->get();
 
-        return view('site.products')->with(['category' => $category, 'products' => $products, 'options' => $options]);
+        if ($request->ajax()) {
+            // return view('site.catalog')->with(['products' => $products]);
+
+            return response()->json(view('site.products', ['products' => $products])->render());
+        }
+
+        return view('site.catalog')->with(['category' => $category, 'products' => $products, 'options' => $options]);
     }
 
     public function brandProducts($company_slug)
@@ -49,7 +55,7 @@ class PageController extends Controller
         $page = Page::where('slug', 'catalog')->firstOrFail();
         $company = Company::where('slug', $company_slug)->first();
 
-        return view('site.products')->with(['page' => $page, 'products_title' => $page->title, 'products' => $company->products]);
+        return view('site.catalog')->with(['page' => $page, 'products_title' => $page->title, 'products' => $company->products]);
     }
 
     public function product($product_id, $product_slug)
