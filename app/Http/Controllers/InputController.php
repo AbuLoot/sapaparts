@@ -34,7 +34,7 @@ class InputController extends Controller
                 return $query->where('barcode', 'LIKE', '%'.$text.'%')
                     ->orWhere('title', 'LIKE', '%'.$text.'%')
                     ->orWhere('oem', 'LIKE', '%'.$text.'%');
-            })->take(10)->get();
+            })->take(12)->get();
 
         return response()->json($products);
     }

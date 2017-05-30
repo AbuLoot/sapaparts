@@ -105,7 +105,7 @@
                     <a href="/catalog/{{ $category->slug }}">{{ $category->title }}</a>
                   <?php endif; ?>
 
-                  <?php if ($category->children && count($category->children) > 1) : ?>
+                  <?php if ($category->children && count($category->children) > 0) : ?>
                     <ul class="subcategories">
                       <?php $traverse($category->children); ?>
                     </ul>
@@ -191,8 +191,8 @@
           minLength: 2
         }, {
           limit: 10,
-          displayKey: 'title',
           source: engine.ttAdapter(),
+          displayKey: 'title',
 
           templates: {
             empty: [

@@ -70,7 +70,7 @@ class ProductController extends Controller
                     }
 
                     // Storing original images
-                    $image->storeAs('img/products/'.$dirName, $imageName);
+                    $this->resizeImage($image, 1024, 768, 'img/products/'.$dirName.'/'.$imageName, 100);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$dirName.'/present-'.$imageName, 100);
@@ -167,7 +167,7 @@ class ProductController extends Controller
                     }
 
                     // Storing original images
-                    $image->storeAs('img/products/'.$product->path, $imageName);
+                    $this->resizeImage($image, 1024, 768, 'img/products/'.$dirName.'/'.$imageName, 100);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$product->path.'/present-'.$imageName, 100);
@@ -177,11 +177,13 @@ class ProductController extends Controller
 
                     if (isset($images[$key])) {
 
-                        Storage::delete([
-                            'img/products/'.$product->path.'/'.$images[$key]['image'],
-                            'img/products/'.$product->path.'/'.$images[$key]['present_image'],
-                            'img/products/'.$product->path.'/'.$images[$key]['mini_image']
-                        ]);
+                        if ($images[$key]['image'] != 'no-image-middle.png') {
+                            Storage::delete([
+                                'img/products/'.$product->path.'/'.$images[$key]['image'],
+                                'img/products/'.$product->path.'/'.$images[$key]['present_image'],
+                                'img/products/'.$product->path.'/'.$images[$key]['mini_image']
+                            ]);
+                        }
 
                         $images[$key]['image'] = $imageName;
                         $images[$key]['present_image'] = 'present-'.$imageName;
@@ -238,15 +240,17 @@ class ProductController extends Controller
 
             foreach ($images as $image)
             {
-                if ($product->image != NULL AND file_exists('img/products/'.$product->path.'/'.$product->image)) {
+                if ($product->image != NULL AND $product->image != 'no-image-middle.png' AND file_exists('img/products/'.$product->path.'/'.$product->image)) {
                     Storage::delete('img/products/'.$product->path.'/'.$product->image);
                 }
 
-                Storage::delete([
-                    'img/products/'.$product->path.'/'.$image['image'],
-                    'img/products/'.$product->path.'/'.$image['present_image'],
-                    'img/products/'.$product->path.'/'.$image['mini_image']
-                ]);
+                if ($image['image'] != 'no-image-middle.png') {
+                    Storage::delete([
+                        'img/products/'.$product->path.'/'.$image['image'],
+                        'img/products/'.$product->path.'/'.$image['present_image'],
+                        'img/products/'.$product->path.'/'.$image['mini_image']
+                    ]);
+                }
             }
 
             Storage::deleteDirectory('img/products/'.$product->path);
