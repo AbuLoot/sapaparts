@@ -53,9 +53,7 @@
       <aside class="options-app col-md-3">
 
         <h4>Фильтр</h4>
-        <form action="/filter-products" method="post" id="filter">
-          {!! csrf_field() !!}
-
+        <form action="/filter-products" method="get" id="filter">
           @foreach ($options as $option)
             <div class="checkbox">
               <label><input type="checkbox" name="options_id[]" value="{{ $option->id }}"> {{ $option->title }}</label>
@@ -65,7 +63,6 @@
       </aside>
     </div>
   </main>
-
 @endsection
 
 @section('scripts')
@@ -119,18 +116,18 @@
   </script>
 
   <script>
-    $(window).on('hashchange',function(){
-      page = window.location.hash.replace('#', '');
+    // $(window).on('hashchange',function(){
+      // page = window.location.hash.replace('#', '');
 
-      getProducts(page);
-    });
+      // getProducts(page);
+    // });
 
     $(document).on('click', '.pagination a', function(e){
       e.preventDefault();
       var page = $(this).attr('href').split('catalog')[1];
 
       getProducts(page);
-      location.hash = page;
+      // location.hash = page;
     });
 
     function getProducts(page) {
@@ -142,14 +139,15 @@
         $('html, body').animate({ scrollTop: $('#catalog').offset().top }, 1000);
         location.hash = page;
       }).fail(function () {
-        alert('Products could not be loaded.');
+        alert('Продукты не загрузились');
       });
     }
 
     // Filter products
-    $('#filter').on('click', 'input', function(e){
+    $('#filter').on('click', 'input', function() {
+
       var optionsId = new Array();
-      var token = $('input[name="_token"]').val();
+      var page = $(location).attr('href').split('catalog')[1];
 
       $('input[name="options_id[]"]:checked').each(function() {
         optionsId.push($(this).val());
@@ -157,15 +155,14 @@
 
       if (optionsId.length > 0) {
         $.ajax({
-          type: "post",
-          url: '/catalog/',
+          type: "get",
+          url: '/catalog' + page,
           dataType: "json",
           data: {
-            '_token':token,
-            'options_id':optionsId
+            "options_id": optionsId
           },
           success: function(data) {
-            $('.products').html(data);
+            $('#products').html(data);
           }
         });
       } else {

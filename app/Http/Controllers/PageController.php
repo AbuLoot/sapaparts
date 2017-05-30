@@ -27,23 +27,27 @@ class PageController extends Controller
         return view('site.page')->with('page', $page);
     }
 
-    public function catalog()
-    {
-        $page = Page::where('slug', 'catalog')->firstOrFail();
-        // $categories = Category::orderBy('sort_id')->get();
-
-        return view('site.catalog')->with(['page' => $page]);
-    }
-
     public function categoryProducts(Request $request, $category_slug)
     {
         $category = Category::where('slug', $category_slug)->first();
-        $products = Product::where('category_id', $category->id)->paginate(27);
+
+        if (isset($request->options_id)) {
+
+            $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
+
+            $products->appends([
+                'options_id' => $request->options_id,
+            ]);
+
+            return response()->json(view('site.products', ['products' => $products])->render());
+        }
+        else {
+            $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
+        }
+
         $options = Option::orderBy('sort_id')->take(80)->get();
 
         if ($request->ajax()) {
-            // return view('site.catalog')->with(['products' => $products]);
-
             return response()->json(view('site.products', ['products' => $products])->render());
         }
 
