@@ -54,23 +54,20 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
 
-            $i = 0;
-
             foreach ($request->file('images') as $key => $image)
             {
                 if (isset($image)) {
 
-                    $imageName = 'image-'.$key.'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
+                    $imageName = 'image-'.$key.uniqid().'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
 
                     // Creating preview image
-                    if ($i == 0) {
-                        $i++;
+                    if ($key == 0) {
                         $this->resizeImage($image, 200, 200, 'img/products/'.$dirName.'/preview-'.$imageName, 100);
                         $introImage = 'preview-'.$imageName;
                     }
 
                     // Storing original images
-                    $this->resizeImage($image, 1024, 768, 'img/products/'.$dirName.'/'.$imageName, 100);
+                    $image->storeAs('img/products/'.$dirName, $imageName);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$dirName.'/present-'.$imageName, 100);
@@ -138,13 +135,14 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
+        $images = unserialize($product->images);
+
         if ($request->hasFile('images')) {
 
-            $i = 0;
             $introImage = null;
-            $images = unserialize($product->images);
 
-            if ( ! file_exists('img/products/'.$product->path)) {
+            if ( ! file_exists('img/products/'.$product->category->id)) {
+                $product->path = $product->category->id.'/'.time();
                 Storage::makeDirectory('img/products/'.$product->path);
             }
 
@@ -152,22 +150,21 @@ class ProductController extends Controller
             {
                 if (isset($image)) {
 
-                    $imageName = 'image-'.$key.'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
+                    $imageName = 'image-'.$key.uniqid().'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
 
                     // Creating preview image
-                    if ($i == 0) {
+                    if ($key == 0) {
 
                         if ($product->image != NULL AND file_exists('img/products/'.$product->path.'/'.$product->image)) {
                             Storage::delete('img/products/'.$product->path.'/'.$product->image);
                         }
 
-                        $i++;
                         $this->resizeImage($image, 200, 200, 'img/products/'.$product->path.'/preview-'.$imageName, 100);
                         $introImage = 'preview-'.$imageName;
                     }
 
                     // Storing original images
-                    $this->resizeImage($image, 1024, 768, 'img/products/'.$dirName.'/'.$imageName, 100);
+                    $image->storeAs('img/products/'.$product->path, $imageName);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$product->path.'/present-'.$imageName, 100);
@@ -198,7 +195,31 @@ class ProductController extends Controller
             }
 
             $images = array_sort_recursive($images);
-            $images = serialize($images);
+        }
+
+        if (count($request->remove_images) > 0) {
+
+            foreach ($request->remove_images as $key => $value) {
+
+                if (!isset($request->images[$value])) {
+
+                    if ($product->image === 'preview-'.$images[$value]['image']) {
+
+                        Storage::delete('img/products/'.$product->path.'/'.$product->image);
+                        $introImage = 'no-image-middle.png';
+                    }
+
+                    Storage::delete([
+                        'img/products/'.$product->path.'/'.$images[$value]['image'],
+                        'img/products/'.$product->path.'/'.$images[$value]['present_image'],
+                        'img/products/'.$product->path.'/'.$images[$value]['mini_image']
+                    ]);
+
+                    unset($images[$value]);
+                }
+            }
+
+            $images = array_sort_recursive($images);
         }
 
         $product->sort_id = ($request->sort_id > 0) ? $request->sort_id : $product->count() + 1;
@@ -214,10 +235,8 @@ class ProductController extends Controller
         $product->meta_description = $request->meta_description;
         $product->description = $request->description;
         $product->characteristic = $request->characteristic;
-
         if (isset($introImage)) $product->image = $introImage;
-        if (isset($images)) $product->images = $images;
-
+        $product->images = serialize($images);
         $product->lang = $request->lang;
         $product->mode = $request->mode;
         $product->status = ($request->status == 'on') ? 1 : 0;

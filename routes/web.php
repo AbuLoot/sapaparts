@@ -46,11 +46,9 @@ Route::get('clear-basket', 'BasketController@clearBasket');
 
 Route::get('basket', 'BasketController@basket');
 
-Route::delete('basket/{id}', 'BasketController@destroy');
+Route::get('basket/{id}', 'BasketController@destroy');
 
-Route::get('order', 'BasketController@order');
-
-Route::post('order', 'BasketController@storeOrder');
+Route::post('store-order', 'BasketController@storeOrder');
 
 
 // Favorite Actions

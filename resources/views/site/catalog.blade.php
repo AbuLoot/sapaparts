@@ -45,7 +45,7 @@
 
         <!-- Catalog -->
         <div id="products">
-          @include('site.products')
+          @include('site.products-render')
         </div>
       </div>
 
@@ -116,33 +116,6 @@
   </script>
 
   <script>
-    // $(window).on('hashchange',function(){
-      // page = window.location.hash.replace('#', '');
-
-      // getProducts(page);
-    // });
-
-    $(document).on('click', '.pagination a', function(e){
-      e.preventDefault();
-      var page = $(this).attr('href').split('catalog')[1];
-
-      getProducts(page);
-      // location.hash = page;
-    });
-
-    function getProducts(page) {
-      $.ajax({
-        url : '/catalog' + page,
-        dataType: 'json',
-      }).done(function (data) {
-        $('#products').html(data);
-        $('html, body').animate({ scrollTop: $('#catalog').offset().top }, 1000);
-        location.hash = page;
-      }).fail(function () {
-        alert('Продукты не загрузились');
-      });
-    }
-
     // Filter products
     $('#filter').on('click', 'input', function() {
 
@@ -152,6 +125,8 @@
       $('input[name="options_id[]"]:checked').each(function() {
         optionsId.push($(this).val());
       });
+
+      localStorage.setItem("optionsId", JSON.stringify(optionsId));
 
       if (optionsId.length > 0) {
         $.ajax({
@@ -169,5 +144,42 @@
         alert("Ошибка сервера");
       }
     });
+
+    // Pagination
+    // $(window).on('hashchange',function(){
+      // page = window.location.hash.replace('#', '');
+
+      // getProducts(page);
+    // });
+
+    $(document).on('click', '.pagination a', function(e){
+      e.preventDefault();
+      var page = $(this).attr('href').split('catalog')[1];
+
+      if (localStorage.getItem("optionsId") === 'null') {
+        var optionsId = new Array();
+      } else {
+        var optionsId = JSON.parse(localStorage.getItem("optionsId"));
+      }
+
+      getProducts(page, optionsId);
+      // location.hash = page;
+    });
+
+    function getProducts(page, optionsId) {
+      $.ajax({
+        url : '/catalog' + page,
+        dataType: 'json',
+        data: {
+          'options_id': optionsId
+        }
+      }).done(function (data) {
+        $('#products').html(data);
+        $('html, body').animate({ scrollTop: $('#catalog').offset().top }, 1000);
+        // location.hash = page;
+      }).fail(function () {
+        alert('Продукты не загрузились');
+      });
+    }
   </script>
 @endsection

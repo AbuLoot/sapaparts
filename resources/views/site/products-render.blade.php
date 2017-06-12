@@ -18,7 +18,7 @@
         @if(is_array($items) AND in_array($product->id, $items['products_id']))
           <a href="/basket" class="btn btn-basket btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><span class="glyphicon glyphicon-shopping-cart"></span> Оформить</a>
         @else
-          <button class="btn btn-basket btn-danger" id="add-to-basket" data-basket-id="{{ $product->id }}"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
+          <button class="btn btn-basket btn-default" id="add-to-basket" data-basket-id="{{ $product->id }}"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
         @endif
 
         @if(is_array($favorites) AND in_array($product->id, $favorites['products_id']))

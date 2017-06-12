@@ -43,6 +43,8 @@ class BasketController extends Controller
 
     public function basket()
     {
+        $countries = Country::all();
+
         if (Session::has('items')) {
 
             $items = Session::get('items');
@@ -52,7 +54,7 @@ class BasketController extends Controller
             $products = collect();
         }
 
-        return view('site.basket', compact('products'));
+        return view('site.basket', compact('products', 'countries'));
     }
 
     public function order()
@@ -74,7 +76,7 @@ class BasketController extends Controller
         $this->validate($request, [
             'name' => 'required|min:2|max:255',
             'email' => 'required|email|max:255',
-            'phone' => 'required|min:6',
+            'phone' => 'required|min:5',
             'city_id' => 'numeric',
             'address' => 'required',
         ]);
@@ -82,16 +84,25 @@ class BasketController extends Controller
         $items = Session::get('items');
         $products = Product::whereIn('id', $items['products_id'])->get();
 
-        $order = new Order;
+        $sumCountProducts = 0;
+        $sumPriceProducts = 0;
 
+        foreach ($products as $product) {
+            $sumCountProducts += $request->count[$product->id];
+            $sumPriceProducts += $request->count[$product->id] * $product->price;
+        }
+
+        $order = new Order;
         $order->name = $request->name;
         $order->email = $request->email;
         $order->phone = $request->phone;
-        // $order->city_id = $request->city_id;
+        if (!empty($request->city_id)) {
+            $order->city_id = $request->city_id;
+        }
         $order->address = $request->address;
-        $order->count = count($items['products_id']);
+        $order->count = serialize($request->count);
         $order->price = $products->sum('price');
-        $order->amount = $products->sum('price');
+        $order->amount = $sumPriceProducts;
         $order->save();
 
         $order->products()->attach($items['products_id']);

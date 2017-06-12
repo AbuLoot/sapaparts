@@ -33,13 +33,18 @@ class PageController extends Controller
 
         if (isset($request->options_id)) {
 
-            $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
+            list($keys, $options_id) = array_divide($request->options_id);
+
+            $products = Product::where('status', 1)->where('category_id', $category->id)
+                ->whereHas('options', function ($query) use ($options_id) {
+                    $query->whereIn('option_id', $options_id);
+                })->paginate(27);
 
             $products->appends([
-                'options_id' => $request->options_id,
+                'options_id' => $options_id
             ]);
 
-            return response()->json(view('site.products', ['products' => $products])->render());
+            return response()->json(view('site.products-render', ['products' => $products])->render());
         }
         else {
             $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
@@ -48,7 +53,7 @@ class PageController extends Controller
         $options = Option::orderBy('sort_id')->take(80)->get();
 
         if ($request->ajax()) {
-            return response()->json(view('site.products', ['products' => $products])->render());
+            return response()->json(view('site.products-render', ['products' => $products])->render());
         }
 
         return view('site.catalog')->with(['category' => $category, 'products' => $products, 'options' => $options]);

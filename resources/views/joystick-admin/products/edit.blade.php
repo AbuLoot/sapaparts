@@ -118,7 +118,7 @@
         @if (isset($images[$i]))
           <div class="fileinput fileinput-new" data-provides="fileinput">
             <div class="fileinput-new thumbnail" style="width:300px;height:200px;">
-              <img src="/img/products/{{ $product->path.'/'.$images[$i]['mini_image'] }}">
+              <img src="/img/products/{{ $product->path.'/'.$images[$i]['present_image'] }}">
             </div>
             <div class="fileinput-preview fileinput-exists thumbnail" style="width:300px;height:200px;" data-trigger="fileinput"></div>
             <div>
@@ -127,6 +127,9 @@
                 <span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>
                 <input type="file" name="images[]" accept="image/*">
               </span>
+              <label>
+                <input type="checkbox" name="remove_images[]" value="{{ $i }}"> Удалить
+              </label>
               <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
             </div>
           </div>
