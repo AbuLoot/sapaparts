@@ -9,8 +9,8 @@
   <main class="container main">
 
     <ol class="breadcrumb">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">{{ $page->title }}</a></li>
+      <li><a href="/">Главная</a></li>
+      <li class="active">{{ $page->title }}</li>
     </ol>
 
     <div class="row">

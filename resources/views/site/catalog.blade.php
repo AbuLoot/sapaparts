@@ -71,7 +71,7 @@
       $('[data-toggle="tooltip"]').tooltip()
     })
 
-    $('button#add-to-basket').click(function(e){
+    $('.thumbnail').on('click', '#add-to-basket', function(e){
       e.preventDefault();
 
       var productId = $(this).data("basket-id");
@@ -117,7 +117,7 @@
 
   <script>
     // Filter products
-    $('#filter').on('click', 'input', function() {
+    $('#filter').on( 'click', 'input', function(e) {
 
       var optionsId = new Array();
       var page = $(location).attr('href').split('catalog')[1];
@@ -125,8 +125,6 @@
       $('input[name="options_id[]"]:checked').each(function() {
         optionsId.push($(this).val());
       });
-
-      localStorage.setItem("optionsId", JSON.stringify(optionsId));
 
       if (optionsId.length > 0) {
         $.ajax({
@@ -141,29 +139,26 @@
           }
         });
       } else {
-        alert("Ошибка сервера");
+        $.ajax({
+          type: "get",
+          url: '/catalog' + page,
+          dataType: "json",
+          success: function(data) {
+            $('#products').html(data);
+          }
+        });
       }
     });
 
     // Pagination
-    // $(window).on('hashchange',function(){
-      // page = window.location.hash.replace('#', '');
-
-      // getProducts(page);
-    // });
-
-    $(document).on('click', '.pagination a', function(e){
+    $(document).on('click', '.pagination a', function(e) {
       e.preventDefault();
       var page = $(this).attr('href').split('catalog')[1];
-
-      if (localStorage.getItem("optionsId") === 'null') {
-        var optionsId = new Array();
-      } else {
-        var optionsId = JSON.parse(localStorage.getItem("optionsId"));
-      }
+      var optionsId = $('input[name="options_id[]"]:checked').map(function(){
+            return this.value
+        }).get();
 
       getProducts(page, optionsId);
-      // location.hash = page;
     });
 
     function getProducts(page, optionsId) {
@@ -176,7 +171,6 @@
       }).done(function (data) {
         $('#products').html(data);
         $('html, body').animate({ scrollTop: $('#catalog').offset().top }, 1000);
-        // location.hash = page;
       }).fail(function () {
         alert('Продукты не загрузились');
       });

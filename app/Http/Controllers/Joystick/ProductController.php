@@ -62,7 +62,7 @@ class ProductController extends Controller
 
                     // Creating preview image
                     if ($key == 0) {
-                        $this->resizeImage($image, 200, 200, 'img/products/'.$dirName.'/preview-'.$imageName, 100);
+                        $this->resizeImage($image, 260, 260, 'img/products/'.$dirName.'/preview-'.$imageName, 100);
                         $introImage = 'preview-'.$imageName;
                     }
 
@@ -159,7 +159,7 @@ class ProductController extends Controller
                             Storage::delete('img/products/'.$product->path.'/'.$product->image);
                         }
 
-                        $this->resizeImage($image, 200, 200, 'img/products/'.$product->path.'/preview-'.$imageName, 100);
+                        $this->resizeImage($image, 260, 260, 'img/products/'.$product->path.'/preview-'.$imageName, 100);
                         $introImage = 'preview-'.$imageName;
                     }
 

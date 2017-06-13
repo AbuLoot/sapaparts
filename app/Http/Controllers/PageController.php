@@ -31,7 +31,7 @@ class PageController extends Controller
     {
         $category = Category::where('slug', $category_slug)->first();
 
-        if (isset($request->options_id)) {
+        if (isset($request->options_id) AND !empty($request->options_id)) {
 
             list($keys, $options_id) = array_divide($request->options_id);
 
@@ -46,9 +46,14 @@ class PageController extends Controller
 
             return response()->json(view('site.products-render', ['products' => $products])->render());
         }
+        else if ($request->ajax()) {
+            $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
+            return response()->json(view('site.products-render', ['products' => $products])->render());
+        }
         else {
             $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
         }
+
 
         $options = Option::orderBy('sort_id')->take(80)->get();
 
@@ -56,7 +61,7 @@ class PageController extends Controller
             return response()->json(view('site.products-render', ['products' => $products])->render());
         }
 
-        return view('site.catalog')->with(['category' => $category, 'products' => $products, 'options' => $options]);
+        return view('site.catalog')->with(['category' => $category, 'result' => $request->options_id, 'products' => $products, 'options' => $options]);
     }
 
     public function brandProducts($company_slug)

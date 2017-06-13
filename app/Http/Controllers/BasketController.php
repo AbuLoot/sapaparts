@@ -96,10 +96,15 @@ class BasketController extends Controller
         $order->name = $request->name;
         $order->email = $request->email;
         $order->phone = $request->phone;
-        if (!empty($request->city_id)) {
-            $order->city_id = $request->city_id;
-        }
+        $order->company_name = '';
+        $order->data_1 = '';
+        $order->data_2 = '';
+        $order->data_3 = '';
+        $order->legal_address = '';
         $order->address = $request->address;
+        $order->city_id = ($request->city_id) ? $request->city_id : 0;
+        $order->delivery = trans('orders.get.'.$request->get);
+        $order->payment_type = trans('orders.pay.'.$request->pay);
         $order->count = serialize($request->count);
         $order->price = $products->sum('price');
         $order->amount = $sumPriceProducts;
