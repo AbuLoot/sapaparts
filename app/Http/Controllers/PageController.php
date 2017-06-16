@@ -54,7 +54,6 @@ class PageController extends Controller
             $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
         }
 
-
         $options = Option::orderBy('sort_id')->take(80)->get();
 
         if ($request->ajax()) {

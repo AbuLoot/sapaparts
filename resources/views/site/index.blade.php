@@ -37,7 +37,7 @@
                   @foreach ($chunk as $new_product)
                     <div class="col-sm-4 col-md-4">
                       <a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">
-                        <img class="img-responsive" src="/img/products/{{ $new_product->path . '/' . $new_product->image }}" alt="{{ $new_product->title }}">
+                        <img class="img-responsive center-block" src="/img/products/{{ $new_product->path . '/' . $new_product->image }}" alt="{{ $new_product->title }}">
                       </a>
                       <div class="caption text-center">
                         <h4><a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">{{ $new_product->title }}</a></h4>
@@ -106,9 +106,7 @@
 
 @section('scripts')
   <script>
-    // Add to Basket
-    $('button#add-to-basket').click(function(e){
-      e.preventDefault();
+    function addToBasket(i) {
 
       var productId = $(this).data("id");
 
@@ -128,7 +126,7 @@
       } else {
         alert("Ошибка сервера");
       }
-    });
+    }
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()

@@ -178,8 +178,7 @@
 
 @section('scripts')
   <script>
-    $('button#add-to-basket').click(function(e){
-      e.preventDefault();
+    function addToBasket(i) {
 
       var productId = $(this).data("id");
 
@@ -199,7 +198,7 @@
       } else {
         alert("Ошибка сервера");
       }
-    });
+    };
 
     $(function () {
       $('[data-toggle="tooltip"]').tooltip()

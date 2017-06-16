@@ -161,14 +161,14 @@
         </div>
 
         <div class="col-md-12"><br>
-          <p class="text-center">SapaParts 2017</p>
+          <p class="text-center">SapaParts 2015 - {{ date('Y') }}</p>
         </div>
       </div>
     </footer>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/bower_components/typeahead.js/dist/typeahead.bundle.min.js"></script>
@@ -199,7 +199,7 @@
               '<li>&nbsp;&nbsp;&nbsp;Ничего не найдено.</li>'
             ],
             suggestion: function (data) {
-              return '<li><a href="/goods/' + data.id + '-' + data.slug + '"><img class="list-img" src="/img/products/' + data.image + '"> ' + data.title + '<br><span>Код: ' + data.barcode + '</span> <span>ОЕМ: ' + data.oem + '</span></a></li>'
+              return '<li><a href="/goods/' + data.id + '-' + data.slug + '"><img class="list-img" src="/img/products/' + data.path + '/' + data.image + '"> ' + data.title + '<br><span>Код: ' + data.barcode + '</span> <span>ОЕМ: ' + data.oem + '</span></a></li>'
             }
           }
         });

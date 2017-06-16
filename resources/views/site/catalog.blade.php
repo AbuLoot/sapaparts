@@ -71,10 +71,8 @@
       $('[data-toggle="tooltip"]').tooltip()
     })
 
-    $('.thumbnail').on('click', '#add-to-basket', function(e){
-      e.preventDefault();
-
-      var productId = $(this).data("basket-id");
+    function addToBasket(i) {
+      var productId = $(i).data("basket-id");
 
       if (productId != '') {
         $.ajax({
@@ -91,13 +89,10 @@
       } else {
         alert("Ошибка сервера");
       }
-    });
+    }
 
-    // Toggle Favorites
-    $('.thumbnail').on('click', '#toggle-favorite', function(e){
-      e.preventDefault();
-
-      var productId = $(this).data("favorite-id");
+    function toggleFavorite (f) {
+      var productId = $(f).data("favorite-id");
 
       if (productId != '') {
         $.ajax({
@@ -106,15 +101,14 @@
           dataType: "json",
           data: {},
           success: function(data) {
-            $('*[data-favorite-id="'+productId+'"]').replaceWith('<button type="button" class="btn btn-like btn-default" id="toggle-favorite" data-favorite-id="'+data.id+'"><span class="glyphicon glyphicon-heart '+data.cssClass+'"></span></button>');
+            $('*[data-favorite-id="'+productId+'"]').replaceWith('<button type="button" class="btn btn-like btn-default" data-favorite-id="'+data.id+'" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart '+data.cssClass+'"></span></button>');
           }
         });
       } else {
         alert("Ошибка сервера");
       }
-    });
+    }
   </script>
-
   <script>
     // Filter products
     $('#filter').on( 'click', 'input', function(e) {
@@ -150,18 +144,13 @@
       }
     });
 
-    // Pagination
-    $(document).on('click', '.pagination a', function(e) {
+    $("body").on('click', '.pagination a', function(e) {
       e.preventDefault();
       var page = $(this).attr('href').split('catalog')[1];
       var optionsId = $('input[name="options_id[]"]:checked').map(function(){
             return this.value
         }).get();
 
-      getProducts(page, optionsId);
-    });
-
-    function getProducts(page, optionsId) {
       $.ajax({
         url : '/catalog' + page,
         dataType: 'json',
@@ -174,6 +163,6 @@
       }).fail(function () {
         alert('Продукты не загрузились');
       });
-    }
+    });
   </script>
 @endsection
