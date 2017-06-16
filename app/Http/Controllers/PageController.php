@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use DB;
+
 use App\Page;
 use App\Option;
 use App\Product;
@@ -54,7 +56,16 @@ class PageController extends Controller
             $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
         }
 
-        $options = Option::orderBy('sort_id')->take(80)->get();
+        // $options = Option::orderBy('sort_id')->get();
+
+        $options = DB::table('products')
+                ->join('product_option', 'products.id', '=', 'product_option.product_id')
+                ->join('options', 'options.id', '=', 'product_option.option_id')
+                ->select('options.id', 'options.slug', 'options.title')
+                ->where('category_id', $category->id)
+                ->where('status', 1)
+                ->distinct()
+                ->get();
 
         if ($request->ajax()) {
             return response()->json(view('site.products-render', ['products' => $products])->render());

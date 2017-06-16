@@ -12,7 +12,7 @@
     @if ($products->count() > 0)
       <h1>Корзина <small>Оформление заказа</small></h1>
 
-      <h4 class="text-right"><a href="/clear-cart">Очистить корзину?</a></h4>
+      <h4 class="text-right"><a href="/clear-basket">Очистить корзину?</a></h4>
 
       <form action="/store-order" method="post">
         {!! csrf_field() !!}
