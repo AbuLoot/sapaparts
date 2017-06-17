@@ -3,13 +3,27 @@
 @section('content')
 
     <!-- Slides -->
-    <section id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <section id="carousel-trucks" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#carousel-trucks" data-slide-to="0" class="active"></li>
+        <li data-target="#carousel-trucks" data-slide-to="1"></li>
+      </ol>
+
       <div class="carousel-inner" role="listbox">
         <div class="item active">
-          <img src="img/motor.png" class="center-block" alt="...">
+          <img src="img/bg1.png" class="center-block" alt="...">
           <div class="carousel-caption">
             <h1>Магазин запчастей "SapaParts" в Казахстане</h1>
-            <p class="short-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p class="short-description"></p>
+            <img src="img/arrow-down.png" class="arrow-down">
+          </div>
+        </div>
+        <div class="item">
+          <img src="img/bg3.png" class="center-block" alt="...">
+          <div class="carousel-caption">
+            <h1>Магазин запчастей "SapaParts" в Казахстане</h1>
+            <p class="short-description"></p>
             <img src="img/arrow-down.png" class="arrow-down">
           </div>
         </div>

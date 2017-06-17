@@ -12,13 +12,13 @@
     <table class="table table-striped table-condensed">
       <thead>
         <tr class="active">
-          <th>№</th>
-          <th>URI</th>
-          <th>Название</th>
-          <th>Номер</th>
-          <th>Язык</th>
-          <th>Статус</th>
-          <th class="text-right">Функции</th>
+          <td>№</td>
+          <td>URI</td>
+          <td>Название</td>
+          <td>Номер</td>
+          <td>Язык</td>
+          <td>Статус</td>
+          <td class="text-right">Функции</td>
         </tr>
       </thead>
       <tbody>

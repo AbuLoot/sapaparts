@@ -56,8 +56,6 @@ class PageController extends Controller
             $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
         }
 
-        // $options = Option::orderBy('sort_id')->get();
-
         $options = DB::table('products')
                 ->join('product_option', 'products.id', '=', 'product_option.product_id')
                 ->join('options', 'options.id', '=', 'product_option.option_id')

@@ -9,12 +9,12 @@
     <table class="table table-striped table-condensed">
       <thead>
         <tr class="active">
-          <th>№</th>
-          <th>Имя</th>
-          <th>Email</th>
-          <th>Номер</th>
-          <th>Текст</th>
-          <th class="text-right">Функции</th>
+          <td>№</td>
+          <td>Имя</td>
+          <td>Email</td>
+          <td>Номер</td>
+          <td>Текст</td>
+          <td class="text-right">Функции</td>
         </tr>
       </thead>
       <tbody>
