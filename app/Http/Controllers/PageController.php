@@ -57,13 +57,13 @@ class PageController extends Controller
         }
 
         $options = DB::table('products')
-                ->join('product_option', 'products.id', '=', 'product_option.product_id')
-                ->join('options', 'options.id', '=', 'product_option.option_id')
-                ->select('options.id', 'options.slug', 'options.title')
-                ->where('category_id', $category->id)
-                ->where('status', 1)
-                ->distinct()
-                ->get();
+            ->join('product_option', 'products.id', '=', 'product_option.product_id')
+            ->join('options', 'options.id', '=', 'product_option.option_id')
+            ->select('options.id', 'options.slug', 'options.title')
+            ->where('category_id', $category->id)
+            ->where('status', 1)
+            ->distinct()
+            ->get();
 
         if ($request->ajax()) {
             return response()->json(view('site.products-render', ['products' => $products])->render());

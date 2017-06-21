@@ -15,6 +15,7 @@
       <div class="col-md-9">
 
         <?php $items = session('items'); ?>
+        <?php $favorites = session('favorites'); ?>
 
         <!-- Catalog -->
         <div class="row">
@@ -30,12 +31,17 @@
                   <p>OEM: {{ $product->oem }}</p>
                   <p>Цена: {{ $product->price }} 〒</p>
                 </div>
-                @if(is_array($items) AND in_array($product->id, $items['products_id']))
-                  <a href="/basket" class="btn btn-cart btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оформить <span class="glyphicon glyphicon-shopping-cart"></span></a>
+                @if (is_array($items) AND in_array($product->id, $items['products_id']))
+                  <a href="/basket" class="btn btn-basket btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><span class="glyphicon glyphicon-shopping-cart"></span> Оформить</a>
                 @else
-                  <button class="btn btn-cart btn-danger" id="add-to-cart" data-id="{{ $product->id }}"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
+                  <button class="btn btn-basket btn-default" data-basket-id="{{ $product->id }}" onclick="addToBasket(this);"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
                 @endif
-                <button type="button" class="btn btn-like btn-default"><span class="glyphicon glyphicon-heart"></span></button>
+
+                @if (is_array($favorites) AND in_array($product->id, $favorites['products_id']))
+                  <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart text-success"></span></button>
+                @else
+                  <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart"></span></button>
+                @endif
               </div>
             </div>
           @endforeach

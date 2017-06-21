@@ -28,7 +28,16 @@
             <td>{{ $order->phone }}</td>
             <td>{{ $order->email }}</td>
             <td>{{ $order->city_id }}</td>
-            <td>{{ $order->count }}</td>
+            <td>
+              <?php $countAllProducts = unserialize($order->count); ?>
+              <?php $i = 0; ?>
+              @foreach ($countAllProducts as $id => $countProduct)
+                @if ($order->products[$i]->id == $id)
+                  {{ $countProduct . ' шт. ' . $order->products[$i]->title  }}<br>
+                @endif
+                <?php $i++; ?>
+              @endforeach
+            </td>
             <td>{{ $order->amount }}</td>
             <td class="text-right">
               <a class="btn btn-link btn-xs" href="{{ route('orders.edit', $order->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>

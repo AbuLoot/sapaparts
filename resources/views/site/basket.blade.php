@@ -103,12 +103,12 @@
             <h4>Способ доставки:</h4>
             <div class="row">
               <div class="col-md-6">
-              <label class="radio-inline">
-                <input type="radio" name="get" value="courier" checked> Доставить Курьером
-              </label>
-              <label class="radio-inline">
-                <input type="radio" name="get" value="self"> Самовывоз
-              </label>
+                <label class="radio-inline">
+                  <input type="radio" name="get" value="courier" checked> Доставить Курьером
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" name="get" value="self"> Самовывоз
+                </label>
               </div>
             </div><br>
 
