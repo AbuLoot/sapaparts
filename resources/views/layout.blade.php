@@ -65,7 +65,7 @@
         <div class="container">
           <div class="col-sm-4 col-md-4">
             <a href="/">
-              <img src="/img/sapaparts.png" class="img-responsive">
+              <img src="/img/logo2.png" class="img-responsive">
             </a>
           </div>
           <div class="col-xs-8 col-sm-4 col-md-4 search">

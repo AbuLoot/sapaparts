@@ -42,7 +42,7 @@
     </div>
     <div class="form-group">
       <label for="countries">Страны</label>
-      <select id="country_id" name="country_id" class="form-control" required>
+      <select id="country_id" name="country_id" class="form-control">
         <option value=""></option>
       </select>
     </div>
@@ -55,36 +55,65 @@
       <input type="text" class="form-control" id="address" name="address" value="{{ (old('address')) ? old('address') : $order->address }}">
     </div>
     <div class="form-group">
-      <label for="count">Количество товаров</label>
-      <input type="text" class="form-control" id="count" name="count" value="{{ (old('count')) ? old('count') : $order->count }}">
+      <label for="count">Количество товаров</label><br>
+      <?php $countAllProducts = unserialize($order->count); ?>
+      <?php $i = 0; $c = 0; ?>
+      @foreach ($countAllProducts as $id => $countProduct)
+        @if ($order->products[$i]->id == $id)
+          <img src="/img/products/{{ $order->products[$i]->path.'/'.$order->products[$i]->image }}" style="width:80px;height:80px;">
+          {{ $countProduct . ' шт. ' }} <a href="/goods/{{ $order->products[$i]->id.'/'.$order->products[$i]->slug }}">{{ $order->products[$i]->title }}</a><br><br>
+        @endif
+        <?php $c += $countProduct; ?>
+        <?php $i++; ?>
+      @endforeach  
+      <p>Общее количество товаров: {{ $c }} шт.</p>
     </div>
     <div class="form-group">
       <label for="price">Цена</label>
-      <input type="text" class="form-control" id="price" name="price" value="{{ (old('price')) ? old('price') : $order->price }}">
+      <input type="text" class="form-control" id="price" name="price" value="{{ (old('price')) ? old('price') : $order->price }} 〒">
     </div>
     <div class="form-group">
       <label for="amount">Сумма</label>
-      <input type="text" class="form-control" id="amount" name="amount" value="{{ (old('amount')) ? old('amount') : $order->amount }}">
+      <input type="text" class="form-control" id="amount" name="amount" value="{{ (old('amount')) ? old('amount') : $order->amount }} 〒">
     </div>
     <div class="form-group">
       <label for="delivery">Способ доставки:</label>
-
+      <select id="delivery" name="delivery" class="form-control" required>
+        <option value=""></option>
+        @foreach(trans('orders.get') as $key => $id)
+          @if ($id == $order->delivery)
+            <option value="{{ $key }}" selected>{{ $key }}</option>
+          @else
+            <option value="{{ $key }}">{{ $key }}</option>
+          @endif
+        @endforeach
+      </select>
     </div>
     <div class="form-group">
       <label for="payment_type">Способ оплаты:</label>
-
-    </div>
-    <div class="form-group">
-      <label for="lang">Язык</label>
-      <select id="lang" name="lang" class="form-control" required>
+      <select id="payment_type" name="payment_type" class="form-control" required>
         <option value=""></option>
+        @foreach(trans('orders.pay') as $key => $id)
+          @if ($id == $order->payment_type)
+            <option value="{{ $key }}" selected>{{ $key }}</option>
+          @else
+            <option value="{{ $key }}">{{ $key }}</option>
+          @endif
+        @endforeach
       </select>
     </div>
     <div class="form-group">
       <label for="status">Статус:</label>
-      <label>
-        <input type="checkbox" id="status" name="status" @if ($order->status == 1) checked @endif> Активен
-      </label>
+      <select id="status" name="status" class="form-control" required>
+        <option value=""></option>
+        @foreach(trans('orders.statuses') as $key => $title)
+          @if ($key == $order->status)
+            <option value="{{ $key }}" selected>{{ $title }}</option>
+          @else
+            <option value="{{ $key }}">{{ $title }}</option>
+          @endif
+        @endforeach
+      </select>
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary">Изменить</button>
