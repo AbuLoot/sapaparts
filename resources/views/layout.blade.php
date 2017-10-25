@@ -117,8 +117,8 @@
           </ul>
         </div>
       </nav>
-    </header>
 
+    </header>
 
     @include('layouts.alerts')
 

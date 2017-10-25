@@ -3,6 +3,8 @@
 @section('content')
   <h2 class="page-header">Продукты</h2>
 
+  <h3>Поиск по запросу <b>"{{ $text }}"</b></h3>
+
   @include('joystick-admin.partials.alerts')
 
   <div class="col-md-6">
@@ -19,6 +21,8 @@
   <p class="text-right">
     <a href="/admin/products/create" class="btn btn-success btn-sm">Добавить</a>
   </p>
+
+
   <div class="table-responsive">
     <table class="table table-striped table-condensed">
       <thead>

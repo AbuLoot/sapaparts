@@ -10,6 +10,7 @@ use App\Category;
 use App\Company;
 use App\Product;
 use App\Option;
+
 use Storage;
 
 class ProductController extends Controller
@@ -23,6 +24,20 @@ class ProductController extends Controller
         $products = Product::orderBy('created_at')->paginate(50);
 
         return view('joystick-admin.products.index', ['products' => $products]);
+    }
+
+    public function search(Request $request)
+    {
+        $text = trim(strip_tags($request->text));
+
+        $products = Product::where('status', 1)
+            ->where(function($query) use ($text) {
+                return $query->where('barcode', 'LIKE', '%'.$text.'%')
+                ->orWhere('title', 'LIKE', '%'.$text.'%')
+                ->orWhere('oem', 'LIKE', '%'.$text.'%');
+            })->paginate(50);
+
+        return view('joystick-admin.products.found', compact('text', 'products'));
     }
 
     public function create()

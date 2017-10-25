@@ -151,7 +151,6 @@
   background-color: #EC1A27;
 }
 
-/*.subcategories:hover,*/
 .subcategories > li:hover  > .subcategories,
 .categories > li:hover > .subcategories {
   display: block;
