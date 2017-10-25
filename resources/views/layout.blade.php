@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title_description', 'SapaParts.kz')</title>
     <meta name="description" content="@yield('meta_description', 'SapaParts.kz')">
+    <meta name="yandex-verification" content="5b2a355d0c6dbf8e" />
 
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
