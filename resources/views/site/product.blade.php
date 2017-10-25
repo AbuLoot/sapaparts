@@ -48,7 +48,7 @@
           </ol>
         @endif
       </section>
-      <section class="col-sm-5 col-md-5">
+      <section class="col-sm-6 col-md-6">
         <div id="carousel-goods" class="carousel" data-ride="carousel" data-interval="false">
           <div class="carousel-inner" role="listbox">
             @if ($product->images != '')
@@ -80,7 +80,7 @@
           </div>
         </div>
       </section>
-      <section class="col-sm-6 col-md-6">
+      <section class="col-sm-5 col-md-5">
         <h1>{{ $product->title }}</h1>
         <table class="table">
           <tbody>
