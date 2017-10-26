@@ -107,7 +107,7 @@
                   <?php endif; ?>
 
                   <?php if ($category->children && count($category->children) > 0) : ?>
-                    <ul class="subcategories">
+                    <ul>
                       <?php $traverse($category->children); ?>
                     </ul>
                   <?php endif; ?>

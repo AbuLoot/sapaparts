@@ -110,18 +110,32 @@
   background: -ms-linear-gradient(top, rgba(222,222,222,1) 0%, rgba(227,228,229,1) 27%, rgba(242,243,247,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dedede', endColorstr='#f2f3f7', GradientType=0 );
 }
-.categories > li > a {
-  color: #000;
-  border-radius: 15px;
+
+ul.categories {
+  position: relative;
 }
-.subcategories {
+ul.categories > li > a {
+  color: #000;
+  border-radius: 5px;
+}
+.categories > li:hover > a {
+  color: #fff;
+  background-color: #EC1A27;
+}
+ul.categories > li > a:focus,
+ul.categories > li > a:hover {
+  color: #fff;
+  cursor: pointer;
+  background-color: #EC1A27;
+}
+ul.categories ul {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
   min-width: 160px;
+  /*width: 100%;*/
+  z-index: 1000;
   padding: 20px 0;
   font-size: 14px;
   text-align: left;
@@ -131,36 +145,27 @@
           background-clip: padding-box;
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, .15);
-  border-radius: 15px;
+  border-radius: 5px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
-.subcategories > li > a {
-  font-size: 16px;
+ul.categories ul > li > a {
+  color: #fff;
   display: block;
+  font-size: 14px;
   padding: 5px 20px;
-  clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #fff;
-  white-space: nowrap;
   cursor: pointer;
+  clear: both;
 }
-.categories > li:hover > a {
-  color: #fff;
-  background-color: #EC1A27;
+ul.categories ul ul {
+  top: 0;
+  left: 95%;
+  min-height: 100%;
 }
-
-.subcategories > li:hover  > .subcategories,
-.categories > li:hover > .subcategories {
+ul.categories li:hover > ul {
   display: block;
-}
-
-.categories > li > a:focus,
-.categories > li > a:hover {
-  color: #fff;
-  cursor: pointer;
-  background-color: #EC1A27;
 }
 
 @media (min-width: 768px) {

@@ -11,6 +11,7 @@ use App\Company;
 use App\Product;
 use App\Option;
 
+use Image;
 use Storage;
 
 class ProductController extends Controller
@@ -81,8 +82,11 @@ class ProductController extends Controller
                         $introImage = 'preview-'.$imageName;
                     }
 
+                    $watermark = Image::make('img/products/watermark.png');
+
                     // Storing original images
-                    $image->storeAs('img/products/'.$dirName, $imageName);
+                    // $image->storeAs('img/products/'.$dirName, $imageName);
+                    $this->resizeImage($image, 1024, 768, 'img/products/'.$product->path.'/'.$imageName, 90, $watermark);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$dirName.'/present-'.$imageName, 100);
@@ -178,8 +182,10 @@ class ProductController extends Controller
                         $introImage = 'preview-'.$imageName;
                     }
 
+                    $watermark = Image::make('img/products/watermark.png');
+
                     // Storing original images
-                    $image->storeAs('img/products/'.$product->path, $imageName);
+                    $this->resizeImage($image, 1024, 768, 'img/products/'.$product->path.'/'.$imageName, 90, $watermark);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$product->path.'/present-'.$imageName, 100);

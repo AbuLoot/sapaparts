@@ -6,7 +6,7 @@ use Image;
 
 trait ImageTrait {
 
-    public function resizeImage($image, $width, $height, $path, $quality, $color = '#ffffff')
+    public function resizeImage($image, $width, $height, $path, $quality, $watermark = null, $color = '#ffffff')
     {
         $frame = Image::canvas($width, $height, $color);
         $newImage = Image::make($image);
@@ -27,6 +27,11 @@ trait ImageTrait {
         }
 
         $frame->insert($newImage, 'center');
+
+        if ($watermark != null) {
+            $frame->insert($watermark, 'bottom-left', 20, 10);
+        }
+
         $frame->save(public_path($path), $quality);
     }
 
