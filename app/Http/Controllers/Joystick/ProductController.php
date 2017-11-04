@@ -86,7 +86,7 @@ class ProductController extends Controller
 
                     // Storing original images
                     // $image->storeAs('img/products/'.$dirName, $imageName);
-                    $this->resizeImage($image, 1024, 768, 'img/products/'.$product->path.'/'.$imageName, 90, $watermark);
+                    $this->resizeImage($image, 1024, 768, 'img/products/'.$dirName.'/'.$imageName, 90, $watermark);
 
                     // Creating present images
                     $this->resizeImage($image, 250, 250, 'img/products/'.$dirName.'/present-'.$imageName, 100);
