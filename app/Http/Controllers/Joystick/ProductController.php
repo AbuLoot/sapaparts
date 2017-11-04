@@ -107,6 +107,7 @@ class ProductController extends Controller
         $product->slug = str_slug($request->title);
         $product->title = $request->title;
         $product->company_id = $request->company_id;
+        $product->barcode = $request->barcode;
         $product->price = $request->price;
         $product->days = $request->days;
         $product->count = $request->count;
@@ -174,7 +175,7 @@ class ProductController extends Controller
                     // Creating preview image
                     if ($key == 0) {
 
-                        if ($product->image != NULL AND file_exists('img/products/'.$product->path.'/'.$product->image)) {
+                        if ($product->image != NULL AND $product->image != 'no-image-middle.png' AND file_exists('img/products/'.$product->path.'/'.$product->image)) {
                             Storage::delete('img/products/'.$product->path.'/'.$product->image);
                         }
 
@@ -248,6 +249,7 @@ class ProductController extends Controller
         $product->slug = str_slug($request->title);
         $product->title = $request->title;
         $product->company_id = $request->company_id;
+        $product->barcode = $request->barcode;
         $product->price = $request->price;
         $product->days = $request->days;
         $product->count = $request->count;
