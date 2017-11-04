@@ -46,7 +46,7 @@
     </div>
     <div class="form-group">
       <label for="barcode">Артикул</label>
-      <input type="text" class="form-control" id="barcode" name="barcode" value="{{ (old('barcode')) ? old('barcode') : NULL }}">
+      <input type="text" class="form-control" id="barcode" name="barcode" value="{{ (old('barcode')) ? old('barcode') : NULL }}" required>
     </div>
     <div class="form-group">
       <label for="price">Цена</label>
