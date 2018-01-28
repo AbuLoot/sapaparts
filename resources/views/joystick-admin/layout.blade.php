@@ -41,7 +41,6 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                 <i class="material-icons md-18">person_outline</i> {{ Auth::user()->name }} <span class="caret"></span>
               </a>
-
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{{ url('/logout') }}">Выйти</a></li>
               </ul>
