@@ -26,7 +26,7 @@
         @else
           <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart"></span></button>
         @endif
-      </div>
+      </div><br>
     </div>
   @endforeach
 </div>

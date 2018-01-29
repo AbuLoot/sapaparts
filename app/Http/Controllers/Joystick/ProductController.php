@@ -4,15 +4,16 @@ namespace App\Http\Controllers\Joystick;
 
 use Illuminate\Http\Request;
 
+use DB;
+use Image;
+use Storage;
+
 use App\Http\Controllers\Controller;
 use App\ImageTrait;
 use App\Category;
 use App\Company;
 use App\Product;
 use App\Option;
-
-use Image;
-use Storage;
 
 class ProductController extends Controller
 {
@@ -38,6 +39,44 @@ class ProductController extends Controller
         ]);
 
         return view('joystick-admin.products.found', compact('text', 'products'));
+    }
+
+    public function priceForm()
+    {
+        $categories = Category::get()->toTree();
+
+        return view('joystick-admin.products.price-edit', ['categories' => $categories]);
+    }
+
+    public function priceUpdate(Request $request)
+    {
+        $operations = [
+            1 => '*',
+            2 => '/',
+            3 => '+',
+            4 => '-'
+        ];
+
+        $category = Category::find($request->category_id);
+
+        $ids[] = $category->id;
+
+        if ($category->children && count($category->children) > 0) {
+            $ids[] = $category->children->pluck('id');
+        }
+
+        $sql = 'update products set price = (price ' . $operations[$request->operation] . ' ' . $request->number . ') where category_id = ' . $request->category_id;
+
+        DB::update($sql);
+
+        return redirect('admin/products')->with('status', 'Цена изменена!');
+    }
+
+    public function checkChildren($category)
+    {
+        if ($category->children && count($category->children) > 0) {
+            $ids[] = $category->children->pluck('id');
+        }
     }
 
     public function create()

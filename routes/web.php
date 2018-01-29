@@ -19,6 +19,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::resource('pages', 'Joystick\PageController');
     Route::resource('products', 'Joystick\ProductController');
     Route::get('search-products', 'Joystick\ProductController@search');
+    Route::get('price/edit', 'Joystick\ProductController@priceForm');
+    Route::post('price/update', 'Joystick\ProductController@priceUpdate');
 
     Route::resource('roles', 'Joystick\RoleController');
     Route::resource('users', 'Joystick\UserController');
@@ -32,23 +34,16 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
 // Input
 Route::get('search', 'InputController@search');
-
 Route::get('search-ajax', 'InputController@searchAjax');
-
 Route::post('filter-products', 'InputController@filterProducts');
-
 Route::post('send-app', 'InputController@sendApp');
 
 
 // Basket Actions
 Route::get('add-to-basket/{id}', 'BasketController@addToBasket');
-
 Route::get('clear-basket', 'BasketController@clearBasket');
-
 Route::get('basket', 'BasketController@basket');
-
 Route::get('basket/{id}', 'BasketController@destroy');
-
 Route::post('store-order', 'BasketController@storeOrder');
 
 
@@ -58,17 +53,10 @@ Route::get('toggle-favorite/{id}', 'FavoriteController@toggleFavorite');
 
 // Pages
 Route::get('/', 'PageController@index');
-
 Route::get('katalog-zapchastey', 'PageController@catalogs');
-
 Route::get('catalog', 'PageController@catalog');
-
 Route::get('catalog/{category}', 'PageController@categoryProducts');
-
 Route::get('goods/{id}-{product}', 'PageController@product');
-
 Route::get('catalog/brand/{company}', 'PageController@brandProducts');
-
 Route::get('contacts', 'PageController@contacts');
-
 Route::get('{page}', 'PageController@page');

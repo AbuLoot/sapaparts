@@ -17,6 +17,7 @@
   </div>
 
   <p class="text-right">
+    <a href="/admin/price/edit" class="btn btn-primary btn-sm">Изменить цену</a>
     <a href="/admin/products/create" class="btn btn-success btn-sm">Добавить</a>
   </p>
   <div class="table-responsive">

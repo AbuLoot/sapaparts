@@ -284,6 +284,9 @@ ul.categories li:hover > ul {
 .thumbnail {
   padding: 0;
   border-radius: 0;
+  margin-bottom: 15px;
+}
+ol > li > .thumbnail {
   margin-bottom: 4px;
 }
 .thumbnail .caption {
