@@ -159,12 +159,13 @@
         @endif
       </section>
 
-      <section class="col-md-7">
-        <br>
+      <section class="col-md-12">
+
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
           <li class="active"><a href="#description" aria-controls="description" role="tab" data-toggle="tab">Описание</a></li>
           <li><a href="#characteristic" aria-controls="characteristic" role="tab" data-toggle="tab">Характеристика</a></li>
+          <li><a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Отзывы</a></li>
         </ul>
 
         <!-- Tab panes -->
@@ -174,6 +175,57 @@
           </div>
           <div class="tab-pane" id="characteristic">
             {!! $product->characteristic !!}
+          </div>
+          <div class="tab-pane" id="reviews">
+            <div class="media"><hr>
+              <div class="media-body">
+                <div>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-muted"></span>
+                </div>
+                <h4 class="media-heading">Middle aligned media</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+            <div class="media"><hr>
+              <div class="media-body">
+                <div>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                  <span class="glyphicon glyphicon-star text-warning"></span>
+                </div>
+                <h4 class="media-heading">Middle aligned media</h4>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+              </div>
+            </div>
+
+            <form>
+              <h3>Добавьте отзыв о товаре</h3>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Введите имя">
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Введите email">
+              </div>
+              <div class="form-group">
+                <select class="form-control">
+                  <option>1 звезда</option>
+                  <option>2 звезды</option>
+                  <option>3 звезды</option>
+                  <option>4 звезды</option>
+                  <option>5 звезд</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" rows="3" placeholder="Комментарий"></textarea>
+              </div>
+              <button type="submit" class="btn btn-default">Добавить</button>
+            </form>
           </div>
         </div>
 
