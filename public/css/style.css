@@ -284,6 +284,7 @@ ul.categories li:hover > ul {
 .thumbnail {
   padding: 0;
   border-radius: 0;
+  margin-bottom: 4px;
 }
 .thumbnail .caption {
   min-height: 185px;

@@ -158,7 +158,8 @@
           <button class="btn btn-basket btn-danger" id="add-to-basket" data-id="{{ $product->id }}"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
         @endif
       </section>
-
+    </div>
+    <div class="row">
       <section class="col-md-7">
         <br>
         <!-- Nav tabs -->
@@ -178,7 +179,6 @@
         </div>
 
       </section>
-
     </div>
   </main>
 
