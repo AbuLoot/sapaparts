@@ -239,8 +239,10 @@ ul.categories li:hover > ul {
 .products-control > .left-arrow {
   position: absolute;
   top: 40%;
-  /*color: #323232;*/
   color: #EC1A27;
+  padding: 8px 0 2px;
+  background-color: #fff;
+  border: 1px solid #ddd;
   font-size: 36px;
   z-index: 1001;
 }

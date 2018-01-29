@@ -19,7 +19,7 @@
         @if ($product->images != '')
           <?php $c = 0; ?>
           <?php $images = unserialize($product->images); ?>
-          <ol class="list-unstyled">
+          <ol class="list-unstyled list-inline">
             @foreach ($images as $k => $image)
               <li data-target="#carousel-goods" data-slide-to="{{ $c }}" @if ($c == 0) class="active" @endif><?php $c++; ?> 
                 <a href="#" class="thumbnail">

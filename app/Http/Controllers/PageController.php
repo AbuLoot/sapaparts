@@ -17,8 +17,8 @@ class PageController extends Controller
 {
     public function index()
     {
-    	$new_products = Product::where('status', 1)->where('mode', '2')->take(9)->get();
-        $last_products = Product::where('status', 1)->where('mode', '3')->take(9)->get();
+    	$new_products = Product::where('status', 1)->orderBy('created_at', 'desc')->take(12)->get();
+        $last_products = Product::where('status', 1)->orderBy('updated_at', 'desc')->take(12)->get();
 
         return view('site.index', compact('new_products', 'last_products'));
     }

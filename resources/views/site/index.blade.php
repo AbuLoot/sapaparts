@@ -45,17 +45,35 @@
               <a class="right-arrow" href="#new_products" data-slide="next"><span class="glyphicon glyphicon-menu-right"></span></a>
             </div>
 
-            @foreach ($new_products->chunk(3) as $key => $chunk)
+            <?php $items = session('items'); ?>
+            <?php $favorites = session('favorites'); ?>
+
+            @foreach ($new_products->chunk(4) as $key => $chunk)
               <div class="item @if($key == '0') active @endif">
-                <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-xs-10 col-sm-10 col-md-10 products-chunk" id="chunk">
+                <div class="row">
                   @foreach ($chunk as $new_product)
-                    <div class="col-sm-4 col-md-4">
-                      <a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">
-                        <img class="img-responsive center-block" src="/img/products/{{ $new_product->path . '/' . $new_product->image }}" alt="{{ $new_product->title }}">
-                      </a>
-                      <div class="caption text-center">
-                        <h4><a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">{{ $new_product->title }}</a></h4>
-                        <p>{{ $new_product->price }} 〒</p>
+                    <div class="col-sm-3 col-md-3 col-xs-6">
+                      <div class="thumbnail">
+                        <a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">
+                          <img class="img-responsive center-block" src="/img/products/{{ $new_product->path.'/'.$new_product->image }}" alt="...">
+                        </a>
+                        <div class="caption">
+                          <h5><a href="/goods/{{ $new_product->id.'-'.$new_product->slug }}">{{ $new_product->title }}</a></h5>
+                          <p>Код: {{ $new_product->barcode }}</p>
+                          <p>OEM: {{ $new_product->oem }}</p>
+                          <p>Цена: {{ $new_product->price }} 〒</p>
+                        </div>
+                        @if (is_array($items) AND in_array($new_product->id, $items['products_id']))
+                          <a href="/basket" class="btn btn-basket btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><span class="glyphicon glyphicon-shopping-cart"></span> Оформить</a>
+                        @else
+                          <button class="btn btn-basket btn-default" data-basket-id="{{ $new_product->id }}" onclick="addToBasket(this);"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
+                        @endif
+
+                        @if (is_array($favorites) AND in_array($new_product->id, $favorites['products_id']))
+                          <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $new_product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart text-success"></span></button>
+                        @else
+                          <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $new_product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart"></span></button>
+                        @endif
                       </div>
                     </div>
                   @endforeach
@@ -94,17 +112,32 @@
               <a class="right-arrow" href="#last_products" data-slide="next"><span class="glyphicon glyphicon-menu-right"></span></a>
             </div>
 
-            @foreach ($last_products->chunk(3) as $key => $chunk)
+            @foreach ($last_products->chunk(4) as $key => $chunk)
               <div class="item @if($key == '0') active @endif">
-                <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-xs-10 col-sm-10 col-md-10 products-chunk" id="chunk">
+                <div class="row">
                   @foreach ($chunk as $last_product)
-                    <div class="col-sm-4 col-md-4">
-                      <a href="/goods/{{ $last_product->id.'-'.$last_product->slug }}">
-                        <img class="img-responsive" src="/img/products/{{ $last_product->path . '/' . $last_product->image }}" alt="{{ $last_product->title }}">
-                      </a>
-                      <div class="caption text-center">
-                        <h4><a href="/goods/{{ $last_product->id.'-'.$last_product->slug }}">{{ $last_product->title }}</a></h4>
-                        <p>{{ $last_product->price }} 〒</p>
+                    <div class="col-sm-3 col-md-3 col-xs-6">
+                      <div class="thumbnail">
+                        <a href="/goods/{{ $last_product->id.'-'.$last_product->slug }}">
+                          <img class="img-responsive center-block" src="/img/products/{{ $last_product->path.'/'.$last_product->image }}" alt="...">
+                        </a>
+                        <div class="caption">
+                          <h5><a href="/goods/{{ $last_product->id.'-'.$last_product->slug }}">{{ $last_product->title }}</a></h5>
+                          <p>Код: {{ $last_product->barcode }}</p>
+                          <p>OEM: {{ $last_product->oem }}</p>
+                          <p>Цена: {{ $last_product->price }} 〒</p>
+                        </div>
+                        @if (is_array($items) AND in_array($last_product->id, $items['products_id']))
+                          <a href="/basket" class="btn btn-basket btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><span class="glyphicon glyphicon-shopping-cart"></span> Оформить</a>
+                        @else
+                          <button class="btn btn-basket btn-default" data-basket-id="{{ $last_product->id }}" onclick="addToBasket(this);"><span class="glyphicon glyphicon-shopping-cart"></span> В корзину</button>
+                        @endif
+
+                        @if (is_array($favorites) AND in_array($last_product->id, $favorites['products_id']))
+                          <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $last_product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart text-success"></span></button>
+                        @else
+                          <button type="button" class="btn btn-like btn-default" data-favorite-id="{{ $last_product->id }}" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart"></span></button>
+                        @endif
                       </div>
                     </div>
                   @endforeach
@@ -121,8 +154,7 @@
 @section('scripts')
   <script>
     function addToBasket(i) {
-
-      var productId = $(this).data("id");
+      var productId = $(i).data("basket-id");
 
       if (productId != '') {
         $.ajax({
@@ -131,8 +163,7 @@
           dataType: "json",
           data: {},
           success: function(data) {
-            console.log(data);
-            $('*[data-id="'+productId+'"]').replaceWith('<a href="/basket" class="btn btn-basket" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><img src="/img/shopping-cart.png"></a>');
+            $('*[data-basket-id="'+productId+'"]').replaceWith('<a href="/basket" class="btn btn-basket btn-success" data-toggle="tooltip" data-placement="top" title="Перейти в корзину"><span class="glyphicon glyphicon-shopping-cart"></span> Оформить</a>');
             $('#count-items').text(data.countItems);
             alert('Товар добавлен в корзину');
           }
@@ -142,8 +173,22 @@
       }
     }
 
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    })
+    function toggleFavorite (f) {
+      var productId = $(f).data("favorite-id");
+
+      if (productId != '') {
+        $.ajax({
+          type: "get",
+          url: '/toggle-favorite/'+productId,
+          dataType: "json",
+          data: {},
+          success: function(data) {
+            $('*[data-favorite-id="'+productId+'"]').replaceWith('<button type="button" class="btn btn-like btn-default" data-favorite-id="'+data.id+'" onclick="toggleFavorite(this);"><span class="glyphicon glyphicon-heart '+data.cssClass+'"></span></button>');
+          }
+        });
+      } else {
+        alert("Ошибка сервера");
+      }
+    }
   </script>
 @endsection
