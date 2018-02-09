@@ -101,18 +101,18 @@
     <section class="last-products">
       <div class="container">
 
-        <h3 class="h2">Последние товары</h3>
+        <h3 class="h2">Актуальные товары</h3>
 
-        <article id="last_products" class="carousel slide" data-ride="carousel" data-interval="false">
+        <article id="top_products" class="carousel slide" data-ride="carousel" data-interval="false">
           <div class="carousel-inner" role="listbox">
 
             <!-- Carousel control -->
             <div class="products-control" role="group" aria-label="...">
-              <a class="left-arrow" href="#last_products" data-slide="prev"><span class="glyphicon glyphicon-menu-left"></span></a>
-              <a class="right-arrow" href="#last_products" data-slide="next"><span class="glyphicon glyphicon-menu-right"></span></a>
+              <a class="left-arrow" href="#top_products" data-slide="prev"><span class="glyphicon glyphicon-menu-left"></span></a>
+              <a class="right-arrow" href="#top_products" data-slide="next"><span class="glyphicon glyphicon-menu-right"></span></a>
             </div>
 
-            @foreach ($last_products->chunk(4) as $key => $chunk)
+            @foreach ($top_products->chunk(4) as $key => $chunk)
               <div class="item @if($key == '0') active @endif">
                 <div class="row">
                   @foreach ($chunk as $last_product)

@@ -25,7 +25,7 @@
         <?php $traverse = function ($nodes, $prefix = null) use (&$traverse) { ?>
           <?php foreach ($nodes as $node) : ?>
             <option value="{{ $node->id }}">{{ PHP_EOL.$prefix.' '.$node->title }}</option>
-            <?php $traverse($node->children, $prefix.'&nbsp;&nbsp;'); ?>
+            <?php $traverse($node->children, $prefix.'___'); ?>
           <?php endforeach; ?>
         <?php }; ?>
         <?php $traverse($categories); ?>

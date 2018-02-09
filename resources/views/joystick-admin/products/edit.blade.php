@@ -35,7 +35,7 @@
             <?php else : ?>
               <option value="{{ $node->id }}">{{ PHP_EOL.$prefix.' '.$node->title }}</option>
             <?php endif; ?>
-            <?php $traverse($node->children, $prefix.'&nbsp;&nbsp;'); ?>
+            <?php $traverse($node->children, $prefix.'___'); ?>
           <?php endforeach; ?>
         <?php }; ?>
         <?php $traverse($categories); ?>
@@ -92,7 +92,7 @@
     </div>
     <div class="form-group">
       <label for="options_id">Опции</label>
-      <select id="options_id" name="options_id[]" class="form-control" multiple>
+      <select id="options_id" name="options_id[]" class="form-control" size="10" multiple>
         <option value=""></option>
         @foreach($options as $option)
           @if ($product->options->contains($option->id))

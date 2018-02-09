@@ -11,6 +11,10 @@ body {
 .btn-delete {
   display: inline;
 }
+.dropdown-menu-category {
+  max-height: 500px;
+  overflow-y: auto;
+}
 /*
  * Global add-ons
  */

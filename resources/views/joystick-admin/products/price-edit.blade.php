@@ -8,7 +8,7 @@
   <p class="text-right">
     <a href="/admin/products" class="btn btn-primary btn-sm">Назад</a>
   </p>
-  <form action="/admin/price/update" method="POST">
+  <form action="/admin/products-price/update" method="POST">
     {!! csrf_field() !!}
 
     <div class="form-group">

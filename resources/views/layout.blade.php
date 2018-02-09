@@ -47,7 +47,7 @@
               @foreach ($pages as $page)
                 <li><a href="/{{ $page->slug }}"><span class="glyphicon {{ $page->icon }}"></span> {{ $page->title }}</a></li>
               @endforeach
-              <li><a href="tel:+77079004204" class="order-products"><span class="glyphicon glyphicon-phone"></span> +7 707 900 4204</a></li>
+              <li><a href="tel:+77079004204" class="order-products"><span class="glyphicon glyphicon-phone"></span> +7 775 900 4204</a></li>
               <li>
                 <div class="social-buttons">Мы тут
                   <a href="#"><i class="socicon-google"></i></a>
@@ -154,7 +154,7 @@
         <div class="col-md-6">
           <h4>Контакты</h4>
           <ul class="list-unstyled">
-            <li>г. Алматы, ул. Райымбек</li>
+            <li>г. Алматы, Жетысуский район, Рыскулова №65</li>
             <li>+7 775 900 4204</li>
             <li>+7 707 900 4204</li>
             <li>info@sapaparts.kz</li>

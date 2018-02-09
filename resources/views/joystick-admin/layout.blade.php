@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Joystick Admin</title>
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <meta name="description" content="Joystick Admin">
+    <meta name="author" content="issayev.adilet@gmail.com">
+    <link rel="icon" href="/favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="/joystick/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -56,8 +57,8 @@
           <ul class="nav nav-sidebar">
             <li class="sidebar-title">Главное</li>
             <li @if (Request::is('admin/pages', 'admin/pages/*')) class="active" @endif> <a href="/admin/pages"><i class="material-icons md-18">content_copy</i> Страницы</a> </li>
-            <li @if (Request::is('admin/categories', 'admin/categories/*')) class="active" @endif> <a href="/admin/categories"><i class="material-icons md-18">list</i> Категории</a> </li>
             <li @if (Request::is('admin/news', 'admin/news/*')) class="active" @endif> <a href="/admin/news"><i class="material-icons md-18">create</i> Новости</a> </li>
+            <li @if (Request::is('admin/categories', 'admin/categories/*')) class="active" @endif> <a href="/admin/categories"><i class="material-icons md-18">list</i> Категории</a> </li>
             <li @if (Request::is('admin/products', 'admin/products/*')) class="active" @endif> <a href="/admin/products"><i class="material-icons md-18">store</i> Продукты</a> </li>
             <li @if (Request::is('admin/options', 'admin/options/*')) class="active" @endif> <a href="/admin/options"><i class="material-icons md-18">label_outline</i> Опции</a> </li>
             <li @if (Request::is('admin/orders', 'admin/orders/*')) class="active" @endif> <a href="/admin/orders"><i class="material-icons md-18">shopping_cart</i> Заказы</a> </li>

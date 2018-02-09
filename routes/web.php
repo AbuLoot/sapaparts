@@ -18,9 +18,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::resource('orders', 'Joystick\OrderController');
     Route::resource('pages', 'Joystick\PageController');
     Route::resource('products', 'Joystick\ProductController');
-    Route::get('search-products', 'Joystick\ProductController@search');
-    Route::get('price/edit', 'Joystick\ProductController@priceForm');
-    Route::post('price/update', 'Joystick\ProductController@priceUpdate');
+    Route::get('products-search', 'Joystick\ProductController@search');
+    Route::get('products-category/{id}', 'Joystick\ProductController@categoryProducts');
+    Route::get('products-actions', 'Joystick\ProductController@actionProducts');
+    Route::get('products-price/edit', 'Joystick\ProductController@priceForm');
+    Route::post('products-price/update', 'Joystick\ProductController@priceUpdate');
 
     Route::resource('roles', 'Joystick\RoleController');
     Route::resource('users', 'Joystick\UserController');

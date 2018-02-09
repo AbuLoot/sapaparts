@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Image;
 use Storage;
+use Validator;
 
 use App\Http\Controllers\Controller;
 use App\ImageTrait;
@@ -24,8 +25,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::orderBy('created_at')->paginate(50);
+        $categories = Category::get()->toTree();
 
-        return view('joystick-admin.products.index', ['products' => $products]);
+        return view('joystick-admin.products.index', ['categories' => $categories, 'products' => $products]);
     }
 
     public function search(Request $request)
@@ -48,6 +50,15 @@ class ProductController extends Controller
         return view('joystick-admin.products.price-edit', ['categories' => $categories]);
     }
 
+    public function categoryProducts($id)
+    {
+        $category = Category::find($id);
+        $categories = Category::get()->toTree();
+        $products = Product::where('category_id', $category->id)->orderBy('created_at')->paginate(50);
+
+        return view('joystick-admin.products.index', ['category' => $category, 'categories' => $categories, 'products' => $products]);
+    }
+
     public function priceUpdate(Request $request)
     {
         $operations = [
@@ -65,18 +76,43 @@ class ProductController extends Controller
             $ids[] = $category->children->pluck('id');
         }
 
-        $sql = 'update products set price = (price ' . $operations[$request->operation] . ' ' . $request->number . ') where category_id = ' . $request->category_id;
+        $sql = 'UPDATE products SET price = (price ' . $operations[$request->operation] . ' ' . $request->number . ') WHERE category_id = ' . $request->category_id;
 
         DB::update($sql);
 
         return redirect('admin/products')->with('status', 'Цена изменена!');
     }
 
-    public function checkChildren($category)
+    public function actionProducts(Request $request)
     {
-        if ($category->children && count($category->children) > 0) {
-            $ids[] = $category->children->pluck('id');
+        $validator = Validator::make($request->all(), [
+            'products_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator);
         }
+
+        switch ($request->action)
+        {
+            case 'active':
+                Product::whereIn('id', $request->products_id)->update(['status' => 1]);
+                break;
+            
+            case 'inactive':
+                Product::whereIn('id', $request->products_id)->update(['status' => 0]);
+                break;
+            
+            case 'default':
+                Product::whereIn('id', $request->products_id)->update(['mode' => 0]);
+                break;
+            
+            case 'top':
+                Product::whereIn('id', $request->products_id)->update(['mode' => 1]);
+                break;
+        }
+
+        return response()->json(['status' => true]);
     }
 
     public function create()

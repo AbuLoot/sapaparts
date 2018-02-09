@@ -1,4 +1,4 @@
-/public/img/categories
-/public/img/companies
-/public/img/products
+public/img/categories/
+public/img/companies/
+public/img/products/
 .env
