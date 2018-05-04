@@ -30,6 +30,45 @@ class ProductController extends Controller
         return view('joystick-admin.products.index', ['categories' => $categories, 'products' => $products]);
     }
 
+    public function imagesFolder()
+    {
+        $products = Product::all();
+
+        $i = 0;
+        foreach ($products as $product) {
+
+            if (empty($product->path) && $product->image != 'no-image-middle.png') {
+
+                $dirName = $product->category_id.'/'.time();
+
+                if ( ! file_exists('img/products/'.$product->category_id)) {
+                    Storage::makeDirectory('img/products/'.$dirName);
+                }
+                echo $i++.' - '.$product->image.'<br>';
+
+                // $image_path = base_path();
+
+                if (file_exists(base_path().'/img/products/'.$product->image)) {
+
+                    dd($i++, public_path('img/products/'.$product->image));
+
+                    Storage::move('img/products/'.$product->image, 'img/products/'.$dirName.'/'.$product->image);
+
+                    $images = unserialize($product->images);
+                    foreach ($images as $k => $image) {
+
+                        Storage::move('img/products/'.$images[$k]['image'], 'img/products/'.$dirName.'/'.$images[$k]['image']);
+                        Storage::move('img/products/'.$images[$k]['mini_image'], 'img/products/'.$dirName.'/'.$images[$k]['mini_image']);
+                        Storage::move('img/products/'.$images[$k]['present_image'], 'img/products/'.$dirName.'/'.$images[$k]['present_image']);
+
+                    }
+                }
+            }
+        }
+
+        echo 'end';
+    }
+
     public function search(Request $request)
     {
         $text = trim(strip_tags($request->text));
@@ -98,15 +137,15 @@ class ProductController extends Controller
             case 'active':
                 Product::whereIn('id', $request->products_id)->update(['status' => 1]);
                 break;
-            
+
             case 'inactive':
                 Product::whereIn('id', $request->products_id)->update(['status' => 0]);
                 break;
-            
+
             case 'default':
                 Product::whereIn('id', $request->products_id)->update(['mode' => 0]);
                 break;
-            
+
             case 'top':
                 Product::whereIn('id', $request->products_id)->update(['mode' => 1]);
                 break;
@@ -138,8 +177,8 @@ class ProductController extends Controller
 
         $dirName = $category->id.'/'.time();
 
-        if ( ! file_exists('img/products/'.$dirName)) {
-            Storage::makeDirectory('img/products/'.$dirName);
+        if ( ! file_exists('img/products/'.$category->id)) {
+            Storage::makeDirectory('/img/products/'.$dirName);
         }
 
         if ($request->hasFile('images')) {

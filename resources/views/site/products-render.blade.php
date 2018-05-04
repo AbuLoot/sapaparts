@@ -7,7 +7,7 @@
     <div class="col-sm-4 col-md-4 col-xs-6">
       <div class="thumbnail">
         <a href="/goods/{{ $product->id.'-'.$product->slug }}">
-          <img class="img-responsive center-block" src="/img/products{{ $product->path.'/'.$product->image }}" alt="...">
+          <img class="img-responsive center-block" src="/img/products/{{ $product->path.'/'.$product->image }}" alt="...">
         </a>
         <div class="caption">
           <h5><a href="/goods/{{ $product->id.'-'.$product->slug }}">{{ $product->title }}</a></h5>

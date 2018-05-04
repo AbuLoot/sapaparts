@@ -2,6 +2,24 @@
 
 Auth::routes();
 
+Route::get('products', function() {
+    $products = \App\Product::all();
+    $i = 0;
+    foreach ($products as $product) {
+        if (empty($product->path) && $product->image != 'no-image-middle.png') {
+            echo ++$i . ' --- ' . $product->path.'/'.$product->image.'<br>';
+
+            $images = unserialize($product->images);
+            foreach ($images as $k => $image) {
+
+                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$product->path.'/'.$images[$k]['mini_image'].'<br>';
+
+            }
+        }
+    }
+});
+
+    Route::get('products-images9', 'Joystick\ProductController@imagesFolder');
 
 // Joystick Administration
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
