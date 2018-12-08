@@ -34,27 +34,35 @@ class PageController extends Controller
     {
         $category = Category::where('slug', $category_slug)->first();
 
-        if (isset($request->options_id) AND !empty($request->options_id)) {
+        // Option operations
+        if ($request->ajax() AND isset($request->options_id)) {
+            $request->session()->put('options', $request->options_id);
+            $request->session()->put('category_id', $category->id);
+        }
 
-            list($keys, $options_id) = array_divide($request->options_id);
+        if ($request->ajax() AND empty($request->action) AND empty($request->options_id) OR session('category_id') != $category->id) {
+            $request->session()->forget('options');
+        }
 
-            $products = Product::where('status', 1)->where('category_id', $category->id)
+        if ($request->session()->has('options')) {
+
+            $options_id = session('options');
+
+            $products = Product::where('status', '<>', 0)->where('category_id', $category->id)
                 ->whereHas('options', function ($query) use ($options_id) {
                     $query->whereIn('option_id', $options_id);
                 })->paginate(27);
-
-            $products->appends([
-                'options_id' => $options_id
-            ]);
-
-            return response()->json(view('site.products-render', ['products' => $products])->render());
         }
-        else if ($request->ajax()) {
-            $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
-            return response()->json(view('site.products-render', ['products' => $products])->render());
-        }
+        // else if ($request->ajax()) {
+        //     $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
+        //     return response()->json(view('site.products-render', ['products' => $products])->render());
+        // }
         else {
-            $products = Product::where('status', 1)->where('category_id', $category->id)->paginate(27);
+            $products = Product::where('status', '<>', 0)->where('category_id', $category->id)->paginate(27);
+        }
+
+        if ($request->ajax()) {
+            return response()->json(view('site.products-render', ['products' => $products])->render());
         }
 
         $options = DB::table('products')
@@ -62,13 +70,9 @@ class PageController extends Controller
             ->join('options', 'options.id', '=', 'product_option.option_id')
             ->select('options.id', 'options.slug', 'options.title')
             ->where('category_id', $category->id)
-            ->where('status', 1)
+            // ->where('status', 1)
             ->distinct()
             ->get();
-
-        if ($request->ajax()) {
-            return response()->json(view('site.products-render', ['products' => $products])->render());
-        }
 
         return view('site.catalog')->with(['category' => $category, 'result' => $request->options_id, 'products' => $products, 'options' => $options]);
     }
@@ -85,6 +89,9 @@ class PageController extends Controller
     {
         $product = Product::where('id', $product_id)->firstOrFail();
         $category = Category::where('id', $product->category_id)->firstOrFail();
+
+        $product->views = $product->views + 1;
+        $product->save();
 
         return view('site.product')->with(['product' => $product]);
     }

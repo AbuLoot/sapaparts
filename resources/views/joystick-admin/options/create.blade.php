@@ -23,7 +23,7 @@
       <input type="text" class="form-control" id="sort_id" name="sort_id" value="{{ (old('sort_id')) ? old('sort_id') : NULL }}">
     </div>
     <div class="form-group">
-      <label for="data">Данные</label>
+      <label for="data">Группа</label>
       <input type="text" class="form-control" id="data" name="data" value="{{ (old('data')) ? old('data') : '' }}">
     </div>
     <div class="form-group">

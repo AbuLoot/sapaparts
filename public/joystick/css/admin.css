@@ -11,6 +11,10 @@ body {
 .btn-delete {
   display: inline;
 }
+.checkbox-ids {
+  width: 18px;
+  height: 18px;
+}
 .dropdown-menu-category {
   max-height: 500px;
   overflow-y: auto;

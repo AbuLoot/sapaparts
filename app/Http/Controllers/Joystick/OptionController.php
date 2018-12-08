@@ -11,8 +11,9 @@ class OptionController extends Controller
     public function index()
     {
         $options = Option::orderBy('sort_id')->paginate(50);
+        $grouped = $options->groupBy('data');
 
-        return view('joystick-admin.options.index', compact('options'));
+        return view('joystick-admin.options.index', compact('grouped', 'options'));
     }
 
     public function create()

@@ -180,6 +180,7 @@
 
       </section>
     </div>
+
   </main>
 
 @endsection

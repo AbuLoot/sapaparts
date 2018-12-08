@@ -50,7 +50,7 @@
     <table class="table table-striped table-condensed">
       <thead>
         <tr class="active">
-          <td><input type="checkbox" onclick="toggleCheckbox(this)"></td>
+          <td><input type="checkbox" onclick="toggleCheckbox(this)" class="checkbox-ids"></td>
           <td>Картинка</td>
           <td>Название</td>
           <td>Категория</td>
@@ -65,7 +65,7 @@
       <tbody>
         @forelse ($products as $product)
           <tr>
-            <td><input type="checkbox" name="products_id[]" value="{{ $product->id }}"></td>
+            <td><input type="checkbox" name="products_id[]" value="{{ $product->id }}" class="checkbox-ids"></td>
             <td><img src="/img/products/{{ $product->path.'/'.$product->image }}" class="img-responsive" style="width:80px;height:auto;"></td>
             <td>{{ $product->title }}</td>
             <td>{{ $product->category->title }}</td>
@@ -79,7 +79,7 @@
               <td class="text-danger">Неактивен</td>
             @endif
             <td class="text-right text-nowrap">
-              <a class="btn btn-link btn-xs" href="#" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
+              <a class="btn btn-link btn-xs" href="/goods/{{ $product->id.'-'.$product->slug }}" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
               <a class="btn btn-link btn-xs" href="{{ route('products.edit', $product->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
               <form class="btn-delete" method="POST" action="{{ route('products.destroy', $product->id) }}" accept-charset="UTF-8">
                 <input name="_method" type="hidden" value="DELETE">
