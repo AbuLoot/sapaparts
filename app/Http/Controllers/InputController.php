@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use DB;
 use Validator;
 
 use App\App;
@@ -35,7 +36,7 @@ class InputController extends Controller
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->get();
+        $products = Product::search($text)->paginate(27);
 
         return response()->json($products);
     }
