@@ -3,23 +3,39 @@
 Auth::routes();
 
 Route::get('products', function() {
+
     $products = \App\Product::all();
     $i = 0;
+    $e = 0;
+
+    echo '<style>div {display: inline-block;}</style>';
+
     foreach ($products as $product) {
-        if (empty($product->path) && $product->image != 'no-image-middle.png') {
-            echo ++$i . ' --- ' . $product->path.'/'.$product->image.'<br>';
+
+        if ($product->image != 'no-image-middle.png') {
+            echo ++$i . ' --- ' . $product->id . '  == ' . $product->path.'/'.$product->image.'<br>';
 
             $images = unserialize($product->images);
-            foreach ($images as $k => $image) {
 
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$product->path.'/'.$images[$k]['mini_image'].'<br>';
-
+            if (is_array($images)) {
+                foreach ($images as $k => $image) {
+                    echo '<div style="width:25%;height:150px;">';
+                    echo '<img style="float:left; margin-right:5px;" src="/img/products/'.$product->path.'/'.$images[$k]['mini_image'].'">';
+                    echo $product->title.'<br>';
+                    echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$product->id.'&nbsp;&nbsp;'.$product->path.'/'.$images[$k]['mini_image'].'<br>';
+                    echo '</div>';
+                    if (!file_exists('img/products/'.$product->path.'/'.$images[$k]['mini_image'])) {
+                        $e++;
+                    }
+                }
             }
         }
     }
+
+    echo '<h4>'.$e.'</h4>';
 });
 
-    Route::get('products-images9', 'Joystick\ProductController@imagesFolder');
+Route::get('products-images9', 'Joystick\ProductController@imagesFolder');
 
 // Joystick Administration
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {

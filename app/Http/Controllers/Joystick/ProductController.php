@@ -35,34 +35,35 @@ class ProductController extends Controller
         $products = Product::all();
 
         $i = 0;
+
         foreach ($products as $product) {
 
-            if (empty($product->path) && $product->image != 'no-image-middle.png') {
+            if (file_exists('img/products/'.$product->image) && $product->image != 'no-image-middle.png') {
+
+                echo ++$i.' - '.$product->id.' - img/products/'.$product->path.' <---------/'.$product->image.'<br>';
 
                 $dirName = $product->category_id.'/'.time();
 
-                if ( ! file_exists('img/products/'.$product->category_id)) {
-                    Storage::makeDirectory('img/products/'.$dirName);
-                }
-                echo $i++.' - '.$product->image.'<br>';
+                Storage::makeDirectory('img/products/'.$dirName);
 
-                // $image_path = base_path();
+                $product->path = $dirName;
+                $product->save();
 
-                if (file_exists(base_path().'/img/products/'.$product->image)) {
-
-                    dd($i++, public_path('img/products/'.$product->image));
+                if (file_exists('img/products/'.$product->image)) {
 
                     Storage::move('img/products/'.$product->image, 'img/products/'.$dirName.'/'.$product->image);
 
                     $images = unserialize($product->images);
+
                     foreach ($images as $k => $image) {
 
                         Storage::move('img/products/'.$images[$k]['image'], 'img/products/'.$dirName.'/'.$images[$k]['image']);
                         Storage::move('img/products/'.$images[$k]['mini_image'], 'img/products/'.$dirName.'/'.$images[$k]['mini_image']);
                         Storage::move('img/products/'.$images[$k]['present_image'], 'img/products/'.$dirName.'/'.$images[$k]['present_image']);
-
                     }
                 }
+
+                echo $i.' - '.$product->id.' - img/products/'.$product->path.' <---------/'.$product->image.'<br>OK!<br>';
             }
         }
 
@@ -221,6 +222,7 @@ class ProductController extends Controller
         $product->title = $request->title;
         $product->company_id = $request->company_id;
         $product->barcode = $request->barcode;
+        $product->oem = $request->oem;
         $product->price = $request->price;
         $product->days = $request->days;
         $product->count = $request->count;
@@ -274,9 +276,11 @@ class ProductController extends Controller
 
             $introImage = null;
 
-            if ( ! file_exists('img/products/'.$product->category->id)) {
-                $product->path = $product->category->id.'/'.time();
-                Storage::makeDirectory('img/products/'.$product->path);
+            if ( ! file_exists('img/products/'.$product->category_id) OR empty($product->path)) {
+                $dirName = $product->category->id.'/'.time();
+                Storage::makeDirectory('img/products/'.$dirName);
+            } else {
+                $dirName = $product->path;
             }
 
             foreach ($request->file('images') as $key => $image)
@@ -292,20 +296,20 @@ class ProductController extends Controller
                             Storage::delete('img/products/'.$product->path.'/'.$product->image);
                         }
 
-                        $this->resizeImage($image, 260, 260, 'img/products/'.$product->path.'/preview-'.$imageName, 100);
+                        $this->resizeImage($image, 260, 260, 'img/products/'.$dirName.'/preview-'.$imageName, 100);
                         $introImage = 'preview-'.$imageName;
                     }
 
                     $watermark = Image::make('img/watermark.png');
 
                     // Storing original images
-                    $this->resizeImage($image, 1024, 768, 'img/products/'.$product->path.'/'.$imageName, 90, $watermark);
+                    $this->resizeImage($image, 1024, 768, 'img/products/'.$dirName.'/'.$imageName, 90, $watermark);
 
                     // Creating present images
-                    $this->resizeImage($image, 250, 250, 'img/products/'.$product->path.'/present-'.$imageName, 100);
+                    $this->resizeImage($image, 250, 250, 'img/products/'.$dirName.'/present-'.$imageName, 100);
 
                     // Creating mini images
-                    $this->resizeImage($image, 100, 100, 'img/products/'.$product->path.'/mini-'.$imageName, 100);
+                    $this->resizeImage($image, 100, 100, 'img/products/'.$dirName.'/mini-'.$imageName, 100);
 
                     if (isset($images[$key])) {
 
@@ -329,10 +333,18 @@ class ProductController extends Controller
                 }
             }
 
+            $product->path = $dirName;
             $images = array_sort_recursive($images);
         }
 
-        if (count($request->remove_images) > 0) {
+        if ($product->category_id != $request->category_id AND file_exists('img/products/'.$product->path)) {
+
+            $dirName = $request->category_id.'/'.time();
+            rename('img/products/'.$product->path, 'img/products/'.$dirName);
+            $product->path = $dirName;
+        }
+
+        if (isset($request->remove_images)) {
 
             foreach ($request->remove_images as $key => $value) {
 
@@ -363,6 +375,7 @@ class ProductController extends Controller
         $product->title = $request->title;
         $product->company_id = $request->company_id;
         $product->barcode = $request->barcode;
+        $product->oem = $request->oem;
         $product->price = $request->price;
         $product->days = $request->days;
         $product->count = $request->count;

@@ -48,14 +48,14 @@
                 <li><a href="/{{ $page->slug }}"><span class="glyphicon {{ $page->icon }}"></span> {{ $page->title }}</a></li>
               @endforeach
               <li><a href="tel:+77079004204" class="order-products"><span class="glyphicon glyphicon-phone"></span> +7 775 900 4204</a></li>
-              <li>
+              <!-- <li>
                 <div class="social-buttons">Мы тут
                   <a href="#"><i class="socicon-google"></i></a>
                   <a href="#"><i class="socicon-facebook"></i></a>
                   <a href="#"><i class="socicon-vkontakte"></i></a>
                   <a href="#"><i class="socicon-instagram"></i></a>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>

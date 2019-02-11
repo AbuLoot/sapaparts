@@ -17,7 +17,7 @@ class InputController extends Controller
         $text = trim(strip_tags($request->text));
 
 	    // $products = Product::where('status', 1)
-	    //     ->where(function($query) use ($text, $qQuery) {
+	    //     ->where(function($query) use ($text) {
 	    //         return $query->where('barcode', 'LIKE', '%'.$text.'%')
 	    //         ->orWhere('title', 'LIKE', '%'.$text.'%')
 	    //         ->orWhere('oem', 'LIKE', '%'.$text.'%');
@@ -26,7 +26,7 @@ class InputController extends Controller
         $products = Product::search($text)->paginate(27);
 
         $products->appends([
-            'text' => $request->text,
+            'text' => $text,
         ]);
 
         return view('site.found', compact('text', 'products'));

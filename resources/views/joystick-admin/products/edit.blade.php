@@ -59,6 +59,10 @@
       <input type="text" class="form-control" id="barcode" name="barcode" value="{{ (old('barcode')) ? old('barcode') : $product->barcode }}" required>
     </div>
     <div class="form-group">
+      <label for="oem">OEM</label>
+      <input type="text" class="form-control" id="oem" name="oem" value="{{ (old('oem')) ? old('oem') : $product->oem }}">
+    </div>
+    <div class="form-group">
       <label for="price">Цена</label>
       <div class="input-group">
         <input type="text" class="form-control" id="price" name="price" maxlength="10" value="{{ (old('price')) ? old('price') : $product->price }}" required>
