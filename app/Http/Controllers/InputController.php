@@ -36,7 +36,9 @@ class InputController extends Controller
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->paginate(27);
+        $products = Product::search($text)->get();
+
+        // return response()->json(view('site.products', ['products' => $products])->render());
 
         return response()->json($products);
     }

@@ -176,13 +176,16 @@ class ProductController extends Controller
         $introImage = null;
         $images = [];
 
-        $dirName = $category->id.'/'.time();
+        // $dirName = $category->id.'/'.time();
 
-        if ( ! file_exists('img/products/'.$category->id)) {
-            Storage::makeDirectory('/img/products/'.$dirName);
-        }
+        // if ( ! file_exists('img/products/'.$category->id)) {
+        //     Storage::makeDirectory('/img/products/'.$dirName);
+        // }
 
         if ($request->hasFile('images')) {
+
+            $dirName = $category->id.'/'.time();
+            Storage::makeDirectory('img/products/'.$dirName);
 
             foreach ($request->file('images') as $key => $image)
             {
@@ -213,6 +216,9 @@ class ProductController extends Controller
                     $images[$key]['mini_image'] = 'mini-'.$imageName;
                 }
             }
+        }
+        else {
+            $dirName = '';
         }
 
         $product = new Product;
