@@ -281,12 +281,11 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
 
             $introImage = null;
+            $dirName = $product->path;
 
             if ( ! file_exists('img/products/'.$product->category_id) OR empty($product->path)) {
                 $dirName = $product->category->id.'/'.time();
                 Storage::makeDirectory('img/products/'.$dirName);
-            } else {
-                $dirName = $product->path;
             }
 
             foreach ($request->file('images') as $key => $image)
