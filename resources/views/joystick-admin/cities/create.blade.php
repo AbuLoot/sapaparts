@@ -34,7 +34,6 @@
     <div class="form-group">
       <label for="lang">Язык</label>
       <select id="lang" name="lang" class="form-control" required>
-        <option value=""></option>
         @foreach($languages as $language)
           @if (old('lang') == $language->slug)
             <option value="{{ $language->slug }}" selected>{{ $language->title }}</option>

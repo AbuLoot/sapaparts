@@ -35,7 +35,7 @@ class CompanyController extends Controller
 
         if ($request->hasFile('image')) {
 
-            $logoName = str_slug($company->title).'.'.$request->image->getClientOriginalExtension();
+            $logoName = str_slug($request->title).'.'.$request->image->getClientOriginalExtension();
 
             $request->image->storeAs('img/companies', $logoName);
         }
@@ -79,7 +79,7 @@ class CompanyController extends Controller
                 Storage::delete($company->logo);
             }
 
-            $logoName = str_slug($company->title).'.'.$request->image->getClientOriginalExtension();
+            $logoName = str_slug($request->title).'.'.$request->image->getClientOriginalExtension();
 
             $request->image->storeAs('img/companies', $logoName);
         }

@@ -101,7 +101,7 @@
               <?php foreach ($categories as $category) : ?>
                 <li>
                   <?php if (count($category->descendants()->get()) > 0) : ?>
-                    <a>{{ $category->title }}</a>
+                    <a href="/catalog/{{ $category->slug }}">{{ $category->title }}</a>
                   <?php else : ?>
                     <a href="/catalog/{{ $category->slug }}">{{ $category->title }}</a>
                   <?php endif; ?>

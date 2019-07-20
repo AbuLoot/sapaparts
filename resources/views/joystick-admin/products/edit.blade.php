@@ -126,7 +126,7 @@
         @if (isset($images[$i]))
           <div class="fileinput fileinput-new" data-provides="fileinput">
             <div class="fileinput-new thumbnail" style="width:300px;height:200px;">
-              <img src="/img/products/{{ $product->path.'/'.$images[$i]['present_image'] }}">
+              <img src="/img/products/{{ $product->path.'/'.$images[$i]['image'] }}">
             </div>
             <div class="fileinput-preview fileinput-exists thumbnail" style="width:300px;height:200px;" data-trigger="fileinput"></div>
             <div>
@@ -172,7 +172,6 @@
     <div class="form-group">
       <label for="lang">Язык</label>
       <select id="lang" name="lang" class="form-control" required>
-        <option value=""></option>
         @foreach($languages as $language)
           @if ($product->lang == $language->slug)
             <option value="{{ $language->slug }}" selected>{{ $language->title }}</option>

@@ -54,6 +54,7 @@
           <td>Картинка</td>
           <td>Название</td>
           <td>Категория</td>
+          <td>Путь</td>
           <td>Компания</td>
           <td>Номер</td>
           <td>Язык</td>
@@ -70,6 +71,7 @@
             <td>{{ $product->title }}</td>
             <td>{{ $product->category->title }}</td>
             <td>{{ (isset($product->company->title)) ? $product->company->title : '' }}</td>
+            <td>{{ $product->path }}</td>
             <td>{{ $product->sort_id }}</td>
             <td>{{ $product->lang }}</td>
             <td>{{ trans('modes.'.$product->mode) }}</td>
