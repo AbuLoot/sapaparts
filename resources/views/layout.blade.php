@@ -14,6 +14,7 @@
     <!-- Bootstrap -->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link href="/bower_components/typeahead.js/dist/typeahead.bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://d1azc1qln24ryf.cloudfront.net/114779/Socicon/style-cf.css?9177x2">
     <link href="/css/style.css" rel="stylesheet">
