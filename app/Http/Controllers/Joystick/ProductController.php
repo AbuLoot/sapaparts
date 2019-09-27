@@ -24,7 +24,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::orderBy('created_at')->paginate(50);
+        $products = Product::orderBy('updated_at','desc')->paginate(50);
         $categories = Category::get()->toTree();
 
         return view('joystick-admin.products.index', ['categories' => $categories, 'products' => $products]);

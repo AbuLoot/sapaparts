@@ -157,7 +157,6 @@
           <ul class="list-unstyled">
             <li>г. Алматы, Жетысуский район, Рыскулова №65</li>
             <li>+7 775 900 4204</li>
-            <li>+7 707 900 4204</li>
             <li>info@sapaparts.kz</li>
           </ul>
         </div>
