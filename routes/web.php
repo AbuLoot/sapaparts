@@ -1,99 +1,53 @@
 <?php
 
+// Authentication routes...
+Route::get('cs-login', 'Auth\AuthCustomController@getLogin')->middleware('guest');;
+Route::post('cs-login', 'Auth\AuthCustomController@postLogin');
+
+// Registration routes...
+Route::get('cs-register', 'Auth\AuthCustomController@getRegister')->middleware('guest');;
+Route::post('cs-register', 'Auth\AuthCustomController@postRegister');
+// Route::get('confirm/{token}', 'Auth\AuthCustomController@confirm');
+
 Auth::routes();
 
-Route::get('products', function() {
+// User Profile
+Route::group(['middleware' => 'auth', 'role:user'], function() {
 
-    $products = \App\Product::where('image', '!=', 'no-image-middle.png')->where('path', '=', '')->get();
-    $i = 0;
-    $s = 0;
-
-    echo '<style>div {display: inline-block;}</style>';
-
-    $files = Storage::allFiles('img/products');
-    $pro_arr = $products->toArray();
-    $box_arr = [];
-
-    foreach ($pro_arr as $key => $value) {
-        $box_arr[] = $value['image'];
-    }
-
-    // foreach ($products as $p => $product) {
-    //     echo $p .' '.$product->image.'<br>';
-    // }
-
-    // echo '<pre>';
-    // print_r($box_arr);
-    // echo '</pre>';
-    // dd();
-
-    foreach ($files as $k => $file) {
-
-        // list($a, $b, $c, $d, $e) = explode('/', $file);
-        $f = explode('/', $file);
-        $v = end($f);
-
-        if (in_array($v, $box_arr)) {
-
-            $product = \App\Product::where('image', $v)->first();            
-            $product->path = $f[2].'/'.$f[3];
-            $product->save();
-        }
-    }
-
-    echo '<h4>'.$e.'</h4>';
+    Route::get('profile', 'ProfileController@profile');
+    Route::get('profile/edit', 'ProfileController@editProfile');
+    Route::post('profile', 'ProfileController@updateProfile');
+    Route::get('orders', 'ProfileController@myOrders');
 });
-
-Route::get('products2', function() {
-
-    $products = \App\Product::where('image', '!=', 'no-image-middle.png')->where('path', '=', '')->get();
-    $e = 0;
-
-    echo '<style>div {display: inline-block;}</style>';
-
-    foreach ($products as $product) {
-
-        $images = unserialize($product->images);
-
-        foreach ($images as $k => $image) {
-
-            if (!file_exists('img/products/'.$product->path.'/'.$product->image)) {
-                // echo '<div style="width:25%;height:150px;">';
-                // echo '<img style="float:left; margin-right:5px;" src="/img/products/'.$product->path.'/'.$images[$k]['mini_image'].'">';
-                // echo $product->title.'<br>';
-                echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$product->category_id.'&nbsp;&nbsp;'.$product->path.'/'.$product->image.'<br>';
-                // echo '&nbsp;&nbsp;&nbsp;&nbsp;'.$product->category_id.'&nbsp;&nbsp;'.$product->path.'/'.$images[$k]['mini_image'].'<br>';
-                // echo '</div>';
-                $e++;
-            }
-        }
-    }
-
-    echo '<h4>'.$e.'</h4>';
-});
-
-Route::get('products-images9', 'Joystick\ProductController@imagesFolder');
 
 // Joystick Administration
-Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], function () {
 
     Route::get('/', 'Joystick\AdminController@index');
+    Route::get('filemanager', 'Joystick\AdminController@filemanager');
+    Route::get('frame-filemanager', 'Joystick\AdminController@frameFilemanager');
 
     Route::resource('categories', 'Joystick\CategoryController');
+    Route::get('categories-actions', 'Joystick\CategoryController@actionCategories');
     Route::resource('countries', 'Joystick\CountryController');
     Route::resource('companies', 'Joystick\CompanyController');
+    Route::get('companies-actions', 'Joystick\CompanyController@actionCompanies');
     Route::resource('cities', 'Joystick\CityController');
-    Route::resource('news', 'Joystick\NewController');
+    Route::resource('news', 'Joystick\NewsController');
     Route::resource('languages', 'Joystick\LanguageController');
+    Route::resource('modes', 'Joystick\ModeController');
     Route::resource('options', 'Joystick\OptionController');
     Route::resource('orders', 'Joystick\OrderController');
     Route::resource('pages', 'Joystick\PageController');
+    Route::resource('section', 'Joystick\SectionController');
+    Route::resource('projects', 'Joystick\ProjectController');
     Route::resource('products', 'Joystick\ProductController');
+    Route::resource('slide', 'Joystick\SlideController');
+    Route::get('products/{id}/comments', 'Joystick\ProductController@comments');
+    Route::get('products/{id}/destroy-comment', 'Joystick\ProductController@destroyComment');
     Route::get('products-search', 'Joystick\ProductController@search');
     Route::get('products-category/{id}', 'Joystick\ProductController@categoryProducts');
     Route::get('products-actions', 'Joystick\ProductController@actionProducts');
-    Route::get('products-price/edit', 'Joystick\ProductController@priceForm');
-    Route::post('products-price/update', 'Joystick\ProductController@priceUpdate');
 
     Route::resource('roles', 'Joystick\RoleController');
     Route::resource('users', 'Joystick\UserController');
@@ -112,24 +66,46 @@ Route::post('filter-products', 'InputController@filterProducts');
 Route::post('send-app', 'InputController@sendApp');
 
 
-// Basket Actions
-Route::get('add-to-basket/{id}', 'BasketController@addToBasket');
-Route::get('clear-basket', 'BasketController@clearBasket');
-Route::get('basket', 'BasketController@basket');
-Route::get('basket/{id}', 'BasketController@destroy');
-Route::post('store-order', 'BasketController@storeOrder');
+// Shop
+Route::get('/', 'ShopController@index');
+
+Route::get('catalog/{category}/{id}', 'ShopController@categoryProducts');
+Route::get('catalog/{category}/{subcategory}/{id}', 'ShopController@subCategoryProducts');
+
+Route::get('brand/{company}', 'ShopController@brandProducts');
+Route::get('brand/{company}/{category}/{id}', 'ShopController@brandCategoryProducts');
+
+Route::get('c/{category}/{id}', 'ShopController@categoryProducts');
+Route::get('c/{category}/{subcategory}/{id}', 'ShopController@subCategoryProducts');
+Route::get('c/{category}/{subcategory}/{subsubcategory}/{id}', 'ShopController@subSubCategoryProducts');
+
+Route::get('p/{id}-{product}', 'ShopController@product');
+Route::get('goods/{id}-{product}', 'ShopController@product');
+Route::post('comment-product', 'ShopController@saveComment');
 
 
-// Favorite Actions
-Route::get('toggle-favorite/{id}', 'FavoriteController@toggleFavorite');
+// Cart Actions
+Route::get('cart', 'CartController@cart');
+Route::get('add-to-cart/{id}', 'CartController@addToCart');
+Route::get('remove-from-cart/{id}', 'CartController@removeFromCart');
+Route::get('clear-cart', 'CartController@clearCart');
+Route::post('store-order', 'CartController@storeOrder');
+Route::get('destroy-from-cart/{id}', 'CartController@destroy');
+
+
+// Favourite Actions
+Route::get('favorite', 'FavouriteController@getFavorite');
+Route::get('toggle-favourite/{id}', 'FavouriteController@toggleFavourite');
+
+
+// News
+Route::get('news', 'NewsController@news');
+Route::get('news-category/{page}', 'NewsController@newsCategory');
+Route::get('news/{page}', 'NewsController@newsSingle');
+Route::post('comment-news', 'NewsController@saveComment');
 
 
 // Pages
-Route::get('/', 'PageController@index');
-Route::get('katalog-zapchastey', 'PageController@catalogs');
-Route::get('catalog', 'PageController@catalog');
-Route::get('catalog/{category}', 'PageController@categoryProducts');
-Route::get('goods/{id}-{product}', 'PageController@product');
-Route::get('catalog/brand/{company}', 'PageController@brandProducts');
-Route::get('contacts', 'PageController@contacts');
-Route::get('{page}', 'PageController@page');
+Route::get('i/catalogs', 'PageController@catalogs');
+Route::get('i/contacts', 'PageController@contacts');
+Route::get('i/{page}', 'PageController@page');

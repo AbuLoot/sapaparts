@@ -18,6 +18,17 @@ class CategoryController extends Controller
         return view('joystick-admin.categories.index', compact('categories'));
     }
 
+    public function actionCategories(Request $request)
+    {
+        $this->validate($request, [
+            'categories_id' => 'required'
+        ]);
+
+        Category::whereIn('id', $request->categories_id)->update(['status' => $request->action]);
+
+        return response()->json(['status' => true]);
+    }
+
     public function create()
     {
         $categories = Category::get()->toTree();
@@ -32,19 +43,12 @@ class CategoryController extends Controller
         ]);
 
         $category = new Category;
-
-        if ($request->hasFile('image')) {
-
-            $imageName = str_slug($category->title).'.'.$request->image->getClientOriginalExtension();
-
-            $request->image->storeAs('img/categories', $imageName);
-        }
-
         $category->sort_id = ($request->sort_id > 0) ? $request->sort_id : $category->count() + 1;
         $category->slug = (empty($request->slug)) ? str_slug($request->title) : $request->slug;
         $category->title = $request->title;
-        $category->image = (isset($imageName)) ? $imageName : 'no-image-mini.png';
-        $category->title_description = $request->title_description;
+        $category->title_extra = $request->title_extra;
+        $category->image = (isset($request->image)) ? $request->image : 'no-image-mini.png';
+        $category->meta_title = $request->meta_title;
         $category->meta_description = $request->meta_description;
 
         $parent_node = Category::find($request->category_id);
@@ -57,7 +61,7 @@ class CategoryController extends Controller
         }
 
         $category->lang = $request->lang;
-        $category->status = ($request->status == 'on') ? 1 : 0;
+        $category->status = $request->status;
         $category->save();
 
         return redirect('/admin/categories')->with('status', 'Запись добавлена.');
@@ -78,23 +82,12 @@ class CategoryController extends Controller
         ]);
 
         $category = Category::findOrFail($id);
-
-        if ($request->hasFile('image')) {
-
-            if (file_exists('img/categories/'.$category->image)) {
-                // Storage::delete('img/categories/'.$category->image);
-            }
-
-            $imageName = str_slug($category->title).'.'.$request->image->getClientOriginalExtension();
-
-            $request->image->storeAs('img/categories', $imageName);
-        }
-
         $category->sort_id = ($request->sort_id > 0) ? $request->sort_id : $category->count() + 1;
         $category->slug = (empty($request->slug)) ? str_slug($request->title) : $request->slug;
         $category->title = $request->title;
-        if (isset($imageName)) $category->image = $imageName;
-        $category->title_description = $request->title_description;
+        $category->title_extra = $request->title_extra;
+        $category->image = (isset($request->image)) ? $request->image : 'no-image-mini.png';
+        $category->meta_title = $request->meta_title;
         $category->meta_description = $request->meta_description;
 
         $parent_node = Category::find($request->category_id);
@@ -107,7 +100,7 @@ class CategoryController extends Controller
         }
 
         $category->lang = $request->lang;
-        $category->status = ($request->status == 'on') ? 1 : 0;
+        $category->status = $request->status;
         $category->save();
 
         return redirect('/admin/categories')->with('status', 'Запись обновлена.');

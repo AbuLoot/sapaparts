@@ -14,6 +14,7 @@
           <td>Заказчик</td>
           <td>Телефон</td>
           <td>Email</td>
+          <td>Город</td>
           <td>Количество</td>
           <td>Сумма</td>
           <td>Статус</td>
@@ -21,13 +22,14 @@
         </tr>
       </thead>
       <tbody>
-        @forelse ($orders as $order)
+        @foreach ($orders as $order)
           <tr>
             <td>{{ $order->id }}</td>
             <td>{{ $order->created_at }}</td>
             <td>{{ $order->name }}</td>
             <td>{{ $order->phone }}</td>
             <td>{{ $order->email }}</td>
+            <td>{{ (isset($order->city->title)) ? $order->city->title : '' }} {{ $order->address }}</td>
             <td>
               <?php $countAllProducts = unserialize($order->count); $i = 0; ?>
               @foreach ($countAllProducts as $id => $countProduct)
@@ -48,11 +50,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="8">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

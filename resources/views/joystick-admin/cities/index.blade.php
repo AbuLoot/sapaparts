@@ -24,7 +24,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($cities as $city)
+        @foreach ($cities as $city)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $city->country->title }}</td>
@@ -45,11 +45,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="7">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

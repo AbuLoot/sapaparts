@@ -13,7 +13,7 @@
     {!! csrf_field() !!}
 
     <div class="form-group">
-      <label for="title">Название</label>
+      <label for="title">Заголовок</label>
       <input type="text" class="form-control" id="title" name="title" maxlength="80" value="{{ (old('title')) ? old('title') : $language->title }}" required>
     </div>
     <div class="form-group">

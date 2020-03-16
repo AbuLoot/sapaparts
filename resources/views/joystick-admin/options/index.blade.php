@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($grouped as $data => $group)
+        @foreach ($grouped as $data => $group)
           <th class="active" colspan="6">{{ $data }}</th>
           @foreach ($group as $option)
             <tr>
@@ -42,11 +42,7 @@
               </td>
             </tr>
           @endforeach
-        @empty
-          <tr>
-            <td colspan="6">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

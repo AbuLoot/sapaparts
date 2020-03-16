@@ -11,8 +11,12 @@
   <form action="{{ route('categories.store') }}" method="post" enctype="multipart/form-data">
     {!! csrf_field() !!}
     <div class="form-group">
-      <label for="title">Название</label>
+      <label for="title">Заголовок</label>
       <input type="text" class="form-control" id="title" name="title" minlength="2" maxlength="80" value="{{ (old('title')) ? old('title') : '' }}" required>
+    </div>
+    <div class="form-group">
+      <label for="title_extra">Название дополнительное</label>
+      <input type="text" class="form-control" id="title_extra" name="title_extra" minlength="2" maxlength="80" value="{{ (old('title_extra')) ? old('title_extra') : '' }}">
     </div>
     <div class="form-group">
       <label for="slug">Slug</label>
@@ -32,17 +36,25 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="image">Логотип</label><br>
-      <div class="fileinput fileinput-new" data-provides="fileinput">
-        <div class="fileinput-new thumbnail" style="width:300px;height:200px;"></div>
-        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width:300px;max-height:200px;"></div>
-        <div>
-          <span class="btn btn-default btn-sm btn-file">
-            <span class="fileinput-new"><i class="glyphicon glyphicon-folder-open"></i>&nbsp; Выбрать</span>
-            <span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>
-            <input type="file" name="image" accept="image/*">
-          </span>
-          <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
+      <label for="image">Картинка</label>
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" data-toggle="modal" data-target="#filemanager"><i class="material-icons md-18">folder</i> Выбрать</button>
+        </span>
+        <input type="text" class="form-control" id="image" name="image" value="{{ (old('image')) ? old('image') : '' }}">
+      </div>
+      <!-- Filemanager -->
+      <div class="modal fade" id="filemanager" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">Файловый менеджер</h4>
+            </div>
+            <div class="modal-body">
+              <iframe src="<?= url('/admin/filemanager'); ?>" frameborder="0" style="width:100%;min-height:600px"></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -51,8 +63,8 @@
       <input type="text" class="form-control" id="sort_id" name="sort_id" maxlength="5" value="{{ (old('sort_id')) ? old('sort_id') : 0 }}">
     </div>
     <div class="form-group">
-      <label for="title_description">Мета заголовок</label>
-      <input type="text" class="form-control" id="title_description" name="title_description" maxlength="255" value="{{ (old('title_description')) ? old('title_description') : '' }}">
+      <label for="meta_title">Мета заголовок</label>
+      <input type="text" class="form-control" id="meta_title" name="meta_title" maxlength="255" value="{{ (old('meta_title')) ? old('meta_title') : '' }}">
     </div>
     <div class="form-group">
       <label for="meta_description">Мета описание</label>
@@ -72,9 +84,11 @@
     </div>
     <div class="form-group">
       <label for="status">Статус</label>
-      <label>
-        <input type="checkbox" id="status" name="status" checked> Активен
-      </label>
+      @foreach(trans('statuses.category') as $num => $status)
+        <label>
+          <input type="radio" id="status" name="status" value="{{ $num }}" @if($num == 1) checked @endif> {{ $status }}
+        </label>
+      @endforeach
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary">Добавить</button>

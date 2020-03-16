@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Joystick;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Order;
+use App\Country;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::paginate(50);
+        $orders = Order::orderBy('created_at', 'desc')->paginate(50);
 
         return view('joystick-admin.orders.index', compact('orders'));
     }
@@ -25,8 +26,9 @@ class OrderController extends Controller
     public function edit($id)
     {
         $order = Order::findOrFail($id);
+        $countries = Country::all();
 
-        return view('joystick-admin.orders.edit', compact('order'));
+        return view('joystick-admin.orders.edit', compact('order', 'countries'));
     }
 
     public function update(Request $request, $id)
@@ -48,10 +50,10 @@ class OrderController extends Controller
         $order->data_2 = $request->data_2;
         $order->data_3 = $request->data_3;
         $order->legal_address = $request->legal_address;
-        $order->address = $request->address;
         $order->city_id = ($request->city_id) ? $request->city_id : 0;
-        $order->delivery = trans('orders.get.'.$request->delivery);
-        $order->payment_type = trans('orders.pay.'.$request->payment_type);
+        $order->address = $request->address;
+        $order->delivery = $request->delivery;
+        $order->payment_type = $request->payment_type;
         // $order->count = serialize($request->count);
         // $order->price = $products->sum('price');
         // $order->amount = $sumPriceProducts;

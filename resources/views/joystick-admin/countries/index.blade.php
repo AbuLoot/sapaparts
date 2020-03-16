@@ -23,7 +23,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($countries as $country)
+        @foreach ($countries as $country)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $country->title }}</td>
@@ -43,11 +43,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="5">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

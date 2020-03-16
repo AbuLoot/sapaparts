@@ -8,7 +8,9 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 use App\Page;
+use App\Mode;
 use App\Company;
+use App\Section;
 use App\Category;
 use App\Language;
 
@@ -18,17 +20,19 @@ class Controller extends BaseController
 
     public function __construct()
     {
-    	$languages = Language::orderBy('sort_id')->get();
-
-    	$pages = Page::where('status', 1)->orderBy('sort_id')->get();
-        $companies = Company::where('status', 1)->orderBy('sort_id')->take(5)->get();
-        $categories = Category::get()->toTree();
-        // $categories = Category::orderBy('sort_id')->get();
+        $mode = Mode::where('slug', 'trend')->first();
+        $languages = Language::orderBy('sort_id')->get();
+        $contacts = Section::where('slug', 'contacts')->first();
+        $pages = Page::where('status', 1)->whereNotIn('slug', ['/'])->orderBy('sort_id')->get()->toTree();
+        $companies = Company::where('status', 2)->orderBy('sort_id')->get();
+        $categories = Category::orderBy('sort_id')->where('status', '<>', 0)->get()->toTree();
 
         view()->share([
-            'pages' => $pages, 
-            'companies' => $companies, 
-            'categories' => $categories, 
+            'mode' => $mode,
+            'pages' => $pages,
+            'contacts' => $contacts,
+            'companies' => $companies,
+            'categories' => $categories,
             'languages' => $languages,
         ]);
     }

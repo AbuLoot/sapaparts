@@ -1,0 +1,22 @@
+.custom-row {
+	margin-right: -7.5px;
+	margin-left: -7.5px;
+}
+.col, .custom-row .col-1, .custom-row .col-10, .custom-row .col-11, .custom-row .col-12, .custom-row .col-2, .custom-row .col-3, .custom-row .col-4, .custom-row .col-5, .custom-row .col-6, .custom-row .col-7, .custom-row .col-8, .custom-row .col-9, .custom-row .col-auto,
+.col-lg, .custom-row .col-lg-1, .custom-row .col-lg-10, .custom-row .col-lg-11, .custom-row .col-lg-12, .custom-row .col-lg-2, .custom-row .col-lg-3, .custom-row .col-lg-4, .custom-row .col-lg-5, .custom-row .col-lg-6, .custom-row .col-lg-7, .custom-row .col-lg-8, .custom-row .col-lg-9, .custom-row .col-lg-auto,
+.col-md, .custom-row .col-md-1, .custom-row .col-md-10, .custom-row .col-md-11, .custom-row .col-md-12, .custom-row .col-md-2, .custom-row .col-md-3, .custom-row .col-md-4, .custom-row .col-md-5, .custom-row .col-md-6, .custom-row .col-md-7, .custom-row .col-md-8, .custom-row .col-md-9, .custom-row .col-md-auto,
+.col-sm, .custom-row .col-sm-1, .custom-row .col-sm-10, .custom-row .col-sm-11, .custom-row .col-sm-12, .custom-row .col-sm-2, .custom-row .col-sm-3, .custom-row .col-sm-4, .custom-row .col-sm-5, .custom-row .col-sm-6, .custom-row .col-sm-7, .custom-row .col-sm-8, .custom-row .col-sm-9, .custom-row .col-sm-auto,
+.col-xl, .custom-row .col-xl-1, .custom-row .col-xl-10, .custom-row .col-xl-11, .custom-row .col-xl-12, .custom-row .col-xl-2, .custom-row .col-xl-3, .custom-row .col-xl-4, .custom-row .col-xl-5, .custom-row .col-xl-6, .custom-row .col-xl-7, .custom-row .col-xl-8, .custom-row .col-xl-9, .custom-row .col-xl-auto {
+
+}
+.custom-row [class*="col"] {
+  padding-right: 7.5px;
+  padding-left: 7.5px;
+}
+
+.btn-liked, .btn-liked:focus {
+  /*border-color: #e5e5e5;*/
+  /*background: #e5e5e5;*/
+  color: #cc3333;
+  fill: #c33;
+}

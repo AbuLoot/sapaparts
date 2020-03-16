@@ -10,6 +10,6 @@ class Option extends Model
 
     public function products()
     {
-    	return $this->belongsToMany('App\Product');
+    	return $this->belongsToMany('App\Product', 'product_option');
     }
 }

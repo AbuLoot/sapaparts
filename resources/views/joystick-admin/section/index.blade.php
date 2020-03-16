@@ -1,7 +1,7 @@
-@extends('admin.layout')
+@extends('joystick-admin.layout')
 
 @section('content')
-  <h1 class="page-header">Разделы</h1>
+  <h2 class="page-header">Разделы</h2>
 
   @include('joystick-admin.partials.alerts')
   <p class="text-right">
@@ -11,42 +11,37 @@
     <table class="table-admin table table-striped table-condensed">
       <thead>
         <tr class="active">
-          <th>№</th>
-          <th>Название</th>
-          <th>Иконка</th>
-          <th>Номер</th>
-          <th>Язык</th>
-          <th>Статус</th>
-          <th class="text-right">Функции</th>
+          <td>№</td>
+          <td>Название</td>
+          <td>Номер</td>
+          <td>Язык</td>
+          <td>Статус</td>
+          <td class="text-right">Функции</td>
         </tr>
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($section as $item)
+        @foreach ($section as $item)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $item->title }}</td>
-            <td>{{ $item->title_description }}</td>
             <td>{{ $item->sort_id }}</td>
+            <td>{{ $item->lang }}</td>
             @if ($item->status == 1)
               <td class="text-success">Активен</td>
             @else
               <td class="text-danger">Неактивен</td>
             @endif
-            <td class="text-right">
-              <a class="btn btn-link btn-xs" href="{{ route('section.edit', $item->id) }}" title="Редактировать"><span class="glyphicon glyphicon-edit"></span></a>
-              <form method="POST" action="{{ route('section.destroy', $item->id) }}" accept-charset="UTF-8" class="btn-delete">
+            <td class="text-right text-nowrap">
+              <a class="btn btn-link btn-xs" href="{{ route('section.edit', $item->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
+              <form class="btn-delete" method="POST" action="{{ route('section.destroy', $item->id) }}" accept-charset="UTF-8">
                 <input name="_method" type="hidden" value="DELETE">
                 <input name="_token" type="hidden" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn-link btn-xs" onclick="return confirm('Удалить запись ({{ $item->title }})?')"><span class="glyphicon glyphicon-remove"></span></button>
+                <button type="submit" class="btn btn-link btn-xs" onclick="return confirm('Удалить запись?')"><i class="material-icons md-18">clear</i></button>
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="7">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

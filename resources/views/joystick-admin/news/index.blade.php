@@ -1,7 +1,7 @@
 @extends('joystick-admin.layout')
 
 @section('content')
-  <h2 class="page-header">Страницы</h2>
+  <h2 class="page-header">Новости</h2>
 
   @include('joystick-admin.partials.alerts')
 
@@ -24,7 +24,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($news as $new)
+        @foreach ($news as $new)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $new->title }}</td>
@@ -37,7 +37,7 @@
             @else
               <td class="text-danger">Неактивен</td>
             @endif
-            <td class="text-right">
+            <td class="text-right text-nowrap">
               <a class="btn btn-link btn-xs" href="{{ route('news.edit', $new->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
               <form method="POST" action="{{ route('news.destroy', $new->id) }}" accept-charset="UTF-8" class="btn-delete">
                 <input name="_method" type="hidden" value="DELETE">
@@ -46,11 +46,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="8">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

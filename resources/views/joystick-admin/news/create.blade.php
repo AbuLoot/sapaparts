@@ -8,10 +8,10 @@
   <p class="text-right">
     <a href="/admin/news" class="btn btn-primary btn-sm">Назад</a>
   </p>
-  <form action="{{ route('news.store') }}" method="post">
+  <form action="{{ route('news.store') }}" method="post" enctype="multipart/form-data">
     {!! csrf_field() !!}
     <div class="form-group">
-      <label for="title">Название</label>
+      <label for="title">Заголовок</label>
       <input type="text" class="form-control" id="title" name="title" minlength="2" maxlength="80" value="{{ (old('title')) ? old('title') : '' }}" required>
     </div>
     <div class="form-group">
@@ -19,16 +19,47 @@
       <input type="text" class="form-control" id="slug" name="slug" minlength="2" maxlength="80" value="{{ (old('slug')) ? old('slug') : '' }}">
     </div>
     <div class="form-group">
+      <label for="page_id">Категории</label>
+      <select id="page_id" name="page_id" class="form-control">
+        <option value=""></option>
+        <?php $traverse = function ($nodes, $prefix = null) use (&$traverse) { ?>
+          <?php foreach ($nodes as $node) : ?>
+            <option value="{{ $node->id }}">{{ PHP_EOL.$prefix.' '.$node->title }}</option>
+            <?php $traverse($node->children, $prefix.'___'); ?>
+          <?php endforeach; ?>
+        <?php }; ?>
+        <?php $traverse($pages); ?>
+      </select>
+    </div>
+    <div class="form-group">
       <label for="headline">Заголовок</label>
-      <input type="text" class="form-control" id="headline" name="headline" minlength="2" maxlength="80" value="{{ (old('headline')) ? old('headline') : '' }}">
+      <input type="text" class="form-control" id="headline" name="headline" minlength="2" maxlength="500" value="{{ (old('headline')) ? old('headline') : '' }}">
+    </div>
+    <div class="form-group">
+      <label for="video">Код видео</label>
+      <input type="text" class="form-control" id="video" name="video" minlength="2" maxlength="500" value="{{ (old('video')) ? old('video') : '' }}">
     </div>
     <div class="form-group">
       <label for="sort_id">Номер</label>
       <input type="text" class="form-control" id="sort_id" name="sort_id" maxlength="5" value="{{ (old('sort_id')) ? old('sort_id') : NULL }}">
     </div>
     <div class="form-group">
-      <label for="title_description">Мета название</label>
-      <input type="text" class="form-control" id="title_description" name="title_description" maxlength="255" value="{{ (old('title_description')) ? old('title_description') : '' }}">
+      <label for="image">Картинка</label><br>
+      <div class="fileinput fileinput-new" data-provides="fileinput">
+        <div class="fileinput-preview thumbnail" style="width:100%;height:auto;" data-trigger="fileinput"></div>
+        <div>
+          <span class="btn btn-default btn-sm btn-file">
+            <span class="fileinput-new"><i class="glyphicon glyphicon-folder-open"></i>&nbsp; Выбрать</span>
+            <span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>
+            <input type="file" name="image" accept="image/*">
+          </span>
+          <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="meta_title">Мета название</label>
+      <input type="text" class="form-control" id="meta_title" name="meta_title" maxlength="255" value="{{ (old('meta_title')) ? old('meta_title') : '' }}">
     </div>
     <div class="form-group">
       <label for="meta_description">Мета описание</label>
@@ -36,7 +67,7 @@
     </div>
     <div class="form-group">
       <label for="content">Контент</label>
-      <textarea class="form-control" id="content" name="content" rows="5">{{ (old('content')) ? old('content') : '' }}</textarea>
+      <textarea class="form-control" id="summernote" name="content" rows="5">{{ (old('content')) ? old('content') : '' }}</textarea>
     </div>
     <div class="form-group">
       <label for="lang">Язык</label>
@@ -63,25 +94,26 @@
 @endsection
 
 @section('head')
-  <script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+  <link href="/joystick/css/jasny-bootstrap.min.css" rel="stylesheet">
+  <script src='https://cdn.tiny.cloud/1/s9hqkvt9a9gdfym5yyaz2pgllizccjq8p71rxv2s5gp714p4/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
   <script>
     tinymce.init({
       selector: 'textarea',
       height: 300,
-      menubar: false,
       plugins: [
-        'advlist autolink lists link image charmap print preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table contextmenu paste code'
+        'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+        'save table directionality emoticons template paste'
       ],
-      toolbar: 'code undo redo | table insert | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-      // content_css: '//www.tinymce.com/css/codepen.min.css',
+      content_css: ['/css/style.css', '/css/custom.css'],
+      menubar: 'file edit view insert format tools table help',
+      toolbar: 'insertfile undo redo | formatselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor removeformat | link image media | code',
+      font_formats: 'Playfair Display; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva;'
 
-      image_advtab: true ,
-   
-      external_filemanager_path:"/responsive_filemanager/filemanager/",
-      filemanager_title:"Responsive Filemanager" ,
-      external_plugins: { "filemanager" : "/responsive_filemanager/filemanager/plugin.min.js"}
     });
   </script>
+@endsection
+
+@section('scripts')
+  <script src="/joystick/js/jasny-bootstrap.js"></script>
 @endsection

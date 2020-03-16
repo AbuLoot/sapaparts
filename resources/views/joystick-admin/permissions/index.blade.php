@@ -21,7 +21,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($permissions as $permission)
+        @foreach ($permissions as $permission)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $permission->name }}</td>
@@ -35,11 +35,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="4">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

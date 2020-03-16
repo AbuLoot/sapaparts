@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use DB;
 use Validator;
 
 use App\App;
+use App\Project;
 use App\Product;
+use App\Category;
 
 class InputController extends Controller
 {
@@ -17,45 +18,43 @@ class InputController extends Controller
         $text = trim(strip_tags($request->text));
 
 	    // $products = Product::where('status', 1)
-	    //     ->where(function($query) use ($text) {
+	    //     ->where(function($query) use ($text, $qQuery) {
 	    //         return $query->where('barcode', 'LIKE', '%'.$text.'%')
 	    //         ->orWhere('title', 'LIKE', '%'.$text.'%')
 	    //         ->orWhere('oem', 'LIKE', '%'.$text.'%');
 	    //     })->paginate(27);
 
-        $products = Product::search($text)->paginate(27);
+        // $products = Product::search($text)->where('status', '<>', 0)->paginate(28);
+        $products = Product::where('status', '<>', 0)->searchable($text)->paginate(28);
 
         $products->appends([
-            'text' => $text,
+            'text' => $request->text,
         ]);
 
-        return view('site.found', compact('text', 'products'));
+        return view('found', compact('text', 'products'));
     }
 
     public function searchAjax(Request $request)
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->get();
+        $products = Product::search($text)->where('status', '<>', 0)->take(10)->get();
 
-        // return response()->json(view('site.products', ['products' => $products])->render());
-
-        return response()->json($products);
+        // return response()->json($products);
+        return view('suggestions-render', ['products' => $products]);
     }
 
     public function filterProducts(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'options_id' => 'required'
+        $from = ($request->price_from) ? (int) $request->price_from : 0;
+        $to = ($request->price_to) ? (int) $request->price_to : 9999999999;
+
+        $products = Product::where('status', 1)->whereBetween('price', [$request->from, $request->to])->paginate(27);
+
+        return redirect()->back()->with([
+            'alert' => $status,
+            'products' => $products
         ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator);
-        }
-
-        $products = Product::where('status', 1)->whereIn('id', $request->options_id)->paginate(27);
-
-        return response()->json(view('site.products', ['products' => $products])->render());
     }
 
     public function sendApp(Request $request)
@@ -69,18 +68,21 @@ class InputController extends Controller
             return redirect('/#contact-form')->withErrors($validator)->withInput();
         }
 
+        $project = Project::where('name', $request->project)->first();
+
         $app = new App;
+        $app->project_id = $project->id;
         $app->name = $request->name;
         $app->email = $request->email;
         $app->phone = $request->phone;
         $app->message = $request->message;
         $app->save();
 
-        // Email subject.
-        $subject = "Japan Import - novaya zayavka ot $request->name";
+        // Email subject
+        $subject = "SapaParts - " . $project->name . " Новая заявка от $request->name";
 
-        // Email content.
-        $content = "<h2>Japan Import</h2>";
+        // Email content
+        $content = "<h2>SapaParts - " . $project->name . "</h2>";
         $content .= "<b>Имя: $request->name</b><br>";
         $content .= "<b>Номер: $request->phone</b><br>";
         $content .= "<b>Email: $request->email</b><br>";
@@ -88,22 +90,23 @@ class InputController extends Controller
         $content .= "<b>Дата: " . date('Y-m-d') . "</b><br>";
         $content .= "<b>Время: " . date('G:i') . "</b>";
 
-        $headers = "From: info@jpi.kz \r\n" .
+        $headers = "From: info@sapaparts.kz \r\n" .
                    "MIME-Version: 1.0" . "\r\n" . 
                    "Content-type: text/html; charset=UTF-8" . "\r\n";
 
-        // Send the email.
-        if (mail('issayev.adilet@gmail.com', $subject, $content, $headers)) {
+        // Send the email
+        if (mail('biotic.company@gmail.com', $subject, $content, $headers)) {
             $status = 'alert-success';
-            $message = 'Ваша заявка принято.';
+            $message = 'Ваша заявка принята. Спасибо!';
         }
         else {
             $status = 'alert-danger';
             $message = 'Произошла ошибка.';
         }
 
+        // dd($status, $message);
         return redirect()->back()->with([
-            'alert' => $status,
+            'status' => $status,
             'message' => $message
         ]);
     }

@@ -18,16 +18,15 @@
         </tr>
       </thead>
       <tbody>
-        <?php $i = 1; ?>
-        @forelse ($apps as $app)
+        @foreach ($apps as $app)
           <tr>
-            <td>{{ $i++ }}</td>
+            <td>{{ $app->id }}</td>
             <td>{{ $app->name }}</td>
             <td>{{ $app->email }}</td>
             <td>{{ $app->phone }}</td>
             <td>{{ $app->message }}</td>
             <td class="text-right">
-              <a class="btn btn-link btn-xs" href="{{ url($app->id) }}" title="Просмотр страницы" target="_blank"><i class="material-icons md-18">link</i></a>
+              <a class="btn btn-link btn-xs" href="/admin/apps/{{ $app->id }}/show" title="Просмотр страницы" target="_blank"><i class="material-icons md-18">link</i></a>
               <form method="POST" action="/admin/apps/{{ $app->id }}" accept-charset="UTF-8" class="btn-delete">
                 <input name="_method" type="hidden" value="DELETE">
                 <input name="_token" type="hidden" value="{{ csrf_token() }}">
@@ -35,11 +34,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="5">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

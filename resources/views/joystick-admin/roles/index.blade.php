@@ -21,7 +21,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($roles as $role)
+        @foreach ($roles as $role)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $role->name }}</td>
@@ -35,11 +35,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="4">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

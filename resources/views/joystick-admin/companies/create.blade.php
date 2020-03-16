@@ -11,7 +11,7 @@
   <form action="{{ route('companies.store') }}" method="post" enctype="multipart/form-data">
     {!! csrf_field() !!}
     <div class="form-group">
-      <label for="title">Название</label>
+      <label for="title">Заголовок</label>
       <input type="text" class="form-control" id="title" name="title" minlength="2" maxlength="80" value="{{ (old('title')) ? old('title') : '' }}" required>
     </div>
     <div class="form-group">
@@ -80,9 +80,11 @@
     </div>
     <div class="form-group">
       <label for="status">Статус:</label>
-      <label>
-        <input type="checkbox" id="status" name="status" checked> Активен
-      </label>
+      @foreach(trans('statuses.category') as $num => $status)
+        <label>
+          <input type="radio" id="status" name="status" value="{{ $num }}" @if($num == 1) checked @endif> {{ $status }}
+        </label>
+      @endforeach
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-primary">Создать</button>

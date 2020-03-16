@@ -29,7 +29,7 @@ class Product extends Model
             'products.description' => 10,
             'products.characteristic' => 10,
             'products.barcode' => 5,
-            'products.oem' => 5,
+            // 'products.oem' => 5,
         ]
     ];
 
@@ -40,16 +40,26 @@ class Product extends Model
 
     public function company()
     {
-    	return $this->belongsTo('App\Company', 'company_id');
+        return $this->belongsTo('App\Company', 'company_id');
+    }
+
+    public function modes()
+    {
+        return $this->belongsToMany('App\Mode', 'product_mode', 'product_id', 'mode_id');
     }
 
     public function options()
     {
-        return $this->belongsToMany('App\Option', 'product_option', 'product_id');
+        return $this->belongsToMany('App\Option', 'product_option', 'product_id', 'option_id');
     }
 
     public function orders()
     {
-        return $this->belongsToMany('App\Order', 'product_order', 'product_id');
+        return $this->belongsToMany('App\Order', 'product_order', 'product_id', 'order_id');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany('App\Comment', 'parent');
     }
 }

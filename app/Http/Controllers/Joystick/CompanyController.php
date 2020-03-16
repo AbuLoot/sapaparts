@@ -18,6 +18,17 @@ class CompanyController extends Controller
         return view('joystick-admin.companies.index', compact('companies'));
     }
 
+    public function actionCompanies(Request $request)
+    {
+        $this->validate($request, [
+            'companies_id' => 'required'
+        ]);
+
+        Company::whereIn('id', $request->companies_id)->update(['status' => $request->action]);
+
+        return response()->json(['status' => true]);
+    }
+
     public function create()
     {
         $countries = Country::orderBy('sort_id')->get();
@@ -51,7 +62,7 @@ class CompanyController extends Controller
         $company->emails = $request->emails;
         $company->address = $request->address;
         $company->lang = $request->lang;
-        $company->status = ($request->status == 'on') ? 1 : 0;
+        $company->status = $request->status;
         $company->save();
 
         return redirect('/admin/companies')->with('status', 'Запись добавлена.');
@@ -95,7 +106,7 @@ class CompanyController extends Controller
         $company->emails = $request->emails;
         $company->address = $request->address;
         $company->lang = $request->lang;
-        $company->status = ($request->status == 'on') ? 1 : 0;
+        $company->status = $request->status;
         $company->save();
 
         return redirect('/admin/companies')->with('status', 'Запись обновлена.');

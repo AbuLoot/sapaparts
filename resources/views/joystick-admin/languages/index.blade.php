@@ -22,7 +22,7 @@
       </thead>
       <tbody>
         <?php $i = 1; ?>
-        @forelse ($languages as $language)
+        @foreach ($languages as $language)
           <tr>
             <td>{{ $i++ }}</td>
             <td>{{ $language->slug }}</td>
@@ -37,11 +37,7 @@
               </form>
             </td>
           </tr>
-        @empty
-          <tr>
-            <td colspan="5">Нет записи</td>
-          </tr>
-        @endforelse
+        @endforeach
       </tbody>
     </table>
   </div>

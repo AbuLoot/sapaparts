@@ -26,7 +26,7 @@
       </select>
     </div>
     <div class="form-group">
-      <label for="title">Название</label>
+      <label for="title">Заголовок</label>
       <input type="text" class="form-control" id="title" name="title" minlength="5" maxlength="80" value="{{ (old('title')) ? old('title') : $city->title }}" required>
     </div>
     <div class="form-group">
@@ -40,6 +40,7 @@
     <div class="form-group">
       <label for="lang">Язык</label>
       <select id="lang" name="lang" class="form-control" required>
+        <option value=""></option>
         @foreach($languages as $language)
           @if ($city->lang == $language->slug)
             <option value="{{ $language->slug }}" selected>{{ $language->title }}</option>
