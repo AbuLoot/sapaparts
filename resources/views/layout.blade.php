@@ -43,7 +43,7 @@
                 <svg width="18px" height="14px"><use xlink:href="/img/sprite.svg#menu-18x14"></use></svg>
               </button>
               <a class="mobile-header__logo" href="/">
-                <img src="/img/logo-2.png">
+                <img src="/img/logo-mobile.png">
               </a>
               <div class="search search--location--mobile-header mobile-header__search">
                 <div class="search__body">
