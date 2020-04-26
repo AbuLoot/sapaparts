@@ -36,7 +36,10 @@
               </tr>
             </thead>
             <tbody class="cart-table__body">
+              <?php $total_sum = 0; ?>
               @foreach ($products as $product)
+                <?php $quantity = session('items')['products_id'][$product->id]['quantity']; ?>
+                <?php $total_sum += $product->price * $quantity; ?>
                 <tr class="cart-table__row">
                   <td class="cart-table__column cart-table__column--image">
                     <a href="/p/{{ $product->slug }}"><img src="/img/products/{{ $product->path.'/'.$product->image }}"></a>
@@ -52,18 +55,18 @@
                       </li>
                     </ul>
                   </td>
-                  <td class="cart-table__column cart-table__column--price" data-title="Price">{{ $product->price }}〒</td>
+                  <td class="cart-table__column cart-table__column--price" data-title="Price"><span>{{ $product->price }}</span>〒</td>
                   <td class="cart-table__column cart-table__column--quantity" data-title="Quantity">
                     <div class="input-number">
-                      <input class="form-control input-number__input" name="quantity[{{ $product->id }}]" type="number" min="1" value="{{ $items['products_id'][$product->id]['quantity'] }}">
-                      <div class="input-number__add"></div>
-                      <div class="input-number__sub"></div>
+                      <input class="form-control input-number__input" type="number" name="count[{{ $product->id }}]" id="input-quantity-{{ $product->id }}" data-price="{{ $product->price }}" size="4" min="1" value="{{ $quantity }}">
+                      <div class="input-number__add" onclick="increment_quantity('{{ $product->id }}')"></div>
+                      <div class="input-number__sub" onclick="decrement_quantity('{{ $product->id }}')"></div>
                     </div>
                   </td>
-                  <td class="cart-table__column cart-table__column--total" data-title="Total">{{ ($product->price * $items['products_id'][$product->id]['quantity']) }}〒</td>
+                  <td class="cart-table__column cart-table__column--total" data-title="Total"><span class="sum-{{ $product->id }}">{{ ($product->price * $quantity) }}</span>〒</td>
                   <td class="cart-table__column cart-table__column--remove">
                     <a href="/destroy-from-cart/{{ $product->id }}" class="btn btn-light btn-sm btn-svg-icon" onclick="return confirm('Удалить запись?')">
-                      <svg width="12px" height="12px"><use xlink:href="images/sprite.svg#cross-12"></use></svg>
+                      <svg width="12px" height="12px"><use xlink:href="/img/sprite.svg#cross-12"></use></svg>
                     </a>
                   </td>
                 </tr>
@@ -101,17 +104,11 @@
                           <div class="cart__calc-shipping"><a href="#">Calculate Shipping</a></div>
                         </td>
                       </tr>
-                      <tr>
-                        <th>Tax</th>
-                        <td>
-                          $0.00
-                        </td>
-                      </tr>
                     </tbody>
                     <tfoot class="cart__totals-footer">
                       <tr>
                         <th>Total</th>
-                        <td>$5,902.00</td>
+                        <td><span class="total_sum">{{ $total_sum }}</span>₸</td>
                       </tr>
                     </tfoot>
                   </table>
@@ -132,7 +129,44 @@
 
 
 @section('scripts')
-  <script>
+<script>
+  function increment_quantity(product_id) {
 
-  </script>
+    var inputQuantityElement = $("#input-quantity-"+product_id);
+    var newQuantity = parseInt($(inputQuantityElement).val()) + 1;
+    addToCart(product_id, newQuantity);
+  }
+
+  function decrement_quantity(product_id) {
+
+    var inputQuantityElement = $("#input-quantity-"+product_id);
+    if ($(inputQuantityElement).val() > 1) {
+      var newQuantity = parseInt($(inputQuantityElement).val()) - 1;
+      addToCart(product_id, newQuantity);
+    }
+  }
+
+  function addToCart(product_id, new_quantity) {
+
+    alert(new_quantity);
+
+    $.ajax({
+      type: "get",
+      url: '/add-to-cart/'+product_id,
+      dataType: "json",
+      data: {
+        "quantity": new_quantity
+      },
+      success: function(data) {
+        var sum = parseInt(data.price) * data.quantity;
+        var total_sum = $('.total-sum');
+
+        $('.sum-'+product_id).text(sum);
+        $('.total-sum').text(data.total_sum);
+
+        // $('*[data-product-id="'+productId+'"]').replaceWith('<a href="/cart" class="btn btn-default btn-lg" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>');
+      }
+    });
+  }
+</script>
 @endsection

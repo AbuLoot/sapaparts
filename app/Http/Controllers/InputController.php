@@ -40,8 +40,8 @@ class InputController extends Controller
 
         $products = Product::search($text)->where('status', '<>', 0)->take(10)->get();
 
-        // return response()->json($products);
-        return view('suggestions-render', ['products' => $products]);
+        return response()->json($products);
+        // return view('suggestions-render', ['products' => $products]);
     }
 
     public function filterProducts(Request $request)

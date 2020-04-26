@@ -1,10 +1,11 @@
 @extends('layout')
 
-@section('meta_title', $category->meta_title)
+@section('meta_title', $product->meta_title ?? $product->title.' - '.$category->title)
 
-@section('meta_description', $category->meta_description)
+@section('meta_description', $product->meta_description ?? $product->title.' - '.$category->title)
 
 @section('head')
+
 @endsection
 
 @section('content')

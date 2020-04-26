@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Joystick;
 
 use Illuminate\Http\Request;
 
+use DB;
 use Image;
 use Storage;
 use Validator;
@@ -67,6 +68,30 @@ class ProductController extends Controller
         $categories = Category::get()->toTree();
 
         return view('joystick-admin.products.price-edit', ['categories' => $categories]);
+    }
+
+    public function priceUpdate(Request $request)
+    {
+        $operations = [
+            1 => '*',
+            2 => '/',
+            3 => '+',
+            4 => '-'
+        ];
+
+        $category = Category::find($request->category_id);
+
+        $ids[] = $category->id;
+
+        if ($category->children && count($category->children) > 0) {
+            $ids[] = $category->children->pluck('id');
+        }
+
+        $sql = 'UPDATE products SET price = (price ' . $operations[$request->operation] . ' ' . $request->number . ') WHERE category_id = ' . $request->category_id;
+
+        DB::update($sql);
+
+        return redirect('admin/products')->with('status', 'Цена изменена!');
     }
 
     public function categoryProducts($id)

@@ -81,7 +81,7 @@
                                       <a href="/brand/{{ $company->slug.'/'.$category_item->slug.'/'.$category_item->id }}">
                                         <svg class="widget-categories__arrow" width="6px" height="9px"><use xlink:href="/img/sprite.svg#arrow-rounded-right-6x9"></use></svg> 
                                         {{ $category_item->title }}
-                                      </a><div class="filter-categories__counter">{{ $category_item->id }}</div>
+                                      </a><div class="filter-categories__counter"></div>
                                     </div>
                                   </li>
                                   @endforeach

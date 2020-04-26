@@ -45,7 +45,7 @@
           <!-- <li><a data-action="destroy" href="#" onclick="return confirm('Удалить записи?')">Удалить</a></li> -->
         </ul>
       </div>
-      <!-- <a href="/admin/products-price/edit" class="btn btn-primary btn-sm">Изменить цену</a> -->
+      <a href="/admin/products-price/edit" class="btn btn-primary btn-sm">Изменить цены</a>
       <a href="/admin/products/create" class="btn btn-success btn-sm">Добавить</a>
     </div>
   </div>
@@ -85,7 +85,7 @@
             </td>
             <td class="text-info">{{ trans('statuses.data.'.$product->status) }}</td>
             <td class="text-right text-nowrap">
-              <a class="btn btn-link btn-xs" href="/product/{{ $product->slug }}" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
+              <a class="btn btn-link btn-xs" href="/p/{{ $product->slug }}" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
               <a class="btn btn-link btn-xs" href="{{ route('products.edit', $product->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
               <form class="btn-delete" method="POST" action="{{ route('products.destroy', $product->id) }}" accept-charset="UTF-8">
                 <input name="_method" type="hidden" value="DELETE">
