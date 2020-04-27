@@ -6,7 +6,6 @@
   @include('joystick-admin.partials.alerts')
 
   <p class="text-right">
-    <a target="_blank" href="/admin/edit-html-page/{{ $page->id }}" class="btn btn-success btn-sm">Конструктор страницы</a>
     <a href="/admin/pages" class="btn btn-primary btn-sm">Назад</a>
   </p>
   <form action="{{ route('pages.update', $page->id) }}" method="post">
@@ -79,10 +78,6 @@
       <input type="text" class="form-control" id="meta_description" name="meta_description" maxlength="255" value="{{ (old('meta_description')) ? old('meta_description') : $page->meta_description }}">
     </div>
     <div class="form-group">
-      <label for="content">Короткое описание</label>
-      <textarea class="form-control my-editor" id="editor" name="short_description" rows="10" cols="10">{{ (old('short_description')) ? old('short_description') : $page->short_description }}</textarea>
-    </div>
-    <div class="form-group">
       <label for="content">Контент</label>
       <textarea class="form-control my-editor" id="editor2" name="content" rows="5">{{ (old('content')) ? old('content') : $page->content }}</textarea>
     </div>
@@ -112,81 +107,24 @@
 @endsection
 
 @section('head')
-  <!-- <script src='https://cdn.tiny.cloud/1/s9hqkvt9a9gdfym5yyaz2pgllizccjq8p71rxv2s5gp714p4/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script> -->
-  <script>
-    // tinymce.init({
-    //   selector: 'textarea',
-    //   height: 300,
-    //   plugins: [
-    //     'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-    //     'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-    //     'save table directionality emoticons template paste'
-    //   ],
-    //   content_css: ['/css/style.css', '/css/custom.css'],
-    //   menubar: 'file edit view insert format tools table help',
-    //   toolbar: 'insertfile undo redo | formatselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor removeformat | link image media | code',
-    //   font_formats: 'Playfair Display; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva;',
-    //   relative_urls: false,
-    //   file_browser_callback : function(field_name, url, type, win) {
-    //     var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-    //     var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
 
-    //     var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-    //     if (type == 'image') {
-    //       cmsURL = cmsURL + "&type=Images";
-    //     } else {
-    //       cmsURL = cmsURL + "&type=Files";
-    //     }
-
-    //     tinyMCE.activeEditor.windowManager.open({
-    //       file : cmsURL,
-    //       title : 'Filemanager',
-    //       width : x * 0.8,
-    //       height : y * 0.8,
-    //       resizable : "yes",
-    //       close_previous : "no"
-    //     });
-    //   }
-    // });
-  </script>
 @endsection
 
 @section('scripts')
-  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+  <script src='https://cdn.tiny.cloud/1/s9hqkvt9a9gdfym5yyaz2pgllizccjq8p71rxv2s5gp714p4/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
   <script>
-  var editor_config = {
-    path_absolute : "/",
-    selector: "textarea.my-editor",
-    plugins: [
-      "advlist autolink lists link image charmap print preview hr anchor pagebreak",
-      "searchreplace wordcount visualblocks visualchars code fullscreen",
-      "insertdatetime media nonbreaking save table contextmenu directionality",
-      "emoticons template paste textcolor colorpicker textpattern"
-    ],
-    toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media",
-    relative_urls: false,
-    file_browser_callback : function(field_name, url, type, win) {
-      var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
-      var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-
-      var cmsURL = editor_config.path_absolute + 'laravel-filemanager?field_name=' + field_name;
-      if (type == 'image') {
-        cmsURL = cmsURL + "&type=Images";
-      } else {
-        cmsURL = cmsURL + "&type=Files";
-      }
-
-      tinyMCE.activeEditor.windowManager.open({
-        file : cmsURL,
-        title : 'Filemanager',
-        width : x * 0.8,
-        height : y * 0.8,
-        resizable : "yes",
-        close_previous : "no"
-      });
-    }
-  };
-
-  tinymce.init(editor_config);
+    tinymce.init({
+      selector: 'textarea',
+      height: 400,
+      plugins: [
+        'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+        'save table directionality emoticons template paste'
+      ],
+      content_css: ['/css/style.css', '/css/custom.css'],
+      menubar: 'file edit view insert format tools table help',
+      toolbar: 'insertfile undo redo | formatselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor removeformat | link image media | code',
+      font_formats: 'Playfair Display; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva;'
+    });
   </script>
 @endsection
