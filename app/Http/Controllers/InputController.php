@@ -24,8 +24,8 @@ class InputController extends Controller
 	    //         ->orWhere('oem', 'LIKE', '%'.$text.'%');
 	    //     })->paginate(27);
 
-        // $products = Product::search($text)->where('status', '<>', 0)->paginate(28);
-        $products = Product::where('status', '<>', 0)->searchable($text)->paginate(28);
+        $products = Product::where('status', '<>', 0)->search($text)->paginate(28);
+        // $products = Product::where('status', '<>', 0)->searchable($text)->paginate(28);
 
         $products->appends([
             'text' => $request->text,
@@ -38,10 +38,10 @@ class InputController extends Controller
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->where('status', '<>', 0)->take(10)->get();
+        $products = Product::where('status', '<>', 0)->search($text)->take(10)->get();
 
-        return response()->json($products);
-        // return view('suggestions-render', ['products' => $products]);
+        // return response()->json($products);
+        return view('suggestions-render', ['products' => $products]);
     }
 
     public function filterProducts(Request $request)
