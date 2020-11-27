@@ -11,7 +11,7 @@ use App\Project;
 use App\Product;
 use App\Category;
 
-class InputController extends Controller
+class TelegramController extends Controller
 {
     public function bot(Request $request)
     {
