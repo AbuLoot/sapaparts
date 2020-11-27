@@ -41,7 +41,7 @@ class InputController extends Controller
         $res = sendTelegram($method, $send_data);
     }
 
-    public function sendTelegram($method, $send_datam $header = '')
+    public function sendTelegram($method, $send_data, $header = '')
     {
     	$curl = curl_init();
     	curl_setopt_array($curl, [
