@@ -167,7 +167,7 @@ return [
          */
         Zizaco\Entrust\EntrustServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-
+        Alexusmai\LaravelFileManager\FileManagerServiceProvider::class,
 
         /*
          * Application Service Providers...

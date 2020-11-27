@@ -48,6 +48,12 @@ return [
             'root' => public_path(),
         ],
 
+        'file-manager' => [
+            'driver' => 'local',
+            'root' => public_path('file-manager'),
+            'url' => '/file-manager',
+        ],
+
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
