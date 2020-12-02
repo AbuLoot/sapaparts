@@ -13,6 +13,17 @@ use App\Category;
 
 class TelegramController extends Controller
 {
+    public function test()
+    {
+        $response = Telegram::getMe();
+
+        $botId = $response->getId();
+        $firstName = $response->getFirstName();
+        $username = $response->getUsername();
+
+        echo $botId, $firstName, $username;
+    }
+
     public function bot(Request $request)
     {
         $data = json_decode(file_get_contents('php://input', TRUE));
