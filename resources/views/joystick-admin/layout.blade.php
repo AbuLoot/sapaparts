@@ -8,13 +8,12 @@
     <title>Joystick Admin</title>
     <meta name="description" content="Joystick Admin">
     <meta name="author" content="issayev.adilet@gmail.com">
-    <link rel="icon" href="/favicon.png" type="image/x-icon" />
-    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+    <link rel="icon" href="/joystick/favicon.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="/joystick/favicon.png" type="image/x-icon" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="/joystick/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/joystick/css/admin.css" rel="stylesheet">
-
     @yield('head')
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -27,13 +26,13 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <button type="button" class="navbar-toggle" id="sidebarCollapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand text-uppercase" href="/admin"><i class="material-icons text-primary">gamepad</i> <b>Joystick</b></a>
+          <a class="navbar-brand text-uppercase" href="/admin"><i class="material-icons text-primary">sports_esports</i> <b>Joystick</b></a>
         </div>
 
         <div class="navbar-collapse collapse">
@@ -44,11 +43,7 @@
               </a>
               <ul class="dropdown-menu" role="menu">
                 <li>
-                  <a class="dropdown-item" href="{{ route('logout') }}"
-                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    {{ __('Выйти') }}
-                  </a>
-
+                  <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">{{ __('Выйти') }} </a>
                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                   </form>
@@ -62,13 +57,13 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar" id="navbar">
+        <div class="col-xs-7 col-sm-3 col-md-2 sidebar" id="sidebar">
           <ul class="nav nav-sidebar">
             <li class="sidebar-title">Главное</li>
             <li @if (Request::is('admin/pages', 'admin/pages/*')) class="active" @endif><a href="/admin/pages"><i class="material-icons md-18">content_copy</i> Страницы</a></li>
             <li @if (Request::is('admin/news', 'admin/news/*')) class="active" @endif><a href="/admin/news"><i class="material-icons md-18">create</i> Новости</a></li>
             <li @if (Request::is('admin/section', 'admin/section/*')) class="active" @endif> <a href="/admin/section"><i class="material-icons md-18">dashboard</i> Разделы</a> </li>
-            <li @if (Request::is('admin/projects', 'admin/projects/*')) class="active" @endif><a href="/admin/projects"><i class="material-icons md-18">widgets</i> Проекты</a></li>
+            <!-- <li @if (Request::is('admin/projects', 'admin/projects/*')) class="active" @endif><a href="/admin/projects"><i class="material-icons md-18">widgets</i> Проекты</a></li> -->
             <li @if (Request::is('admin/categories', 'admin/categories/*')) class="active" @endif><a href="/admin/categories"><i class="material-icons md-18">list</i> Категории</a></li>
             <li @if (Request::is('admin/products', 'admin/products/*')) class="active" @endif><a href="/admin/products"><i class="material-icons md-18">store</i> Продукты</a></li>
             <li @if (Request::is('admin/frame-filemanager', 'admin/frame-filemanager/*')) class="active" @endif><a href="/admin/frame-filemanager"><i class="material-icons md-18">folder</i> Файловый менеджер</a></li>
@@ -96,17 +91,24 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <!-- <div class="panel panel-default"> -->
-            <!-- <div class="panel-body"> -->
-              @yield('content')
-            <!-- </div> -->
-          <!-- </div> -->
+          @yield('content')
         </div>
       </div>
     </div>
 
     <script src="/joystick/js/jquery.min.js"></script>
     <script src="/joystick/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#sidebarCollapse').on('click', function () {
+          $('#sidebar').toggleClass('active');
+        });
+
+        $('.main').on('click', function () {
+          $('#sidebar').removeClass('active');
+        });
+      });
+    </script>
     @yield('scripts')
   </body>
 </html>

@@ -9,7 +9,7 @@
     <div class="col-md-6">
       <form action="/admin/products-search" method="get">
         <div class="input-group input-search">
-          <input type="search" class="form-control input-xs typeahead-goods" name="text" placeholder="Поиск...">
+          <input type="search" class="form-control typeahead-goods" name="text" placeholder="Поиск...">
 
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -45,12 +45,13 @@
           <!-- <li><a data-action="destroy" href="#" onclick="return confirm('Удалить записи?')">Удалить</a></li> -->
         </ul>
       </div>
-      <a href="/admin/products-price/edit" class="btn btn-primary btn-sm">Изменить цены</a>
-      <a href="/admin/products/create" class="btn btn-success btn-sm">Добавить</a>
+      <a href="/admin/products-price/edit" class="btn btn-default btn-sm-">Изменить цены</a>
+      <a href="/admin/products/create" class="btn btn-success btn-sm-"><i class="material-icons md-18">add</i></a>
     </div>
+    <br>
   </div>
 
-  <div class="table-responsive">
+  <div class="table-responsive table-products">
     <table class="table table-striped table-condensed table-hover">
       <thead>
         <tr class="active">
@@ -71,8 +72,8 @@
         @foreach ($products as $product)
           <tr>
             <td><input type="checkbox" name="products_id[]" value="{{ $product->id }}" class="checkbox-ids"></td>
-            <td><img src="/img/products/{{ $product->path.'/'.$product->image }}" class="img-responsive" style="width:80px;height:auto;"></td>
-            <td>{{ $product->title }}</td>
+            <td><img src="/img/products/{{ $product->path.'/'.$product->image }}" class="img-responsive" style="width:69px;height:auto;"></td>
+            <td class="cell-size">{{ $product->title }}</td>
             <td>{{ $product->category->title }}</td>
             <td>{{ (isset($product->company->title)) ? $product->company->title : '' }}</td>
             <td>{{ $product->sort_id }}</td>
@@ -85,7 +86,7 @@
             </td>
             <td class="text-info">{{ trans('statuses.data.'.$product->status) }}</td>
             <td class="text-right text-nowrap">
-              <a class="btn btn-link btn-xs" href="/p/{{ $product->slug }}" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
+              <a class="btn btn-link  href="/p/{{ $product->slug }}" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
               <a class="btn btn-link btn-xs" href="{{ route('products.edit', $product->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
               <form class="btn-delete" method="POST" action="{{ route('products.destroy', $product->id) }}" accept-charset="UTF-8">
                 <input name="_method" type="hidden" value="DELETE">
@@ -93,6 +94,14 @@
                 <button type="submit" class="btn btn-link btn-xs" onclick="return confirm('Удалить запись?')"><i class="material-icons md-18">clear</i></button>
               </form>
             </td>
+            <th class="fix-col">
+              <a class="btn btn-link btn-xs btn-fix-col" href="{{ route('products.edit', $product->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
+              <form class="btn-delete btn-fix-col" method="POST" action="{{ route('products.destroy', $product->id) }}" accept-charset="UTF-8">
+                <input name="_method" type="hidden" value="DELETE">
+                <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-link btn-xs" onclick="return confirm('Удалить запись?')"><i class="material-icons md-18">clear</i></button>
+              </form>
+            </th>
           </tr>
         @endforeach
       </tbody>

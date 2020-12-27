@@ -156,38 +156,15 @@ class ProductController extends Controller
         ]);
 
         $category = Category::findOrFail($request->category_id);
+        $dirName = $category->id.'/'.time();
         $introImage = null;
         $images = [];
-        $dirName = $category->id.'/'.time();
+
         Storage::makeDirectory('img/products/'.$dirName);
 
         if ($request->hasFile('images')) {
-
-            $order = 0;
-
-            foreach ($request->file('images') as $key => $image)
-            {
-                $imageName = 'image-'.$order.'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
-
-                // Creating preview image
-                if ($key == 0) {
-                    $this->resizeOptimalImage($image, 350, 424, '/img/products/'.$dirName.'/preview-'.$imageName, 90);
-                    $introImage = 'preview-'.$imageName;
-                }
-
-                $watermark = Image::make('img/watermark.png');
-
-                // Creating present images
-                $this->resizeOptimalImage($image, 350, 424, '/img/products/'.$dirName.'/present-'.$imageName, 90);
-
-                // Storing original images
-                // $image->storeAs('/img/products/'.$dirName, $imageName);
-                $this->resizeOptimalImage($image, 700, 850, '/img/products/'.$dirName.'/'.$imageName, 90, $watermark);
-
-                $images[$key]['image'] = $imageName;
-                $images[$key]['present_image'] = 'present-'.$imageName;
-                $order++;
-            }
+            $images = $this->saveImages($request, $dirName);
+            $introImage = current($images)['present_image'];
         }
 
         // Saving Background
@@ -213,7 +190,7 @@ class ProductController extends Controller
         $product->days = $request->days;
         $product->count = $request->count;
         $product->condition = $request->condition;
-        $product->presense = $request->presense;
+        // $product->presense = $request->presense;
         $product->meta_title = $request->meta_title;
         $product->meta_description = $request->meta_description;
         $product->description = $request->description;
@@ -371,7 +348,7 @@ class ProductController extends Controller
         $product->days = $request->days;
         $product->count = $request->count;
         $product->condition = $request->condition;
-        $product->presense = $request->presense;
+        // $product->presense = $request->presense;
         $product->meta_title = $request->meta_title;
         $product->meta_description = $request->meta_description;
         $product->description = $request->description;
@@ -394,20 +371,85 @@ class ProductController extends Controller
         return redirect('admin/products')->with('status', 'Товар обновлен!');
     }
 
-    public function editHtml($id)
+    public function saveImages($request, $dirName)
     {
-        $product = Product::findOrFail($id);
+        $order = 1;
+        $images = [];
 
-        return view('joystick-admin.products.page', ['product' => $product]);
+        foreach ($request->file('images') as $key => $image)
+        {
+            $imageName = 'image-'.$order.'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
+
+            // $watermark = Image::make('img/watermark.png');
+
+            // Creating present images
+            $this->resizeOptimalImage($image, 350, 255, '/img/products/'.$dirName.'/present-'.$imageName, 90);
+
+            // Storing original images
+            // $image->storeAs('/img/products/'.$dirName, $imageName);
+
+            // Storing main images
+            $this->resizeOptimalImage($image, 1024, 768, '/img/products/'.$dirName.'/'.$imageName, 90);
+
+            $images[$key]['image'] = $imageName;
+            $images[$key]['present_image'] = 'present-'.$imageName;
+            $order++;
+        }
+
+        return $images;
     }
 
-    public function saveHtml($id)
+    public function uploadImages($request, $dirName, $images = [], $product)
     {
-        $product = Product::find($id);
-        $product->description = $_GET['html'];
-        $product->save();
+        $order = (!empty($images)) ? count($images) : 1;
+        $order = time() + 1;
 
-        return response()->json($product->title);
+        foreach ($request->file('images') as $key => $image)
+        {
+            $imageName = 'image-'.$order.'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
+
+            // $watermark = Image::make('img/watermark.png');
+
+            // Creating present images
+            $this->resizeOptimalImage($image, 350, 255, '/img/products/'.$dirName.'/present-'.$imageName, 90);
+
+            // Storing main images
+            $this->resizeOptimalImage($image, 1024, 768, '/img/products/'.$dirName.'/'.$imageName, 90);
+
+            if (isset($images[$key])) {
+
+                Storage::delete([
+                    'img/products/'.$product->path.'/'.$images[$key]['image'],
+                    'img/products/'.$product->path.'/'.$images[$key]['present_image']
+                ]);
+            }
+
+            $images[$key]['image'] = $imageName;
+            $images[$key]['present_image'] = 'present-'.$imageName;
+            $order++;
+        }
+
+        ksort($images);
+        return $images;
+    }
+
+    public function removeImages($request, $images = [], $product)
+    {
+        foreach ($request->remove_images as $kvalue) {
+
+            if (!isset($request->images[$kvalue])) {
+
+                Storage::delete([
+                    'img/products/'.$product->path.'/'.$images[$kvalue]['image'],
+                    'img/products/'.$product->path.'/'.$images[$kvalue]['present_image']
+                ]);
+
+                unset($images[$kvalue]);
+            }
+        }
+
+        ksort($images);
+        return $images;
     }
 
     public function destroy($id)

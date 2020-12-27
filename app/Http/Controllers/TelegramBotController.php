@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Validator;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
 use App\App;
 use App\Project;
 use App\Product;
 use App\Category;
 
-class TelegramController extends Controller
+
+class TelegramBotController extends Controller
 {
     public function test()
     {
@@ -21,7 +23,6 @@ class TelegramController extends Controller
         $firstName = $response->getFirstName();
         $username = $response->getUsername();
 
-        echo $botId, $firstName, $username;
     }
 
     public function bot(Request $request)

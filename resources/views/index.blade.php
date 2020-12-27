@@ -157,7 +157,7 @@
             <div class="block-categories__item category-card category-card--layout--classic">
               <div class="category-card__body">
                 <div class="category-card__image">
-                  <a href="/c/{{ $relevant_category->slug .'/'. $relevant_category->id }}"><img src="/filemanager/{{ $relevant_category->image }}" alt="{{ $relevant_category->title }}"></a>
+                  <a href="/c/{{ $relevant_category->slug .'/'. $relevant_category->id }}"><img src="/file-manager/{{ $relevant_category->image }}" alt="{{ $relevant_category->title }}"></a>
                 </div>
                 <div class="category-card__content">
                   <div class="category-card__name">

@@ -61,11 +61,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
 });
 
 
-// Telegram bot
-Route::get('bot', 'TelegramController@bot');
-Route::get('test', 'TelegramController@test');
-
-
 // Input
 Route::get('search', 'InputController@search');
 Route::get('search-ajax', 'InputController@searchAjax');
