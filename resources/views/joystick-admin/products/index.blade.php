@@ -9,7 +9,7 @@
     <div class="col-md-6">
       <form action="/admin/products-search" method="get">
         <div class="input-group input-search">
-          <input type="search" class="form-control typeahead-goods" name="text" placeholder="Поиск...">
+          <input type="search" class="form-control typeahead-goods-" name="text" placeholder="Поиск...">
 
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
