@@ -3,35 +3,29 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Nicolaslopezj\Searchable\SearchableTrait;
+use Laravel\Scout\Searchable;
 
 class Product extends Model
 {
-    use SearchableTrait;
+    use Searchable;
 
     protected $table = 'products';
 
+    public $asYouType = true;
+
     /**
-     * Searchable rules.
+     * Get the indexable data array for the model.
      *
-     * @var array
+     * @return array
      */
-    protected $searchable = [
-        /**
-         * Columns and their priority in search results.
-         * Columns with higher values are more important.
-         * Columns with equal values have equal importance.
-         *
-         * @var array
-         */
-        'columns' => [
-            'products.title' => 10,
-            'products.description' => 10,
-            'products.characteristic' => 10,
-            'products.barcode' => 5,
-            // 'products.oem' => 5,
-        ]
-    ];
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+
+        // Customize array...
+
+        return $array;
+    }
 
     public function category()
     {

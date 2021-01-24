@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}">
 </head>
 <body>
-  <div style="height: 600px;">
+  <div style="min-width:725px;height:600px;" class="table-responsive">
     <div id="fm"></div>
   </div>
 

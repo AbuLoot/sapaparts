@@ -11709,7 +11709,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
   margin-right: 12px;
   color: #000;
   position: fixed;
-  top: 85px;
+  top: 65px;
   right: 0;
   z-index: 10;
 }

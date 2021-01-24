@@ -35,7 +35,7 @@
     <!-- Mobile header -->
     <header class="site__header d-lg-none">
       <!-- data-sticky-mode - one of [pullToShow, alwaysOnTop] -->
-      <div class="mobile-header mobile-header--sticky" data-sticky-mode="pullToShow">
+      <div class="mobile-header mobile-header--sticky" data-sticky-mode="alwaysOnTop">
         <div class="mobile-header__panel">
           <div class="container">
             <div class="mobile-header__body">
@@ -172,7 +172,7 @@
 
         <div class="site-header__nav-panel">
           <!-- data-sticky-mode - one of [pullToShow, alwaysOnTop] -->
-          <div class="nav-panel nav-panel--sticky" data-sticky-mode="pullToShow">
+          <div class="nav-panel nav-panel--sticky" data-sticky-mode="alwaysOnTop">
             <div class="nav-panel__container container">
               <div class="nav-panel__row">
                 

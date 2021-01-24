@@ -30,43 +30,53 @@ class CartController extends Controller
         return view('cart', compact('products', 'countries'));
     }
 
+    public function checkout(Request $request)
+    {
+        $countries = Country::all();
+
+        $items = $request->session()->get('items');
+        $data_id = collect($items['products_id']);
+        $products = Product::whereIn('id', $data_id->keys())->get();
+
+        return view('checkout', compact('countries', 'products'));
+    }
+
     public function addToCart(Request $request, $id)
     {
         $product = Product::findOrFail($id);
-        $quantity = (isset($request->quantity)) ? $request->quantity : 1;
 
         if ($request->session()->has('items')) {
 
             $items = $request->session()->get('items');
+            $quantity = (isset($request->quantity)) ? $request->quantity : 1;
 
             $items['products_id'][$id] = [
-                'id' => $id, 'quantity' => $quantity, 'price' => $product->price, 'sum' => $product->price * $quantity,
+                'id' => $id, 'quantity' => $quantity, 'slug' => $product->slug, 'title' => $product->title, 'img_path' => $product->path.'/'.$product->image, 'price' => $product->price,
             ];
 
-            $count = count($items['products_id']);
-
             $request->session()->put('items', $items);
+            $count = count($items['products_id']);
+            $sum_price_items = 0;
 
-            $total_sum = 0;
-
-            foreach ($items['products_id'] as $key => $item) {
-                $total_sum += $item['sum'];
+            foreach ($items['products_id'] as $item) {
+                $sum_price_item = $item['price'] * $item['quantity'];
+                $sum_price_items += $sum_price_item;
             }
 
             return response()->json([
-                'alert' => 'Товар обновлен', 'countItems' => $count, 'quantity' => $quantity, 'price' => $product->price, 'sum' => $product->price * $quantity, 'total_sum' => $total_sum
+                'alert' => 'Товар обновлен', 'countItems' => $count, 'sumPriceItems' => $sum_price_items, 'quantity' => $request->quantity, 'slug' => $product->slug, 'title' => $product->title, 'img_path' => $product->path.'/'.$product->image, 'price' => $product->price,
             ]);
         }
 
         $items = [];
         $items['products_id'][$id] = [
-            'id' => $id, 'quantity' => $quantity, 'price' => $product->price, 'sum' => $product->price * $quantity,
+            'id' => $id, 'quantity' => 1, 'slug' => $product->slug, 'title' => $product->title, 'img_path' => $product->path.'/'.$product->image, 'price' => $product->price,
         ];
 
         $request->session()->put('items', $items);
 
         return response()->json([
-            'alert' => 'Товар обновлен', 'countItems' => 1, 'price' => $product->price, 'sum' => $product->price * $quantity
+            'alert' => 'Товар обновлен', 'countItems' => 1, 'slug' => $product->slug, 'title' => $product->title, 'img_path' => $product->path.'/'.$product->image, 'price' => $product->price,
         ]);
     }
 
@@ -98,42 +108,44 @@ class CartController extends Controller
     public function storeOrder(Request $request)
     {
         $this->validate($request, [
+            'surname' => 'required|min:2|max:255',
             'name' => 'required|min:2|max:255',
-            'email' => 'required|email|max:255',
+            // 'email' => 'required|email|max:255',
             'phone' => 'required|min:5',
-            'city_id' => 'numeric',
             'address' => 'required',
+            'count' => 'required',
         ]);
 
         $items = $request->session()->get('items');
         $data_id = collect($items['products_id']);
         $products = Product::whereIn('id', $data_id->keys())->get();
 
-        $sumCountProducts = 0;
-        $sumPriceProducts = 0;
+        $sum_count_products = 0;
+        $sum_price_products = 0;
 
         foreach ($products as $product) {
-            $sumCountProducts += $request->count[$product->id];
-            $sumPriceProducts += $request->count[$product->id] * $product->price;
+            // $product_lang = $product->products_lang->where('lang', $lang)->first();
+            // $sum_count_products += $items['products_id'][$product->id]['quantity'];
+            $sum_price_products += $items['products_id'][$product->id]['quantity'] * $items['products_id'][$product->id]['price'];
         }
 
         $order = new Order;
         $order->user_id = ((Auth::check())) ? Auth::id() : 0;
-        $order->name = $request->name;
-        $order->email = $request->email;
+        $order->name = $request->surname.' '.$request->name;
         $order->phone = $request->phone;
-        $order->company_name = '';
-        $order->data_1 = '';
-        $order->data_2 = '';
+        $order->email = $request->email;
+        $order->company_name = $request->company_name;
+        $order->data_1 = $request->notes;
+        $order->data_2 = $request->postcode;
         $order->data_3 = '';
         $order->legal_address = '';
-        $order->address = $request->address;
         $order->city_id = ($request->city_id) ? $request->city_id : 0;
-        $order->delivery = trans('orders.get.'.$request->get);
-        $order->payment_type = trans('orders.pay.'.$request->pay);
+        $order->address = $request->address;
         $order->count = serialize($request->count);
         $order->price = $products->sum('price');
-        $order->amount = $sumPriceProducts;
+        $order->amount = $sum_price_products;
+        $order->delivery = 1;
+        $order->payment_type = 1;
         $order->save();
 
         $order->products()->attach($data_id->keys());
@@ -141,9 +153,9 @@ class CartController extends Controller
         $name = $request->name;
 
         // Email subject
-        $subject = "GoMarket - novaya zayavka ot $request->name";
+        $subject = "Sapaparts - Новая заявка от $request->name";
 
-        $headers = "From: info@gomarket.kz \r\n" .
+        $headers = "From: info@sapaparts.kz \r\n" .
                    "MIME-Version: 1.0" . "\r\n" . 
                    "Content-type: text/html; charset=UTF-8" . "\r\n";
 
@@ -156,13 +168,13 @@ class CartController extends Controller
             $message = 'Ваш заказ принят!';
 
             // Mail::send('vendor.mail.html.layout', ['order' => $order], function($message) use ($name) {
-            //     $message->to(['abdulaziz.abishov@gmail.com', 'issayev.adilet@gmail.com'], 'GoMarket')->subject('GoMarket - Новый заказ от '.$name);
+            //     $message->to(['abdulaziz.abishov@gmail.com', 'issayev.adilet@gmail.com'], 'Sapaparts')->subject('Sapaparts - Новый заказ от '.$name);
             //     $message->from('electron.servant@gmail.com', 'Electron Servant');
             // });
 
             $response = view('partials.mail-client-order', ['order' => $order])->render();
 
-            mail($order->email, 'GoMarket - ваш заказ: '.$order->id, $response, $headers);
+            mail($order->email, 'Sapaparts - ваш заказ: '.$order->id, $response, $headers);
 
         } catch (Exception $e) {
 
@@ -172,10 +184,11 @@ class CartController extends Controller
 
         $request->session()->forget('items');
 
-        return redirect()->back()->with([
+        return redirect('cart')->with([
             'info' => $message
         ]);
     }
+
 
     public function destroy(Request $request, $id)
     {

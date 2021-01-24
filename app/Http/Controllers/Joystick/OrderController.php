@@ -42,9 +42,9 @@ class OrderController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
-        // $order->name = $request->name;
-        // $order->email = $request->email;
-        // $order->phone = $request->phone;
+        $order->name = $request->name;
+        $order->email = $request->email;
+        $order->phone = $request->phone;
         $order->company_name = $request->company_name;
         $order->data_1 = $request->data_1;
         $order->data_2 = $request->data_2;

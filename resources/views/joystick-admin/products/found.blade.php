@@ -11,7 +11,7 @@
     <div class="col-md-6">
       <form action="/admin/products-search" method="get">
         <div class="input-group input-search">
-          <input type="search" class="form-control typeahead-goods-" name="text" placeholder="Поиск...">
+          <input type="search" class="form-control typeahead-goods" name="text" placeholder="Поиск...">
 
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -47,8 +47,9 @@
         </ul>
       </div>
       <!-- <a href="/admin/products-price/edit" class="btn btn-primary btn-sm">Изменить цену</a> -->
-      <a href="/admin/products/create" class="btn btn-success btn-sm">Добавить</a>
+      <a href="/admin/products/create" class="btn btn-success"><i class="material-icons md-18">add</i></a>
     </div>
+    <br>
   </div>
 
 
@@ -122,7 +123,7 @@
       // Set the Options for "Bloodhound" suggestion engine
       var engine = new Bloodhound({
         remote: {
-          url: '/search-ajax?text=%QUERY%',
+          url: '/search-ajax-admin?text=%QUERY%',
           wildcard: '%QUERY%'
         },
         datumTokenizer: Bloodhound.tokenizers.whitespace('text'),

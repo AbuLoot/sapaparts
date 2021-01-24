@@ -9,7 +9,7 @@
     <div class="col-md-6">
       <form action="/admin/products-search" method="get">
         <div class="input-group input-search">
-          <input type="search" class="form-control typeahead-goods-" name="text" placeholder="Поиск...">
+          <input type="search" class="form-control typeahead-goods" name="text" placeholder="Поиск...">
 
           <div class="input-group-btn">
             <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -45,8 +45,8 @@
           <!-- <li><a data-action="destroy" href="#" onclick="return confirm('Удалить записи?')">Удалить</a></li> -->
         </ul>
       </div>
-      <a href="/admin/products-price/edit" class="btn btn-default btn-sm-">Изменить цены</a>
-      <a href="/admin/products/create" class="btn btn-success btn-sm-"><i class="material-icons md-18">add</i></a>
+      <a href="/admin/products-price/edit" class="btn btn-default">Изменить цены</a>
+      <a href="/admin/products/create" class="btn btn-success"><i class="material-icons md-18">add</i></a>
     </div>
     <br>
   </div>
@@ -123,7 +123,7 @@
       // Set the Options for "Bloodhound" suggestion engine
       var engine = new Bloodhound({
         remote: {
-          url: '/search-ajax?text=%QUERY%',
+          url: '/search-ajax-admin?text=%QUERY%',
           wildcard: '%QUERY%'
         },
         datumTokenizer: Bloodhound.tokenizers.whitespace('text'),

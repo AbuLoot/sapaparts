@@ -40,7 +40,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
     Route::resource('orders', 'Joystick\OrderController');
     Route::resource('pages', 'Joystick\PageController');
     Route::resource('section', 'Joystick\SectionController');
-    Route::resource('projects', 'Joystick\ProjectController');
     Route::resource('products', 'Joystick\ProductController');
     Route::resource('slide', 'Joystick\SlideController');
     Route::get('products/{id}/comments', 'Joystick\ProductController@comments');
@@ -64,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
 // Input
 Route::get('search', 'InputController@search');
 Route::get('search-ajax', 'InputController@searchAjax');
+Route::get('search-ajax-admin', 'InputController@searchAjaxAdmin');
 Route::post('filter-products', 'InputController@filterProducts');
 Route::post('send-app', 'InputController@sendApp');
 
@@ -88,6 +88,7 @@ Route::post('comment-product', 'ShopController@saveComment');
 
 // Cart Actions
 Route::get('cart', 'CartController@cart');
+Route::get('checkout', 'CartController@checkout');
 Route::get('add-to-cart/{id}', 'CartController@addToCart');
 Route::get('remove-from-cart/{id}', 'CartController@removeFromCart');
 Route::get('clear-cart', 'CartController@clearCart');

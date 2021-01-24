@@ -87,9 +87,7 @@ class ProductController extends Controller
             $ids[] = $category->children->pluck('id');
         }
 
-        $sql = 'UPDATE products SET price = (price ' . $operations[$request->operation] . ' ' . $request->number . ') WHERE category_id = ' . $request->category_id;
-
-        DB::update($sql);
+        DB::update('UPDATE products SET price = (price ' . $operations[$request->operation] . ' ' . $request->number . ') WHERE category_id = ' . $request->category_id);
 
         return redirect('admin/products')->with('status', 'Цена изменена!');
     }

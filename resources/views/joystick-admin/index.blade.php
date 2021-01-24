@@ -2,8 +2,13 @@
 
 @section('content')
 
-    @include('joystick-admin.partials.alerts')
+  @include('joystick-admin.partials.alerts')
 
-    <h1 class="text-center">AsSalamu alaikum admin!</h1>
+  <br>
+  <h1 class="text-center">AsSalamu alaikum<br> {{ Auth::user()->name }}!</h1>
+
+  <div class="row">
+    <img src="/file-manager/bg-joystick-2.png" class="img-responsive center-block">
+  </div>
 
 @endsection
