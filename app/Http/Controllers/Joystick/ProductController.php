@@ -162,7 +162,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             $images = $this->saveImages($request, $dirName);
-            $introImage = current($images)['present_image'];
+            $introImage = current($images)['mini_image'];
         }
 
         $product = new Product;
@@ -233,7 +233,7 @@ class ProductController extends Controller
         // Remove images
         if (isset($request->remove_images)) {
             $images = $this->removeImages($request, $images, $product);
-            $introImage = (isset($images[0]['present_image'])) ? $images[0]['present_image'] : 'no-image-middle.png';
+            $introImage = (isset($images[0]['mini_image'])) ? $images[0]['mini_image'] : 'no-image-middle.png';
         }
 
         // Adding new images
@@ -246,7 +246,7 @@ class ProductController extends Controller
             }
 
             $images = $this->uploadImages($request, $dirName, $images, $product);
-            $introImage = current($images)['present_image'];
+            $introImage = current($images)['mini_image'];
         }
 
         // Change directory for new category
@@ -311,7 +311,7 @@ class ProductController extends Controller
             $this->resizeOptimalImage($image, 1024, 768, '/img/products/'.$dirName.'/'.$imageName, 90);
 
             $images[$key]['image'] = $imageName;
-            $images[$key]['present_image'] = 'present-'.$imageName;
+            $images[$key]['mini_image'] = 'present-'.$imageName;
             $order++;
         }
 
@@ -339,12 +339,12 @@ class ProductController extends Controller
 
                 Storage::delete([
                     'img/products/'.$product->path.'/'.$images[$key]['image'],
-                    'img/products/'.$product->path.'/'.$images[$key]['present_image']
+                    'img/products/'.$product->path.'/'.$images[$key]['mini_image']
                 ]);
             }
 
             $images[$key]['image'] = $imageName;
-            $images[$key]['present_image'] = 'present-'.$imageName;
+            $images[$key]['mini_image'] = 'present-'.$imageName;
             $order++;
         }
 
@@ -360,7 +360,7 @@ class ProductController extends Controller
 
                 Storage::delete([
                     'img/products/'.$product->path.'/'.$images[$kvalue]['image'],
-                    'img/products/'.$product->path.'/'.$images[$kvalue]['present_image']
+                    'img/products/'.$product->path.'/'.$images[$kvalue]['mini_image']
                 ]);
 
                 unset($images[$kvalue]);
@@ -388,7 +388,7 @@ class ProductController extends Controller
                 if ($image['image'] != 'no-image-middle.png') {
                     Storage::delete([
                         'img/products/'.$product->path.'/'.$image['image'],
-                        'img/products/'.$product->path.'/'.$image['present_image']
+                        'img/products/'.$product->path.'/'.$image['mini_image']
                     ]);
                 }
             }
