@@ -59,7 +59,7 @@
               <h4 class="modal-title" id="myModalLabel">Файловый менеджер</h4>
             </div>
             <div class="modal-body">
-              <iframe src="<?= url('/admin/laravel-filemanager'); ?>" frameborder="0" style="width:100%;min-height:600px"></iframe>
+              <iframe src="<?= url('/admin/filemanager'); ?>" frameborder="0" style="width:100%;min-height:600px"></iframe>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
     </div>
     <div class="form-group">
       <label for="content">Контент</label>
-      <textarea class="form-control my-editor" id="editor2" name="content" rows="5">{{ (old('content')) ? old('content') : $page->content }}</textarea>
+      <textarea class="form-control" id="summernote" name="content" rows="5">{{ (old('content')) ? old('content') : $page->content }}</textarea>
     </div>
     <div class="form-group">
       <label for="lang">Язык</label>
@@ -107,24 +107,17 @@
 @endsection
 
 @section('head')
-
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 @endsection
 
 @section('scripts')
-  <script src='https://cdn.tiny.cloud/1/s9hqkvt9a9gdfym5yyaz2pgllizccjq8p71rxv2s5gp714p4/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
   <script>
-    tinymce.init({
-      selector: 'textarea',
-      height: 400,
-      plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-        'save table directionality emoticons template paste'
-      ],
-      content_css: ['/css/style.css', '/css/custom.css'],
-      menubar: 'file edit view insert format tools table help',
-      toolbar: 'insertfile undo redo | formatselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor removeformat | link image media | code',
-      font_formats: 'Playfair Display; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva;'
+    /* Summernote */
+    $(document).ready(function() {
+      $('#summernote').summernote({
+        height: 150
+      });
     });
   </script>
 @endsection

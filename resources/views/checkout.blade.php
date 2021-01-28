@@ -5,7 +5,7 @@
 @section('meta_description', 'Оформление')
 
 @section('head')
-
+  <link rel="stylesheet" href="/vendor/select2/css/select2.min.css">
 @endsection
 
 @section('content')
@@ -66,12 +66,11 @@
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label>Email адрес <span class="text-muted">(Необязательно)</span></label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="bake_make@gmail.com" value="{{ old('email') }}">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Введите email почту" value="{{ old('email') }}">
                       </div>
                       <div class="form-group col-md-6">
                         <label>Номер телефона</label>
                         <input type="tel" class="form-control" pattern="(\+?\d[- .]*){7,13}" name="phone" placeholder="Номер телефона*" value="{{ old('phone') }}" required>
-
                       </div>
                     </div>
                   </div>
@@ -177,4 +176,35 @@
     </div>
   </div>
 
+@endsection
+
+@section('footer')
+  <script src="/vendor/select2/js/select2.min.js"></script>
+  <script type="text/javascript">
+    
+    /*
+    // .block-finder
+    */
+    $(function () {
+        $('.block-finder__select').on('change', function() {
+            const item = $(this).closest('.block-finder__form-item');
+
+            if ($(this).val() !== 'none') {
+                item.find('~ .block-finder__form-item:eq(0) .block-finder__select').prop('disabled', false).val('none');
+                item.find('~ .block-finder__form-item:gt(0) .block-finder__select').prop('disabled', true).val('none');
+            } else {
+                item.find('~ .block-finder__form-item .block-finder__select').prop('disabled', true).val('none');
+            }
+
+            item.find('~ .block-finder__form-item .block-finder__select').trigger('change.select2');
+        });
+    });
+
+    /*
+    // select2
+    */
+    $(function () {
+        $('.form-control-select2, .block-finder__select').select2({width: ''});
+    });
+  </script>
 @endsection

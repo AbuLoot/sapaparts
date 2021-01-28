@@ -165,23 +165,11 @@ class ProductController extends Controller
             $introImage = current($images)['present_image'];
         }
 
-        // Saving Background
-        if ($request->hasFile('background')) {
-
-            $backgroundName = $request->background->getClientOriginalName();
-
-            $request->background->storeAs('img/products/'.$dirName, $backgroundName);
-        }
-
         $product = new Product;
         $product->sort_id = ($request->sort_id > 0) ? $request->sort_id : $product->count() + 1;
         $product->category_id = $request->category_id;
         $product->slug = str_slug($request->title);
         $product->title = $request->title;
-        // $product->title_extra = $request->title_extra;
-        // $product->direction = $request->direction;
-        // $product->color = $request->color;
-        // $product->background = (isset($backgroundName)) ? $backgroundName : '';
         $product->company_id = $request->company_id;
         $product->barcode = $request->barcode;
         $product->price = $request->price;
@@ -233,7 +221,6 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
 
-        $backgroundName = $product->background;
         $images = unserialize($product->images);
         $dirName = $product->path;
 
@@ -243,60 +230,23 @@ class ProductController extends Controller
             $product->path = $dirName;
         }
 
-        if ($request->hasFile('images')) {
-
-            $order = (!empty($images)) ? count($images) : 1;
-            $introImage = null;
-
-            foreach ($request->file('images') as $key => $image)
-            {
-                $imageName = 'image-'.$order.'-'.str_slug($request->title).'.'.$image->getClientOriginalExtension();
-
-                // Creating preview image
-                if ($key == 0) {
-
-                    if ($product->image != 'no-image-middle.png' AND file_exists('img/products/'.$product->path.'/'.$product->image)) {
-                        Storage::delete('img/products/'.$product->path.'/'.$product->image);
-                        Storage::delete('img/products/'.$product->path.'/preview-'.$product->image);
-                    }
-
-                    $this->resizeOptimalImage($image, 350, 424, '/img/products/'.$dirName.'/preview-'.$imageName, 90);
-                    $introImage = 'preview-'.$imageName;
-                }
-
-                $watermark = Image::make('img/watermark.png');
-
-                // Creating present images
-                $this->resizeOptimalImage($image, 350, 424, '/img/products/'.$dirName.'/present-'.$imageName, 90);
-
-                // Storing original images
-                $this->resizeOptimalImage($image, 700, 850, '/img/products/'.$dirName.'/'.$imageName, 90, $watermark);
-
-                if (isset($images[$key])) {
-
-                    Storage::delete([
-                        'img/products/'.$product->path.'/'.$images[$key]['image'],
-                        'img/products/'.$product->path.'/'.$images[$key]['present_image']
-                    ]);
-                }
-
-                $images[$key]['image'] = $imageName;
-                $images[$key]['present_image'] = 'present-'.$imageName;
-                $order++;
-            }
-
-            ksort($images);
+        // Remove images
+        if (isset($request->remove_images)) {
+            $images = $this->removeImages($request, $images, $product);
+            $introImage = (isset($images[0]['present_image'])) ? $images[0]['present_image'] : 'no-image-middle.png';
         }
 
-        // Resave background
-        if ($request->hasFile('background')) {
+        // Adding new images
+        if ($request->hasFile('images')) {
 
-            if (file_exists('img/products/'.$product->path.'/'.$product->background)) {
-                Storage::delete('img/products/'.$product->path.'/'.$product->background);
+            if ( ! file_exists('img/products/'.$product->category_id) OR empty($product->path)) {
+                $dirName = $product->category_id.'/'.time();
+                Storage::makeDirectory('img/products/'.$dirName);
+                $product->path = $dirName;
             }
 
-            $backgroundName = $request->background->getClientOriginalName();
-            $request->background->storeAs('img/products/'.$product->path, $backgroundName);
+            $images = $this->uploadImages($request, $dirName, $images, $product);
+            $introImage = current($images)['present_image'];
         }
 
         // Change directory for new category
@@ -307,39 +257,10 @@ class ProductController extends Controller
             $product->path = $dirName;
         }
 
-        // Remove images
-        if (isset($request->remove_images)) {
-
-            foreach ($request->remove_images as $kvalue) {
-
-                if (!isset($request->images[$kvalue])) {
-
-                    if ($product->image === 'preview-'.$images[$kvalue]['image']) {
-
-                        Storage::delete('img/products/'.$product->path.'/'.$product->image);
-                        $introImage = 'no-image-middle.png';
-                    }
-
-                    Storage::delete([
-                        'img/products/'.$product->path.'/'.$images[$kvalue]['image'],
-                        'img/products/'.$product->path.'/'.$images[$kvalue]['present_image']
-                    ]);
-
-                    unset($images[$kvalue]);
-                }
-            }
-
-            ksort($images);
-        }
-
         $product->sort_id = ($request->sort_id > 0) ? $request->sort_id : $product->count() + 1;
         $product->category_id = $request->category_id;
         $product->slug = str_slug($request->title);
         $product->title = $request->title;
-        // $product->title_extra = $request->title_extra;
-        // $product->direction = $request->direction;
-        // $product->color = $request->color;
-        // $product->background = $backgroundName;
         $product->company_id = $request->company_id;
         $product->barcode = $request->barcode;
         $product->price = $request->price;
@@ -381,7 +302,7 @@ class ProductController extends Controller
             // $watermark = Image::make('img/watermark.png');
 
             // Creating present images
-            $this->resizeOptimalImage($image, 350, 255, '/img/products/'.$dirName.'/present-'.$imageName, 90);
+            $this->resizeOptimalImage($image, 260, 200, '/img/products/'.$dirName.'/present-'.$imageName, 90);
 
             // Storing original images
             // $image->storeAs('/img/products/'.$dirName, $imageName);
@@ -409,7 +330,7 @@ class ProductController extends Controller
             // $watermark = Image::make('img/watermark.png');
 
             // Creating present images
-            $this->resizeOptimalImage($image, 350, 255, '/img/products/'.$dirName.'/present-'.$imageName, 90);
+            $this->resizeOptimalImage($image, 260, 200, '/img/products/'.$dirName.'/present-'.$imageName, 90);
 
             // Storing main images
             $this->resizeOptimalImage($image, 1024, 768, '/img/products/'.$dirName.'/'.$imageName, 90);

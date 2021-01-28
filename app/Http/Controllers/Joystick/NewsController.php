@@ -82,7 +82,7 @@ class NewsController extends Controller
 
         $news = News::findOrFail($id);
         $news->sort_id = ($request->sort_id > 0) ? $request->sort_id : $news->count() + 1;
-        $news->page_id = $request->page_id;
+        $news->page_id = ($request->page_id > 0) ? $request->page_id : 0;
         $news->slug = (empty($request->slug)) ? str_slug($request->title) : $request->slug;
         $news->title = $request->title;
         $news->headline = $request->headline;

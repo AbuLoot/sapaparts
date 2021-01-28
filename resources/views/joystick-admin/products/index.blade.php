@@ -30,6 +30,7 @@
     </div>
 
     <div class="col-md-6 text-right">
+      <a href="/admin/products-price/edit" class="btn btn-default">Изменить цены</a>
       <div class="btn-group">
         <button type="button" id="submit" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Функции <span class="caret"></span>
@@ -45,7 +46,6 @@
           <!-- <li><a data-action="destroy" href="#" onclick="return confirm('Удалить записи?')">Удалить</a></li> -->
         </ul>
       </div>
-      <a href="/admin/products-price/edit" class="btn btn-default">Изменить цены</a>
       <a href="/admin/products/create" class="btn btn-success"><i class="material-icons md-18">add</i></a>
     </div>
     <br>
@@ -86,7 +86,6 @@
             </td>
             <td class="text-info">{{ trans('statuses.data.'.$product->status) }}</td>
             <td class="text-right text-nowrap">
-              <a class="btn btn-link  href="/p/{{ $product->slug }}" title="Просмотр товара" target="_blank"><i class="material-icons md-18">link</i></a>
               <a class="btn btn-link btn-xs" href="{{ route('products.edit', $product->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
               <form class="btn-delete" method="POST" action="{{ route('products.destroy', $product->id) }}" accept-charset="UTF-8">
                 <input name="_method" type="hidden" value="DELETE">

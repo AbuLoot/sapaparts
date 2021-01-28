@@ -36,7 +36,7 @@
         <button type="button" id="submit" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Функции <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu" id="actions">
+        <ul class="dropdown-menu dropdown-menu-right" id="actions">
           <li><a data-action="active" href="#">Сделать активным</a></li>
           <li><a data-action="inactive" href="#">Сделать неактивым</a></li>
           <li role="separator" class="divider"></li>

@@ -27,38 +27,37 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
     Route::get('filemanager', 'Joystick\AdminController@filemanager');
     Route::get('frame-filemanager', 'Joystick\AdminController@frameFilemanager');
 
-    Route::resource('categories', 'Joystick\CategoryController');
+    Route::resources([
+        'categories' => 'Joystick\CategoryController',
+        'pages' => 'Joystick\PageController',
+        'section' => 'Joystick\SectionController',
+        'news' => 'Joystick\NewsController',
+        'products' => 'Joystick\ProductController',
+        'slide' => 'Joystick\SlideController',
+        'apps' => 'Joystick\AppController',
+        'orders' => 'Joystick\OrderController',
+        'options' => 'Joystick\OptionController',
+        'modes' => 'Joystick\ModeController',
+        'companies' => 'Joystick\CompanyController',
+        'countries' => 'Joystick\CountryController',
+        'cities' => 'Joystick\CityController',
+        'roles' => 'Joystick\RoleController',
+        'users' => 'Joystick\UserController',
+        'permissions' => 'Joystick\PermissionController',
+        'languages' => 'Joystick\LanguageController',
+    ]);
+
     Route::get('categories-actions', 'Joystick\CategoryController@actionCategories');
-    Route::resource('countries', 'Joystick\CountryController');
-    Route::resource('companies', 'Joystick\CompanyController');
     Route::get('companies-actions', 'Joystick\CompanyController@actionCompanies');
-    Route::resource('cities', 'Joystick\CityController');
-    Route::resource('news', 'Joystick\NewsController');
-    Route::resource('languages', 'Joystick\LanguageController');
-    Route::resource('modes', 'Joystick\ModeController');
-    Route::resource('options', 'Joystick\OptionController');
-    Route::resource('orders', 'Joystick\OrderController');
-    Route::resource('pages', 'Joystick\PageController');
-    Route::resource('section', 'Joystick\SectionController');
-    Route::resource('products', 'Joystick\ProductController');
-    Route::resource('slide', 'Joystick\SlideController');
+
+    Route::get('products-search', 'Joystick\ProductController@search');
+    Route::get('products-actions', 'Joystick\ProductController@actionProducts');
+    Route::get('products-category/{id}', 'Joystick\ProductController@categoryProducts');
     Route::get('products/{id}/comments', 'Joystick\ProductController@comments');
     Route::get('products/{id}/destroy-comment', 'Joystick\ProductController@destroyComment');
-    Route::get('products-search', 'Joystick\ProductController@search');
-    Route::get('products-category/{id}', 'Joystick\ProductController@categoryProducts');
-    Route::get('products-actions', 'Joystick\ProductController@actionProducts');
     Route::get('products-price/edit', 'Joystick\ProductController@priceForm');
     Route::post('products-price/update', 'Joystick\ProductController@priceUpdate');
-
-    Route::resource('roles', 'Joystick\RoleController');
-    Route::resource('users', 'Joystick\UserController');
-    Route::resource('permissions', 'Joystick\PermissionController');
-
-    Route::get('apps', 'Joystick\AppController@index');
-    Route::get('apps/{id}', 'Joystick\AppController@show');
-    Route::delete('apps/{id}', 'Joystick\AppController@destroy');
 });
-
 
 // Input
 Route::get('search', 'InputController@search');
@@ -70,9 +69,6 @@ Route::post('send-app', 'InputController@sendApp');
 
 // Shop
 Route::get('/', 'ShopController@index');
-
-Route::get('catalog/{category}/{id}', 'ShopController@categoryProducts');
-Route::get('catalog/{category}/{subcategory}/{id}', 'ShopController@subCategoryProducts');
 
 Route::get('brand/{company}', 'ShopController@brandProducts');
 Route::get('brand/{company}/{category}/{id}', 'ShopController@brandCategoryProducts');

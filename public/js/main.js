@@ -744,31 +744,6 @@
     });
 
     /*
-    // .block-finder
-    */
-    $(function () {
-        $('.block-finder__select').on('change', function() {
-            const item = $(this).closest('.block-finder__form-item');
-
-            if ($(this).val() !== 'none') {
-                item.find('~ .block-finder__form-item:eq(0) .block-finder__select').prop('disabled', false).val('none');
-                item.find('~ .block-finder__form-item:gt(0) .block-finder__select').prop('disabled', true).val('none');
-            } else {
-                item.find('~ .block-finder__form-item .block-finder__select').prop('disabled', true).val('none');
-            }
-
-            item.find('~ .block-finder__form-item .block-finder__select').trigger('change.select2');
-        });
-    });
-
-    /*
-    // select2
-    */
-    $(function () {
-        $('.form-control-select2, .block-finder__select').select2({width: ''});
-    });
-
-    /*
     // totop
     */
     $(function () {

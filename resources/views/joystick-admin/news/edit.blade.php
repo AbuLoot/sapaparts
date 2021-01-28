@@ -51,18 +51,20 @@
     </div>
     <div class="form-group">
       <label for="image">Картинка</label><br>
-      <div class="fileinput fileinput-new" data-provides="fileinput">
-        <div class="fileinput-new thumbnail" style="width:100%;height:auto;">
-          <img src="/img/news/{{ $news->image }}">
-        </div>
-        <div class="fileinput-preview fileinput-exists thumbnail" style="width:100%;height:auto;"></div>
-        <div>
-          <span class="btn btn-default btn-sm btn-file">
-            <span class="fileinput-new"><i class="glyphicon glyphicon-folder-open"></i>&nbsp; Выбрать</span>
-            <span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>
-            <input type="file" name="image" accept="image/*">
-          </span>
-          <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
+      <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-12 fileinput fileinput-new" data-provides="fileinput">
+          <div class="fileinput-new thumbnail" style="width:100%;height:200px;">
+            <img src="/img/news/{{ $news->image }}">
+          </div>
+          <div class="fileinput-preview fileinput-exists thumbnail" style="width:100%;height:200px;"></div>
+          <div>
+            <span class="btn btn-default btn-sm btn-file">
+              <span class="fileinput-new"><i class="glyphicon glyphicon-folder-open"></i>&nbsp; Выбрать</span>
+              <span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>
+              <input type="file" name="image" accept="image/*">
+            </span>
+            <a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>
+          </div>
         </div>
       </div>
     </div>
@@ -104,26 +106,19 @@
 @endsection
 
 @section('head')
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   <link href="/joystick/css/jasny-bootstrap.min.css" rel="stylesheet">
-  <script src='https://cdn.tiny.cloud/1/s9hqkvt9a9gdfym5yyaz2pgllizccjq8p71rxv2s5gp714p4/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
-  <script>
-    tinymce.init({
-      selector: 'textarea',
-      height: 300,
-      plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-        'save table directionality emoticons template paste'
-      ],
-      content_css: ['/css/style.css', '/css/custom.css'],
-      menubar: 'file edit view insert format tools table help',
-      toolbar: 'insertfile undo redo | formatselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor removeformat | link image media | code',
-      font_formats: 'Playfair Display; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva;'
-
-    });
-  </script>
 @endsection
 
 @section('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
   <script src="/joystick/js/jasny-bootstrap.js"></script>
+  <script>
+    /* Summernote */
+    $(document).ready(function() {
+      $('#summernote').summernote({
+        height: 200
+      });
+    });
+  </script>
 @endsection

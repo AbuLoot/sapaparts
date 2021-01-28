@@ -131,12 +131,12 @@ class ShopController extends Controller
 
     public function product($product_id, $product_slug)
     {
-        $product = Product::where('id', $product_id)->firstOrFail();
-        $category = Category::where('id', $product->category_id)->firstOrFail();
-        $products = Product::search($product->title)->where('status', 1)->take(4)->get();
-
+        $product = Product::find($product_id);
         $product->views = $product->views + 1;
         $product->save();
+
+        $category = Category::where('id', $product->category_id)->firstOrFail();
+        $products = Product::search($product->title)->where('status', 1)->take(4)->get();
 
         return view('product')->with(['product' => $product, 'products' => $products, 'category' => $category]);
     }

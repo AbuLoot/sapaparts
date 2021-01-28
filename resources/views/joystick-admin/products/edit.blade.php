@@ -45,11 +45,11 @@
         </div>
         <div class="form-group">
           <label for="characteristic">Характеристика</label>
-          <textarea class="form-control" name="characteristic" rows="6" maxlength="2000">{{ (old('characteristic')) ? old('characteristic') : $product->characteristic }}</textarea>
+          <textarea class="form-control" name="characteristic" id="summernote" rows="8" maxlength="2000">{{ (old('characteristic')) ? old('characteristic') : $product->characteristic }}</textarea>
         </div>
         <div class="form-group">
           <label for="description">Описание</label>
-          <textarea class="form-control" name="description" rows="6" maxlength="2000">{{ (old('description')) ? old('description') : $product->description }}</textarea>
+          <textarea class="form-control" name="description" id="summernote2" rows="8" maxlength="2000">{{ (old('description')) ? old('description') : $product->description }}</textarea>
         </div>
         <div class="form-group">
           <label for="price">Цена</label>
@@ -85,7 +85,7 @@
           <div class="col-md-6 form-group">
             <label for="company_id">Компания</label>
             <select id="company_id" name="company_id" class="form-control">
-              <option value=""></option>
+              <option value="0"></option>
               @foreach($companies as $company)
                 @if ($company->id == $product->company_id)
                   <option value="{{ $company->id }}" selected>{{ $company->title }}</option>
@@ -242,29 +242,22 @@
 @endsection
 
 @section('head')
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
   <link href="/joystick/css/jasny-bootstrap.min.css" rel="stylesheet">
-  <script src='https://cdn.tiny.cloud/1/s9hqkvt9a9gdfym5yyaz2pgllizccjq8p71rxv2s5gp714p4/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
-  <script>
-    tinymce.init({
-      selector: 'textarea',
-      height: 300,
-      plugins: [
-        'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
-        'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
-        'save table directionality emoticons template paste'
-      ],
-      content_css: ['/css/style.css', '/css/custom.css'],
-      menubar: 'file edit view insert format tools table help',
-      toolbar: 'insertfile undo redo | formatselect fontselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor removeformat | link image media | code',
-      font_formats: 'Playfair Display; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva;'
-
-    });
-  </script>
 @endsection
 
 @section('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
   <script src="/joystick/js/jasny-bootstrap.js"></script>
   <script>
+    /* Summernote */
+    $(document).ready(function() {
+      $('#summernote').summernote({
+        height: 150
+      });
+    });
+
+    /* Adding input element for image */
     function addFileinput(i) {
       var fileinput = 
         '<div class="fileinput fileinput-new" data-provides="fileinput">' +

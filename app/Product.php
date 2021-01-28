@@ -13,18 +13,11 @@ class Product extends Model
 
     public $asYouType = true;
 
-    /**
-     * Get the indexable data array for the model.
-     *
-     * @return array
-     */
+    // const SEARCHABLE_FIELDS = ['title', 'barcode', 'oem', 'description', 'characteristic'];
+
     public function toSearchableArray()
     {
-        $array = $this->toArray();
-
-        // Customize array...
-
-        return $array;
+        // return $this->only(self::SEARCHABLE_FIELDS);
     }
 
     public function category()

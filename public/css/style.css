@@ -3054,7 +3054,7 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
 }
 
 .product-card__image {
-  padding: 0 0 18px;
+  /*padding: 0 0 18px;*/
   -ms-flex-negative: 0;
       flex-shrink: 0;
 }
