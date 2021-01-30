@@ -134,7 +134,7 @@
         highlight: true,
         minLength: 2
       }, {
-        limit: 10,
+        limit: 50,
         source: engine.ttAdapter(),
         displayKey: 'title',
 

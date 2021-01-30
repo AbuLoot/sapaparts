@@ -51,6 +51,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
     Route::get('companies-actions', 'Joystick\CompanyController@actionCompanies');
 
     Route::get('products-search', 'Joystick\ProductController@search');
+    Route::get('products-search-ajax', 'Joystick\ProductController@searchAjax');
     Route::get('products-actions', 'Joystick\ProductController@actionProducts');
     Route::get('products-category/{id}', 'Joystick\ProductController@categoryProducts');
     Route::get('products/{id}/comments', 'Joystick\ProductController@comments');

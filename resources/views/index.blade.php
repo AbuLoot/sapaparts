@@ -13,7 +13,6 @@
   <?php $items = session('items'); ?>
   <?php $favorite = session('favorite'); ?>
 
-  <!-- Site Body -->
   <div class="site__body">
 
     <!-- Slideshow -->

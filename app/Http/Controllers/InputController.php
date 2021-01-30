@@ -38,7 +38,7 @@ class InputController extends Controller
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->take(10)->get();
+        $products = Product::search($text)->take(15)->get();
 
         return view('suggestions-render', ['products' => $products]);
     }
@@ -47,7 +47,7 @@ class InputController extends Controller
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->take(10)->get();
+        $products = Product::search($text)->take(25)->get();
 
         return response()->json($products);
     }
