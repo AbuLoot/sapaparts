@@ -23,6 +23,8 @@
     </div>
     <div class="cart block">
       <div class="container">
+        @include('partials.alerts')
+
         @if ($products->count() > 0)
           <table class="cart__table cart-table">
             <thead class="cart-table__head">
@@ -55,15 +57,15 @@
                       </li>
                     </ul>
                   </td>
-                  <td class="cart-table__column cart-table__column--price" data-title="Price"><span>{{ $product->price }}</span>〒</td>
-                  <td class="cart-table__column cart-table__column--quantity" data-title="Quantity">
+                  <td class="cart-table__column cart-table__column--price" data-title="Цена"><span>{{ $product->price }}</span>〒</td>
+                  <td class="cart-table__column cart-table__column--quantity" data-title="Количество">
                     <div class="input-number">
                       <input class="form-control input-number__input sum-{{ $product->id }}" oninput="input_quantity('{{ $product->id }}')" type="number" name="count[{{ $product->id }}]" id="input-quantity-{{ $product->id }}" data-price="{{ $product->price }}" size="4" min="1" value="{{ $quantity }}">
                       <div class="input-number__add" onclick="increment_quantity('{{ $product->id }}')"></div>
                       <div class="input-number__sub" onclick="decrement_quantity('{{ $product->id }}')"></div>
                     </div>
                   </td>
-                  <td class="cart-table__column cart-table__column--total" data-title="Total"><span class="sum-item-{{ $product->id }}">{{ ($product->price * $quantity) }}</span>〒</td>
+                  <td class="cart-table__column cart-table__column--total" data-title="Сумма"><span class="sum-item-{{ $product->id }}">{{ ($product->price * $quantity) }}</span>〒</td>
                   <td class="cart-table__column cart-table__column--remove">
                     <a href="/destroy-from-cart/{{ $product->id }}" class="btn btn-light btn-sm btn-svg-icon" onclick="return confirm('Удалить запись?')">
                       <svg width="12px" height="12px"><use xlink:href="/img/sprite.svg#cross-12"></use></svg>
@@ -107,7 +109,9 @@
   function increment_quantity(product_id) {
 
     var inputQuantityElement = $("#input-quantity-"+product_id);
+    console.log(inputQuantityElement);
     var newQuantity = parseInt($(inputQuantityElement).val());
+
     addToCart(product_id, newQuantity);
   }
 
@@ -116,6 +120,7 @@
     var inputQuantityElement = $("#input-quantity-"+product_id);
     if ($(inputQuantityElement).val() >= 1) {
       var newQuantity = parseInt($(inputQuantityElement).val());
+
       addToCart(product_id, newQuantity);
     }
   }
@@ -124,6 +129,7 @@
 
     var inputQuantityElement = $("#input-quantity-"+product_id);
     var newQuantity = parseInt($(inputQuantityElement).val());
+
     addToCart(product_id, newQuantity);
   }
 

@@ -22,11 +22,11 @@
     </div>
     <div class="form-group">
       <label for="email">Email:</label>
-      <input type="email" class="form-control" name="email" id="email" minlength="8" maxlength="60" value="{{ $order->email }}" required>
+      <input type="email" class="form-control" name="email" id="email" value="{{ $order->email }}">
     </div>
     <div class="form-group">
       <label for="company_name">Название компаний</label>
-      <textarea class="form-control" id="company_name" name="company_name" rows="5">{{ (old('company_name')) ? old('company_name') : $order->company_name }}</textarea>
+      <input type="text" class="form-control" id="company_name" name="company_name" value="{{ (old('company_name')) ? old('company_name') : $order->company_name }}">
     </div>
     <div class="form-group">
       <label for="data_1">Данные 1</label>

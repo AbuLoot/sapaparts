@@ -38,7 +38,7 @@ class InputController extends Controller
     {
         $text = trim(strip_tags($request->text));
 
-        $products = Product::search($text)->take(15)->get();
+        $products = Product::search($text)->take(10)->get();
 
         return view('suggestions-render', ['products' => $products]);
     }
@@ -46,10 +46,29 @@ class InputController extends Controller
     public function searchAjaxAdmin(Request $request)
     {
         $text = trim(strip_tags($request->text));
+        $products = Product::search($text)->take(15)->get();
+        $array = [];
 
-        $products = Product::search($text)->take(25)->get();
+        foreach ($products as $key => $product) {
 
-        return response()->json($products);
+            $image = 'no-image-mini.png';
+            $path = '';
+
+            if ($product->images == true) {
+                $path = 'products/'.$product->path;
+                $images = unserialize($product->images);
+                $image = $images[0]['mini_image'];
+            }
+
+            $array[$key]['id'] = $product->id;
+            $array[$key]['path'] = $path;
+            $array[$key]['image'] = $image;
+            $array[$key]['barcode'] = $product->barcode;
+            $array[$key]['title'] = $product->title;
+            $array[$key]['lang'] = $product->lang;
+        }
+
+        return response()->json($array);
     }
 
     public function filterProducts(Request $request)

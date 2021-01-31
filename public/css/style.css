@@ -1202,6 +1202,13 @@ h6 {
   background: transparent;
 }
 
+.btn-dark {
+  border-color: #333;
+  background: #333;
+  color: #fff;
+  fill: #fff;
+}
+
 /* loading state */
 .btn-loading {
   position: relative;

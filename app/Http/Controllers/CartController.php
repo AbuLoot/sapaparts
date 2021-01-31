@@ -16,15 +16,13 @@ class CartController extends Controller
     public function cart(Request $request)
     {
         $countries = Country::all();
+        $products = collect();
 
         if ($request->session()->has('items')) {
 
             $items = $request->session()->get('items');
             $data_id = collect($items['products_id']);
             $products = Product::whereIn('id', $data_id->keys())->get();
-        }
-        else {
-            $products = collect();
         }
 
         return view('cart', compact('products', 'countries'));
@@ -124,7 +122,6 @@ class CartController extends Controller
         $sum_price_products = 0;
 
         foreach ($products as $product) {
-            // $product_lang = $product->products_lang->where('lang', $lang)->first();
             // $sum_count_products += $items['products_id'][$product->id]['quantity'];
             $sum_price_products += $items['products_id'][$product->id]['quantity'] * $items['products_id'][$product->id]['price'];
         }
@@ -145,7 +142,7 @@ class CartController extends Controller
         $order->price = $products->sum('price');
         $order->amount = $sum_price_products;
         $order->delivery = 1;
-        $order->payment_type = 1;
+        $order->payment_type = $request->pay;
         $order->save();
 
         $order->products()->attach($data_id->keys());
@@ -162,7 +159,7 @@ class CartController extends Controller
         $content = view('partials.mail-new-order', ['order' => $order])->render();
 
         try {
-            mail('issayev.adilet@gmail.com', $subject, $content, $headers);
+            mail('issayev.adilet@gmail.com parts055@mail.ru', $subject, $content, $headers);
 
             $status = 'alert-success';
             $message = 'Ваш заказ принят!';

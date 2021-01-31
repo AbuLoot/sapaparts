@@ -174,8 +174,6 @@
           <div class="nav-panel nav-panel--sticky" data-sticky-mode="alwaysOnTop">
             <div class="nav-panel__container container">
               <div class="nav-panel__row">
-                
-                <!-- .departments -->
 
                 <!-- .nav-links -->
                 <div class="nav-panel__nav-links nav-links">
@@ -499,6 +497,7 @@
           @else
             <li class="mobile-links__item" data-collapse-item>
               <div class="mobile-links__item-title">
+
                 <a href="/profile" class="mobile-links__item-link">Моя страница</a>
               </div>
             </li>

@@ -53,7 +53,7 @@
   </div>
 
 
-  <div class="table-responsive">
+  <div class="table-responsive table-products">
     <table class="table table-striped table-condensed">
       <thead>
         <tr class="active">
@@ -98,6 +98,14 @@
                 <button type="submit" class="btn btn-link btn-xs" onclick="return confirm('Удалить запись?')"><i class="material-icons md-18">clear</i></button>
               </form>
             </td>
+            <th class="fix-col">
+              <a class="btn btn-link btn-xs btn-fix-col" href="{{ route('products.edit', $product->id) }}" title="Редактировать"><i class="material-icons md-18">mode_edit</i></a>
+              <form class="btn-delete btn-fix-col" method="POST" action="{{ route('products.destroy', $product->id) }}" accept-charset="UTF-8">
+                <input name="_method" type="hidden" value="DELETE">
+                <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-link btn-xs" onclick="return confirm('Удалить запись?')"><i class="material-icons md-18">clear</i></button>
+              </form>
+            </th>
           </tr>
         @empty
           <tr>
@@ -107,12 +115,13 @@
       </tbody>
     </table>
   </div>
+
   {{ $products->links() }}
 
 @endsection
 
 @section('head')
-  <link href="/bower_components/typeahead.js/dist/typeahead.bootstrap.min.css" rel="stylesheet">
+  <link href="/bower_components/typeahead.js/dist/typeahead.bootstrap.css" rel="stylesheet">
 @endsection
 
 @section('scripts')
@@ -144,38 +153,37 @@
             '<li>&nbsp;&nbsp;&nbsp;Ничего не найдено.</li>'
           ],
           suggestion: function (data) {
-            return '<li><a href="/admin/products/' + data.id + '/edit"><img class="list-img" src="/img/products/' + data.path + '/' + data.image + '"> ' + data.title + '<br><span>Код: ' + data.barcode + '</span></a></li>'
+            return '<li><a href="/admin/products/' + data.id + '/edit"><img class="list-img" src="/img/' + data.path + '/' + data.image + '"> ' + data.title + '<br><span>Код: ' + data.barcode + '</span></a></li>'
           }
         }
       });
+    });
 
+    // submit button click
+    $("#actions > li > a").click(function() {
 
-      // submit button click
-      $("#actions > li > a").click(function() {
+      var action = $(this).data("action");
+      var productsId = new Array();
 
-        var action = $(this).data("action");
-        var productsId = new Array();
-
-        $('input[name="products_id[]"]:checked').each(function() {
-          productsId.push($(this).val());
-        });
-
-        if (productsId.length > 0) {
-          $.ajax({
-            type: "get",
-            url: '/admin/products-actions',
-            dataType: "json",
-            data: {
-              "action": action,
-              "products_id": productsId
-            },
-            success: function(data) {
-              console.log(data);
-              location.reload();
-            }
-          });
-        }
+      $('input[name="products_id[]"]:checked').each(function() {
+        productsId.push($(this).val());
       });
+
+      if (productsId.length > 0) {
+        $.ajax({
+          type: "get",
+          url: '/admin/products-actions',
+          dataType: "json",
+          data: {
+            "action": action,
+            "products_id": productsId
+          },
+          success: function(data) {
+            console.log(data);
+            location.reload();
+          }
+        });
+      }
     });
 
     function toggleCheckbox(source) {

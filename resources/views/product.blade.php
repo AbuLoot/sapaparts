@@ -14,7 +14,7 @@
   <?php $favorite = session('favorite'); ?>
 
   <div class="site__body">
-    <!-- Breadcrumb -->
+
     <div class="page-header">
       <div class="page-header__container container">
         <div class="page-header__breadcrumb">
@@ -40,7 +40,6 @@
       <div class="container">
         <div class="product product--layout--standard" data-layout="standard">
           <div class="product__content">
-            <!-- .product__gallery -->
             <div class="product__gallery">
               <div class="product-gallery">
                 <div class="product-gallery__featured">

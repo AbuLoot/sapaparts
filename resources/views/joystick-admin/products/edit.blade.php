@@ -167,7 +167,7 @@
             @if(array_key_exists($i, $images))
               <div class="col-md-4 col-xs-12 fileinput fileinput-new" data-provides="fileinput">
                 <div class="fileinput-new thumbnail" style="width:100%;height:200px;">
-                  <img src="/img/products/{{ $product->path.'/'.$images[$i]['present_image'] }}">
+                  <img src="/img/products/{{ $product->path.'/'.$images[$i]['image'] }}">
                 </div>
                 <div class="fileinput-preview fileinput-exists thumbnail" style="width:100%;height:200px;" data-trigger="fileinput"></div>
                 <div>
@@ -260,17 +260,17 @@
     /* Adding input element for image */
     function addFileinput(i) {
       var fileinput = 
-        '<div class="fileinput fileinput-new" data-provides="fileinput">' +
-            '<div class="fileinput-preview thumbnail" style="width:300px;height:200px;" data-trigger="fileinput"></div>' +
-            '<div>' +
-              '<span class="btn btn-default btn-sm btn-file">' +
-                '<span class="fileinput-new"><i class="glyphicon glyphicon-folder-open"></i>&nbsp; Выбрать</span>' +
-                '<span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>' +
-                '<input type="file" name="images[]" accept="image/*">' +
-              '</span>' +
-              '<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>' +
-            '</div>' +
-          '</div>';
+        '<div class="col-md-4 col-xs-12 fileinput fileinput-new" data-provides="fileinput">' +
+          '<div class="fileinput-preview thumbnail" style="width:300px;height:200px;" data-trigger="fileinput"></div>' +
+          '<div>' +
+            '<span class="btn btn-default btn-sm btn-file">' +
+              '<span class="fileinput-new"><i class="glyphicon glyphicon-folder-open"></i>&nbsp; Выбрать</span>' +
+              '<span class="fileinput-exists"><i class="glyphicon glyphicon-folder-open"></i>&nbsp;</span>' +
+              '<input type="file" name="images[]" accept="image/*">' +
+            '</span>' +
+            '<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><i class="glyphicon glyphicon-trash"></i> Удалить</a>' +
+          '</div>' +
+        '</div>';
 
       $('#gallery').append(fileinput);
     }

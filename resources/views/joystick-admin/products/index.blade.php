@@ -143,7 +143,7 @@
             '<li>&nbsp;&nbsp;&nbsp;Ничего не найдено.</li>'
           ],
           suggestion: function (data) {
-            return '<li><a href="/admin/products/' + data.id + '/edit"><img class="list-img" src="/img/products/' + data.path + '/' + data.image + '"> ' + data.title + '<br><span>Код: ' + data.barcode + '</span></a></li>'
+            return '<li><a href="/admin/products/' + data.id + '/edit"><img class="list-img" src="/img/' + data.path + '/' + data.image + '"> ' + data.title + '<br><span>Код: ' + data.barcode + '</span></a></li>'
           }
         }
       });
