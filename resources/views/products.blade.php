@@ -172,7 +172,7 @@
         dataType: "json",
         data: {},
         success: function(data) {
-          $('*[data-product-id="'+productId+'"]').replaceWith('<a href="/cart" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>');
+          $('*[data-product-id="'+productId+'"]').replaceWith('<a href="/cart" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>');
           $('#count-items').text(data.countItems);
           alert('Товар добавлен в корзину');
         }

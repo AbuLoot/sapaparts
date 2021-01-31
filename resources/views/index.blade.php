@@ -68,7 +68,7 @@
                 <div class="product-card__prices">{{ $top_product->price }}〒</div>
                 <div class="product-card__buttons">
                   @if (is_array($items) AND isset($items['products_id'][$top_product->id]))
-                    <a href="/cart" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>
+                    <a href="/cart" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>
                   @else
                     <button class="btn btn-primary btn-sm" type="button" data-product-id="{{ $top_product->id }}" onclick="addToCart(this);" title="Добавить в корзину">В корзину</button>
                   @endif
@@ -106,7 +106,7 @@
                 <div class="product-card__prices">{{ $new_product->price }}〒</div>
                 <div class="product-card__buttons">
                   @if (is_array($items) AND isset($items['products_id'][$new_product->id]))
-                    <a href="/cart" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>
+                    <a href="/cart" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>
                   @else
                     <button class="btn btn-primary btn-sm" type="button" data-product-id="{{ $new_product->id }}" onclick="addToCart(this);" title="Добавить в корзину">В корзину</button>
                   @endif
@@ -191,7 +191,7 @@
         dataType: "json",
         data: {},
         success: function(data) {
-          $('*[data-product-id="'+productId+'"]').replaceWith('<a href="/cart" class="btn btn-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>');
+          $('*[data-product-id="'+productId+'"]').replaceWith('<a href="/cart" class="btn btn-dark btn-sm" data-toggle="tooltip" data-placement="top" title="Перейти в корзину">Оплатить</a>');
           $('#count-items').text(data.countItems);
           alert('Товар добавлен в корзину');
         }
