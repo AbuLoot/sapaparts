@@ -159,7 +159,7 @@ class CartController extends Controller
         $content = view('partials.mail-new-order', ['order' => $order])->render();
 
         try {
-            mail('issayev.adilet@gmail.com parts055@mail.ru', $subject, $content, $headers);
+            mail('issayev.adilet@gmail.com', $subject, $content, $headers);
 
             $status = 'alert-success';
             $message = 'Ваш заказ принят!';
