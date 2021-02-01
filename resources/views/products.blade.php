@@ -119,6 +119,21 @@
 
           <!-- Products list -->
           <div id="products">
+            <div class="mt--15 d-block d-sm-none">
+              <?php if ($category->ancestors->count() == 2) : ?>
+                <div class="list-group custom-list-group">
+                  <?php foreach ($category->getSiblings() as $sibling_category) : ?>
+                    <a href="/c/{{ $sibling_category->slug.'/'.$sibling_category->id }}" class="list-group-item list-group-item-action">{{ $sibling_category->title }}</a>
+                  <?php endforeach; ?>
+                </div><br>
+              <?php elseif ($category->children && $category->children->count() > 0) : ?>
+                <div class="list-group custom-list-group">
+                  <?php foreach ($category->children as $child_category) : ?>
+                    <a href="/c/{{ $child_category->slug.'/'.$child_category->id }}" class="list-group-item list-group-item-action">{{ $child_category->title }}</a>
+                  <?php endforeach; ?>
+                </div><br>
+              <?php endif; ?>
+            </div>
             <div class="row custom-row">
               @foreach ($products as $product)
                 <div class="col-6 col-lg-4">

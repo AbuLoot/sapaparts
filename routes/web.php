@@ -60,6 +60,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
     Route::post('products-price/update', 'Joystick\ProductController@priceUpdate');
 });
 
+
 // Input
 Route::get('search', 'InputController@search');
 Route::get('search-ajax', 'InputController@searchAjax');
