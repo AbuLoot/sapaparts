@@ -19,27 +19,23 @@
     @if($slide_items->isNotEmpty())
       <div class="block-slideshow block-slideshow--layout--full block">
         <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <div class="block-slideshow__body">
-                <div class="owl-carousel">
-                  @foreach($slide_items as $key => $slide_item)
-                    <a class="block-slideshow__slide" href="/{{ $slide_item->link }}">
-                      <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('img/slide/{{ $slide_item->image }}')"></div>
-                      <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('img/slide/{{ $slide_item->image }}')"></div>
-                      <div class="block-slideshow__slide-content">
-                        <div class="block-slideshow__slide-title" style="color: {{ $slide_item->color }};">{{ $slide_item->title }}</div>
-                        <div class="block-slideshow__slide-text" style="color: {{ $slide_item->color }};">{{ $slide_item->marketing }}</div>
-                        @if($slide_item->link != NULL)
-                          <div class="block-slideshow__slide-button">
-                            <span class="btn btn-primary btn-lg">Подробнее</span>
-                          </div>
-                        @endif
+          <div class="block-slideshow__body">
+            <div class="owl-carousel">
+              @foreach($slide_items as $key => $slide_item)
+                <a class="block-slideshow__slide" href="/{{ $slide_item->link }}">
+                  <div class="block-slideshow__slide-image block-slideshow__slide-image--desktop" style="background-image: url('img/slide/{{ $slide_item->image }}')"></div>
+                  <div class="block-slideshow__slide-image block-slideshow__slide-image--mobile" style="background-image: url('img/slide/{{ $slide_item->image }}')"></div>
+                  <div class="block-slideshow__slide-content">
+                    <div class="block-slideshow__slide-title" style="color: {{ $slide_item->color }};">{{ $slide_item->title }}</div>
+                    <div class="block-slideshow__slide-text" style="color: {{ $slide_item->color }};">{{ $slide_item->marketing }}</div>
+                    @if($slide_item->link != NULL)
+                      <div class="block-slideshow__slide-button">
+                        <span class="btn btn-primary btn-lg">Подробнее</span>
                       </div>
-                    </a>
-                  @endforeach
-                </div>
-              </div>
+                    @endif
+                  </div>
+                </a>
+              @endforeach
             </div>
           </div>
         </div>
