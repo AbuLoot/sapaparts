@@ -22,7 +22,7 @@ class Product extends Model
     {
         $array = $this->toArray();
 
-        // Customize array...
+        // $array = ['*'];
 
         return $array;
     }

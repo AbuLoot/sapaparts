@@ -224,12 +224,6 @@ class ProductController extends Controller
         $images = unserialize($product->images);
         $dirName = $product->path;
 
-        if (!file_exists('img/products/'.$product->category_id) OR empty($product->path)) {
-            $dirName = $product->category->id.'/'.time();
-            Storage::makeDirectory('img/products/'.$dirName);
-            $product->path = $dirName;
-        }
-
         // Remove images
         if (isset($request->remove_images)) {
             $images = $this->removeImages($request, $images, $product);
@@ -375,9 +369,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        if (! empty($product->images)) {
+        $images = unserialize($product->images);
 
-            $images = unserialize($product->images);
+        if (is_array($images)) {
 
             foreach ($images as $image)
             {
