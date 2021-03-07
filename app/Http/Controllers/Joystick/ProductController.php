@@ -228,6 +228,8 @@ class ProductController extends Controller
         if (isset($request->remove_images)) {
             $images = $this->removeImages($request, $images, $product);
             $introImage = (isset($images[0]['mini_image'])) ? $images[0]['mini_image'] : 'no-image-middle.png';
+            $product->image = $introImage;
+            $product->images = serialize($images);
         }
 
         // Adding new images
@@ -241,11 +243,12 @@ class ProductController extends Controller
 
             $images = $this->uploadImages($request, $dirName, $images, $product);
             $introImage = current($images)['mini_image'];
+            $product->image = $introImage;
+            $product->images = serialize($images);
         }
 
         // Change directory for new category
         if ($product->category_id != $request->category_id AND file_exists('img/products/'.$product->path)) {
-
             $dirName = $request->category_id.'/'.time();
             Storage::move('img/products/'.$product->path, 'img/products/'.$dirName);
             $product->path = $dirName;
@@ -261,13 +264,10 @@ class ProductController extends Controller
         $product->days = $request->days;
         $product->count = $request->count;
         $product->condition = $request->condition;
-        // $product->presense = $request->presense;
         $product->meta_title = $request->meta_title;
         $product->meta_description = $request->meta_description;
         $product->description = $request->description;
         $product->characteristic = (isset($request->characteristic)) ? $request->characteristic : '';
-        if (isset($introImage)) $product->image = $introImage;
-        $product->images = serialize($images);
         $product->lang = $request->lang;
         $product->mode = (isset($request->mode)) ? $request->mode : 0;
         $product->status = $request->status;
@@ -371,7 +371,7 @@ class ProductController extends Controller
 
         $images = unserialize($product->images);
 
-        if (is_array($images)) {
+        if (is_array($images) AND !empty($product->path)) {
 
             foreach ($images as $image)
             {
