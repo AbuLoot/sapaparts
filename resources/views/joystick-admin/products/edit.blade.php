@@ -51,25 +51,27 @@
           <label for="description">Описание</label>
           <textarea class="form-control" name="description" id="summernote2" rows="8" maxlength="2000">{{ (old('description')) ? old('description') : $product->description }}</textarea>
         </div>
-        <div class="form-group">
-          <label for="price">Цена</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="price" name="price" maxlength="10" value="{{ (old('price')) ? old('price') : $product->price }}">
-            <div class="input-group-addon">〒</div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="price">Цена</label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="price" name="price" maxlength="10" value="{{ (old('price')) ? old('price') : $product->price }}">                <div class="input-group-addon">〒</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="lang"><i class="material-icons md-18">language</i> Язык</label>
+              <select id="lang" name="lang" class="form-control" required>
+                @foreach($languages as $language)
+                  @if ($product->lang == $language->slug)
+                    <option value="{{ $language->slug }}" selected>{{ $language->title }}</option>
+                  @else
+                    <option value="{{ $language->slug }}">{{ $language->title }}</option>
+                  @endif
+                @endforeach
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="lang">Язык</label>
-          <select id="lang" name="lang" class="form-control" required>
-            <option value=""></option>
-            @foreach($languages as $language)
-              @if ($product->lang == $language->slug)
-                <option value="{{ $language->slug }}" selected>{{ $language->title }}</option>
-              @else
-                <option value="{{ $language->slug }}">{{ $language->title }}</option>
-              @endif
-            @endforeach
-          </select>
         </div>
       </div>
     </div>
@@ -83,7 +85,7 @@
             <input type="text" class="form-control" id="barcode" name="barcode" value="{{ (old('barcode')) ? old('barcode') : NULL }}">
           </div>
           <div class="col-md-6 form-group">
-            <label for="company_id">Компания</label>
+            <label for="company_id"><i class="material-icons md-18">business</i> Компания</label>
             <select id="company_id" name="company_id" class="form-control">
               <option value="0"></option>
               @foreach($companies as $company)
@@ -96,7 +98,7 @@
             </select>
           </div>
           <div class="col-md-6">
-            <p><b>Категории</b></p>
+            <p><i class="material-icons md-18">list</i> <b>Категории</b></p>
             <div class="panel panel-default">
               <div class="panel-body" style="max-height: 250px; overflow-y: auto;">
                 <?php $traverse = function ($nodes, $prefix = null) use (&$traverse, $product) { ?>
@@ -114,7 +116,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <p><b>Опции</b></p>
+            <p><i class="material-icons md-18">label_outline</i> <b>Опции</b></p>
             <div class="panel panel-default">
               <div class="panel-body" style="max-height: 250px; overflow-y: auto;">
                 @forelse ($grouped as $data => $group)
@@ -203,7 +205,7 @@
         <br>
         <div class="row">
           <div class="col-md-6">
-            <p><b>Режимы</b></p>
+            <p><i class="material-icons md-18">style</i> <b>Режимы</b></p>
             <div class="panel panel-default">
               <div class="panel-body" style="max-height: 150px; overflow-y: auto;">
                 @foreach($modes as $mode)

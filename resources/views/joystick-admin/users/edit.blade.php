@@ -6,6 +6,7 @@
   @include('joystick-admin.partials.alerts')
 
   <p class="text-right">
+    <a href="/admin/users/password/{{ $user->id }}/edit" class="btn btn-primary btn-sm">Изменить пароль</a>
     <a href="/admin/users" class="btn btn-primary btn-sm">Назад</a>
   </p>
   <form action="{{ route('users.update', $user->id) }}" method="post" enctype="multipart/form-data">

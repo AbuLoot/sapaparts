@@ -58,6 +58,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'role:admin']], func
     Route::get('products/{id}/destroy-comment', 'Joystick\ProductController@destroyComment');
     Route::get('products-price/edit', 'Joystick\ProductController@priceForm');
     Route::post('products-price/update', 'Joystick\ProductController@priceUpdate');
+
+    Route::get('users/password/{id}/edit', 'Joystick\UserController@passwordEdit');
+    Route::put('users/password/{id}', 'Joystick\UserController@passwordUpdate');
 });
 
 
